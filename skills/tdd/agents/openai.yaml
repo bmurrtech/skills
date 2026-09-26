@@ -1,5 +1,5 @@
 interface:
   display_name: "TDD"
-  short_description: "Red-green tests at agreed seams"
+  short_description: "Red-green TDD; OKF session-scoped tests"
 policy:
   allow_implicit_invocation: false

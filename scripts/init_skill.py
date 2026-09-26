@@ -60,8 +60,8 @@ def validate_name(name: str) -> str | None:
 
 
 def repo_root_from_script() -> Path:
-    # skills/skill-create/scripts/init_skill.py → repo root
-    return Path(__file__).resolve().parents[3]
+    # scripts/init_skill.py → repo root
+    return Path(__file__).resolve().parents[1]
 
 
 def main() -> int:

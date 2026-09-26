@@ -1,5 +1,5 @@
 interface:
   display_name: "Setup bmurrtech Skills"
-  short_description: "Provision repo agent conventions"
+  short_description: "Provision conventions incl. .scratch/"
 policy:
   allow_implicit_invocation: false

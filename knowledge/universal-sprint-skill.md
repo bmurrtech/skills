@@ -16,16 +16,17 @@ Skills meant to improve sprints in **any** repo that installs them — not only 
 
 ## Rules of thumb
 
-- Spec discovery is ordered and optional (`docs/prd/` is one path, not the only one).
+- Spec discovery is ordered and optional (`docs/prd/` / `.scratch/` are paths, not the only ones).
 - Validation = target repo evidence (`AGENTS.md`, package scripts, CI).
 - Skill validators (`quick_validate.py`) are optional and only when a `skills/` tree changed **and** a validator exists.
 - `upkeep` / `context` run when installed **and** artifacts exist; otherwise one-line skip.
+- **`tdd`**: session-scoped runs via AGENTS Test index → OKF test-maps when those conventions exist.
 
 ## Contrast
 
-Library-specific skills (`skill-create`, `setup-bmurrtech-skills`, `to-prd`, `to-adr`, `upkeep`, `context`) may assume this repo’s layout. Do not copy those assumptions into universal sprint skills.
+Library-specific skills (`writing-for-agents`, `setup-bmurrtech-skills`, `docx`, `to-prd`, `to-adr`, `upkeep`, `context`) may assume this repo’s layout. Do not copy those assumptions into universal sprint skills.
 
 ## Related
 
 - Glossary: [CONTEXT.md](../CONTEXT.md)
-- [Skill](skill.md)
+- [Skill](agent-skill.md)

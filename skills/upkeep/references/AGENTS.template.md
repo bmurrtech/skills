@@ -27,10 +27,18 @@ likely to touch. Link deeper documentation rather than repeating it.>
 <typecheck command>
 ```
 
-- Run the smallest relevant check while iterating.
+- Run the smallest relevant check while iterating (prefer Test index → OKF test-maps).
 - Run the required broader checks before considering the change complete.
 - Never delete or weaken a valid test merely to make a change pass.
 - Do not claim a failed, interrupted, skipped, or timed-out check passed.
+
+### Test index (OKF)
+
+One-liners only — each points at a `knowledge/` test-map. Maintained by **`tdd`** / **`upkeep`**. Load maps for the current seams; do not dump the whole `tests/` tree into context.
+
+```markdown
+- [<capability>](knowledge/<slug>.md) — `<smallest run command>`
+```
 
 ## Code style
 
@@ -60,3 +68,4 @@ likely to touch. Link deeper documentation rather than repeating it.>
 ## References
 
 - `<path-or-url>` — <what it covers>
+- `CHANGELOG.md` — Keep a Changelog; upkeep keeps Unreleased current after implement/review

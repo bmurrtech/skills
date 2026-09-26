@@ -3,10 +3,10 @@
 <!-- File: docs/adr/0003-ADR-docs-adr-madr.md -->
 
 ## Status
-Accepted
+Superseded
 - **Date (optional):** 2026-09-25
 - **Supersedes:** —
-- **Superseded by:** —
+- **Superseded by:** [0010](0010-ADR-to-adr-mechanics-shipped.md)
 - **Related PRDs:** —
 
 ## Context and Problem Statement

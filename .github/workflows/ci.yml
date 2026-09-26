@@ -1,0 +1,57 @@
+# CI — unit tests + skills release packaging smoke (no publish).
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  package-skills:
+    name: Test and package smoke
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Unit tests (package + docx ensure + adr catalog)
+        run: python3 -m unittest tests.test_package_skills tests.test_docx_ensure tests.test_adr_catalog -v
+
+      - name: Validate tracked skills
+        run: |
+          set -euo pipefail
+          shopt -s nullglob
+          for skill in skills/*/SKILL.md; do
+            python3 scripts/quick_validate.py "$(dirname "$skill")"
+          done
+
+      - name: Package smoke (filtered artifact)
+        run: |
+          python3 scripts/package_skills.py --version 0.0.0-ci --out dist/
+          test -f dist/bmurrtech-skills-0.0.0-ci.tar.gz
+          test -f dist/bmurrtech-skills-0.0.0-ci.tar.gz.sha256
+          # Library OKF/ops must not appear in the artifact
+          ! tar -tzf dist/bmurrtech-skills-0.0.0-ci.tar.gz | grep -E '/(knowledge/|CONTEXT\.md|AGENTS\.md|docs/)'
+
+      - name: Upload smoke artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: skills-package-smoke
+          path: |
+            dist/bmurrtech-skills-0.0.0-ci.tar.gz
+            dist/bmurrtech-skills-0.0.0-ci.tar.gz.sha256
+          if-no-files-found: error
+          retention-days: 7

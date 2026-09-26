@@ -1,5 +1,5 @@
 interface:
   display_name: "Upkeep"
-  short_description: "Maintain AGENTS.md and CLAUDE.md"
+  short_description: "Maintain AGENTS.md, CLAUDE.md, CHANGELOG"
 policy:
   allow_implicit_invocation: true

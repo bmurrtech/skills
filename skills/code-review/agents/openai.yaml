@@ -1,5 +1,5 @@
 interface:
   display_name: "Code Review"
-  short_description: "Two-axis standards and spec review"
+  short_description: "Two-axis review with severity + ship call"
 policy:
   allow_implicit_invocation: false

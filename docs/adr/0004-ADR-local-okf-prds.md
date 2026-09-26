@@ -3,10 +3,10 @@
 <!-- File: docs/adr/0004-ADR-local-okf-prds.md -->
 
 ## Status
-Accepted
+Superseded
 - **Date (optional):** 2026-09-25
 - **Supersedes:** —
-- **Superseded by:** —
+- **Superseded by:** [0007-ADR-scaffold-omit-about-prd.md](0007-ADR-scaffold-omit-about-prd.md)
 - **Related PRDs:** —
 
 ## Context and Problem Statement

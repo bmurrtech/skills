@@ -2,11 +2,15 @@
 /pm/
 /pm/*
 
-# Local PRDs — developer-only OKF concepts under docs/prd/. See docs/about-prd.md.
+# Local PRDs — developer-only OKF concepts under docs/prd/. See docs/how-to-bmurrtech-skills.md / knowledge/prd.md.
 /docs/prd/
 /docs/prd/*
 /docs/handoff/
 /docs/handoff/*
+
+# Agent scratch pad — exploratory / pre-PRD / skill-related dumps. Never track.
+.scratch/
+.scratch/*
 
 # Local agent tooling — local developer only. Skills SoT is skills/.
 .claude/
@@ -42,6 +46,10 @@ venv/
 .pytest_cache/
 .mypy_cache/
 .ruff_cache/
+
+# Release packaging output
+/dist/
+/dist/*
 
 # Node
 node_modules/

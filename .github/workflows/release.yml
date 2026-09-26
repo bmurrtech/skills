@@ -1,0 +1,67 @@
+# Release — runs when a v* tag is pushed (this workflow does not create/push tags).
+# Attach filtered skills tarball + sha256 to the GitHub Release for that tag.
+name: Release
+
+on:
+  push:
+    tags:
+      - "v*"
+
+concurrency:
+  group: release-${{ github.ref }}
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    name: Package and publish GitHub Release
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Derive version from tag
+        id: ver
+        run: |
+          TAG="${GITHUB_REF_NAME}"
+          VERSION="${TAG#v}"
+          if [[ ! "$VERSION" =~ ^[0-9]+\.[0-9]+\.[0-9]+([.-].+)?$ ]]; then
+            echo "Tag must be v<semver> (got: $TAG)" >&2
+            exit 1
+          fi
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+          echo "tag=$TAG" >> "$GITHUB_OUTPUT"
+
+      - name: Unit tests
+        run: python3 -m unittest tests.test_package_skills tests.test_docx_ensure -v
+
+      - name: Build skills release artifact
+        run: |
+          python3 scripts/package_skills.py \
+            --version "${{ steps.ver.outputs.version }}" \
+            --out dist/
+          ! tar -tzf "dist/bmurrtech-skills-${{ steps.ver.outputs.version }}.tar.gz" \
+            | grep -E '/(knowledge/|CONTEXT\.md|AGENTS\.md|docs/)'
+
+      - name: Create GitHub Release with assets
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          VERSION="${{ steps.ver.outputs.version }}"
+          TAG="${{ steps.ver.outputs.tag }}"
+          TARBALL="dist/bmurrtech-skills-${VERSION}.tar.gz"
+          SUM="${TARBALL}.sha256"
+          NOTES="Skills release ${TAG}
+
+          Artifact contains \`skills/\` + \`LICENSE\` only (library OKF/ops/docs excluded).
+          See ADR 0005."
+          gh release create "$TAG" "$TARBALL" "$SUM" \
+            --title "bmurrtech-skills ${VERSION}" \
+            --notes "$NOTES"

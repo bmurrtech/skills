@@ -1,0 +1,5 @@
+interface:
+  display_name: "Writing for Agents"
+  short_description: "Levers for skills and repeatable agent writing"
+policy:
+  allow_implicit_invocation: false

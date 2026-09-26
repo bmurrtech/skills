@@ -1,0 +1,5 @@
+interface:
+  display_name: "Docx"
+  short_description: "Word docs via docx-cli; LibreOffice probe"
+policy:
+  allow_implicit_invocation: true

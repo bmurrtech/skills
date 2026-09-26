@@ -35,10 +35,20 @@ Agent operating manual. Owned by `upkeep`. May link here; must not restate gloss
 Repo file whose entire body is exactly `AGENTS.md`.
 
 **ADR**:
-Tracked decision under `docs/adr/NNNN-ADR-<slug>.md`, indexed by `docs/adr/index.md`. Accepted = immutable; change via supersede.
+Tracked decision under `docs/adr/NNNN-ADR-<slug>.md`, indexed by `docs/adr/index.md`. Accepted = immutable; change via supersede. Authoring SoT ships in **`to-adr`** (`references/mechanics.md`); library OKF only summarizes.
 
-**PRD**:
-Local OKF product requirement under `docs/prd/NNNN-PRD-<slug>.md` (gitignored). See `docs/about-prd.md`.
+**How-to doc**:
+Library consumer guide under `docs/how-to-<topic>.md` (e.g. `how-to-bmurrtech-skills`, `how-to-adr`, `how-to-visual-explainer`). Install/scaffold lives in the main skills how-to; topic how-tos are prompts + scope only.
+_Avoid_: `how-to-use-…` naming; duplicating setup into every topic how-to; scaffolding library how-tos into consumers
+
+
+**.scratch/**:
+Gitignored local scratch pad for exploratory, pre-PRD, and other agent artifact dumps related to these skills. Includes `.scratch/diagrams/` for **visual-explainer** HTML (optional Markdown companions) and `.scratch/adr-optics/` for **`to-adr`** at-a-glance catalog HTML. Not for handoffs (those use OS temp via `handoff`).
+_Avoid_: committing scratch; using tracked `docs/` for throwaways; `/pm/diagrams` or harness skill dirs as diagram SoT
+
+**Test map**:
+OKF concept (`type: test-map`) under `knowledge/` naming a seam, the smallest run command, and tracked test paths. Indexed by a one-liner in `AGENTS.md` so agents load only session-relevant tests.
+_Avoid_: dumping the whole `tests/` tree into context each session
 
 **grill-me**:
 Design-tree interview in frontier rounds; updates glossary via `context`; warrants ADRs via `to-adr`.
@@ -46,25 +56,47 @@ Design-tree interview in frontier rounds; updates glossary via `context`; warran
 **upkeep** / **context** (skills):
 Ops manual vs glossary/OKF ownership — never cross-edit.
 
-**skill-create**:
-Scaffolds skills under `skills/` including `agents/openai.yaml`.
+**writing-for-agents**:
+Standalone guidance for writing skills and other agent instructions so behaviour is repeatable across LLMs. Owns levers: context pointers, two loads, information hierarchy, completion criteria, leading words, negative-imperative guardrails, pruning. Soft-skips skill validators when absent. Does not own ops-manual create/maintain.
+_Avoid_: flattening levers into unnamed checklist vibes; treating this as upkeep for ops manuals; soft bans where a hard Boundaries line is required
+
+**Context pointer**:
+Always-loaded reference that names out-of-context material and encodes when to reach it (skill `description`, always-on instruction line). Wording decides reach reliability; weak wording on a must-have target is a variance bug.
+_Avoid_: treating the target path as the trigger; stuffing identity the body already carries
+
+**Leading word**:
+Compact pretrained token the agent thinks with while running a document (*tight*, *red*). Recruits priors; repeats as a token, not a sentence. Anchors execution in the body and invocation in pointers.
+_Avoid_: coining words with no prior; restating the same idea as a phrase in three places
 
 **setup-bmurrtech-skills**:
-Idempotent provision of gitignore, AGENTS/CLAUDE/CONTEXT, knowledge stub, docs/adr, about-prd.
+Idempotent provision of gitignore (incl. `.scratch/`), `.scratch/` + `.scratch/diagrams/` + `.scratch/adr-optics/`, AGENTS/CLAUDE/CONTEXT, knowledge stub, docs/adr index, docs/prd ignore; optional **`docx`** (docx-cli + office host). Does not install skill folders into harnesses (that is `npx skills`) and does not copy library how-tos / explainers into the consumer. Tree: [docs/skill-scaffold.md](docs/skill-scaffold.md); why: [knowledge/skill-scaffold.md](knowledge/skill-scaffold.md).
+
+**visual-explainer**:
+Lean Agent Skill that turns architectures, diffs, plans, tables, and related intent into self-contained HTML under `.scratch/diagrams/`. Single entry with intent routing to modes (diagram, visual-plan, slides, diff-review, plan-review, project-recap, fact-check); modes also callable manually. Optional AI-readable Markdown companion (same basename) only when requested; ask before replace. Inspired by [nicobailon/visual-explainer](https://github.com/nicobailon/visual-explainer) (MIT); no Pi/MCP/PPTX bundle in this remake.
+_Avoid_: ASCII/box-drawing as the primary artifact when this skill is loaded; writing diagrams under `/pm/` or agent install dirs; treating the `.md` companion as HTML source
+
+**docx**:
+Word `.docx` via pinned **docx-cli**; probes Word/LibreOffice and can install LibreOffice OS-specifically for render/import. Prefer **`ensure_toolchain`** façade; cores remain `ensure_docx` / `ensure_office`. **ToolchainReady** is the typed evidence report (pin ok ∧ office ready).
+_Avoid_: Anthropic proprietary office scripts; domain design-doc templates; fusing pin + OS install into one implementation module
 
 **Universal sprint skill**:
 Portable skill for any consumer repo: **`implement`**, **`code-review`**, **`tdd`**, plus soft-coupled **`grill-me`** / **`wait-what`** / **`handoff`**. Validation means the *target* repo’s checks; `upkeep`/`context` run only when installed and those artifacts exist.
 _Avoid_: requiring `quick_validate.py` for ordinary app/lib work; assuming every consumer is a skills monorepo
 
 **Library-specific skill**:
-Opinionated for this library (or repos that opted into the convention): **`skill-create`**, **`setup-bmurrtech-skills`**, **`to-prd`** / **`to-adr`** homes, **`upkeep`** / **`context`** as glossary/ops maintainers.
+Opinionated for this library (or repos that opted into the convention): **`writing-for-agents`**, **`setup-bmurrtech-skills`**, **`docx`**, **`visual-explainer`**, **`to-prd`** / **`to-adr`** homes, **`upkeep`** / **`context`** as glossary/ops maintainers.
 _Avoid_: shipping library layout rules inside universal sprint skills
+
+**Skills release artifact**:
+Versioned install tarball of `skills/` + `LICENSE` only. Library `knowledge/` / `CONTEXT.md` / ops / docs stay **tracked** in git but are **excluded** by packaging (`scripts/package_skills.py`). Do not gitignore library OKF to keep consumer installs clean.
+_Avoid_: shipping full-repo trees as the install artifact; overlaying library OKF onto consumer roots
 
 ## Hard rules
 
-1. **All skills live in `skills/`.**
+1. **Tracked/published skills live only in `skills/`.** Library-local skills may sit under ignored `.agents/skills/` (host-readable; not product; not OKF; not release).
 2. **No glossary/ops duplication.**
 3. **`docs/prd/` is local-only** (gitignored); ADRs stay tracked.
+4. **Release artifacts exclude library OKF/ops/docs** — filter at package time; keep `knowledge/` tracked.
 
 Post-`implement`/`code-review` housekeeping lives in [`AGENTS.md`](AGENTS.md) Boundaries — not restated here.
 
@@ -72,5 +104,5 @@ Post-`implement`/`code-review` housekeeping lives in [`AGENTS.md`](AGENTS.md) Bo
 
 - [knowledge/index.md](knowledge/index.md)
 - [docs/adr/index.md](docs/adr/index.md)
-- [docs/about-prd.md](docs/about-prd.md)
+- [docs/how-to-bmurrtech-skills.md](docs/how-to-bmurrtech-skills.md)
 - [AGENTS.md](AGENTS.md)

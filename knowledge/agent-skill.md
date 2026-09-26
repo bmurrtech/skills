@@ -25,4 +25,4 @@ A **Skill** in this repository is a directory at `skills/<name>/` containing:
 ## Related
 
 - Glossary: [CONTEXT.md](../CONTEXT.md)
-- Creator skill: [`skills/skill-create`](../skills/skill-create/SKILL.md)
+- Writing levers: [`skills/writing-for-agents`](../skills/writing-for-agents/SKILL.md)

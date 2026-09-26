@@ -13,7 +13,7 @@ Author **PRDs** — MVP scope, one critical journey, behavioral FRs, DoD, living
 
 ## Homes
 
-- PRD home: `docs/prd/` (local-only; gitignored — see `docs/about-prd.md`)
+- PRD home: `docs/prd/` (local-only; gitignored). Rationale: library [how-to-bmurrtech-skills — Local PRDs](https://github.com/bmurrtech/skills/blob/main/docs/how-to-bmurrtech-skills.md#local-prds-docsprd) / [knowledge/prd.md](https://github.com/bmurrtech/skills/blob/main/knowledge/prd.md) — not required in the consumer tree.
 - Filename: `NNNN-PRD-<slug>.md` (no project-key prefix)
 - Catalog: `docs/prd/index.md` (local)
 - ADR home: `docs/adr/` (tracked)

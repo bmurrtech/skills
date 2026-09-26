@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CI/CD Pipeline — Reference Template</title>
+<!--
+  Reference template for the visual-explainer skill: Mermaid flowcharts.
+  Teal/cyan palette — distinctly different from terracotta (architecture)
+  and rose (data-table) templates so agents absorb variety.
+
+  Key patterns demonstrated:
+  ─ Teal/cyan palette (NOT indigo/violet)
+  ─ Dot-grid background atmosphere
+  ─ Large heading (38px) for typographic contrast
+  ─ Mermaid: startOnLoad:false + async mermaid.render() — REQUIRED for panzoom
+  ─ SVG sized from viewBox after render — without this SVG is invisible (0×0)
+  ─ Full-width diagram-hero section outside the max-width container
+  ─ Fixed-height overflow:hidden viewport + translate(tx,ty) scale(s) panzoom
+  ─ transform-origin: 0 0 on inner wrapper — REQUIRED for zoom-toward-cursor math
+  ─ computeFit() centers diagram on load and reset
+  ─ Scroll-to-zoom toward cursor (no Ctrl required in dedicated viewport)
+  ─ Click-and-drag pan always works (not only when zoom > 1)
+  ─ Only a Reset button — no separate +/- buttons needed
+  ─ classDef: single space between node name and class, never extra padding
+  ─ edgeLabelBackground must contrast with textColor (white-on-white is invisible)
+  ─ Both light and dark themes via prefers-color-scheme
+  ─ Staggered fade-in, reduced motion respect
+-->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;500;600;700&family=Fragment+Mono:wght@400&display=swap" rel="stylesheet">
+<style>
+  /* ============ THEME ============ */
+  :root {
+    --font-body: 'Bricolage Grotesque', system-ui, sans-serif;
+    --font-mono: 'Fragment Mono', 'SF Mono', Consolas, monospace;
+
+    --bg: #f0fdfa;
+    --surface: #ffffff;
+    --surface2: #e6f7f3;
+    --border: rgba(0, 0, 0, 0.07);
+    --border-bright: rgba(0, 0, 0, 0.14);
+    --text: #134e4a;
+    --text-dim: #5f8a85;
+
+    --primary: #0d9488;
+    --primary-dim: rgba(13, 148, 136, 0.08);
+    --secondary: #7c3aed;
+    --secondary-dim: rgba(124, 58, 237, 0.08);
+    --tertiary: #d97706;
+    --tertiary-dim: rgba(217, 119, 6, 0.08);
+    --danger: #dc2626;
+    --danger-dim: rgba(220, 38, 38, 0.08);
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #042f2e;
+      --surface: #0a3d3a;
+      --surface2: #115e59;
+      --border: rgba(255, 255, 255, 0.08);
+      --border-bright: rgba(255, 255, 255, 0.14);
+      --text: #ccfbf1;
+      --text-dim: #5eead4;
+
+      --primary: #2dd4bf;
+      --primary-dim: rgba(45, 212, 191, 0.14);
+      --secondary: #c4b5fd;
+      --secondary-dim: rgba(196, 181, 253, 0.12);
+      --tertiary: #fbbf24;
+      --tertiary-dim: rgba(251, 191, 36, 0.12);
+      --danger: #f87171;
+      --danger-dim: rgba(248, 113, 113, 0.12);
+    }
+  }
+
+  /* ============ RESET + BASE ============ */
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background-color: var(--bg);
+    background-image: radial-gradient(circle, var(--border) 1px, transparent 1px);
+    background-size: 24px 24px;
+    color: var(--text);
+    font-family: var(--font-body);
+    padding: 40px;
+    min-height: 100vh;
+  }
+
+  /* ============ ANIMATION ============ */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .animate {
+    animation: fadeUp 0.4s ease-out both;
+    animation-delay: calc(var(--i, 0) * 0.06s);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-delay: 0ms !important;
+      transition-duration: 0.01ms !important;
+    }
+    .mermaid-wrap .mermaid { transition: none; }
+  }
+
+  /* ============ LAYOUT ============ */
+  .container {
+    max-width: 1000px;
+    margin: 0 auto;
+  }
+
+  h1 {
+    font-size: 38px;
+    font-weight: 700;
+    letter-spacing: -1px;
+    margin-bottom: 6px;
+    text-wrap: balance;
+  }
+
+  .subtitle {
+    color: var(--text-dim);
+    font-family: var(--font-mono);
+    font-size: 12px;
+    margin-bottom: 32px;
+  }
+
+  .description {
+    font-size: 14px;
+    line-height: 1.7;
+    color: var(--text-dim);
+    margin-bottom: 24px;
+    max-width: 700px;
+  }
+
+  .description code {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    background: var(--primary-dim);
+    color: var(--primary);
+    padding: 1px 5px;
+    border-radius: 3px;
+  }
+
+  /* ============ DIAGRAM HERO (full-width, outside .container) ============ */
+  .diagram-hero {
+    width: 100%;
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 2rem 2rem 1rem;
+    margin-bottom: 2rem;
+  }
+
+  .diagram-hero h2 {
+    font-size: 22px;
+    font-weight: 600;
+    text-align: center;
+    margin-bottom: 1rem;
+    letter-spacing: -0.3px;
+  }
+
+  .zoom-controls {
+    display: flex;
+    justify-content: center;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .zoom-controls button {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    color: var(--text-dim);
+    padding: 0.35rem 1rem;
+    border-radius: 6px;
+    cursor: pointer;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    transition: background 0.15s, color 0.15s;
+  }
+
+  .zoom-controls button:hover {
+    background: var(--primary-dim);
+    color: var(--text);
+  }
+
+  /* Fixed-height panzoom viewport */
+  .diagram-viewport {
+    width: 100%;
+    height: 440px;
+    overflow: hidden;
+    cursor: grab;
+    user-select: none;
+    background: var(--surface2);
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    position: relative;
+  }
+
+  .diagram-viewport.panning { cursor: grabbing; }
+
+  /* Free-floating inner: transform-origin MUST be 0 0 */
+  #mermaid-diagram {
+    position: absolute;
+    top: 0;
+    left: 0;
+    transform-origin: 0 0;
+    display: inline-block;
+  }
+
+  #mermaid-diagram svg {
+    display: block;
+    max-width: none;
+  }
+
+  .diagram-hint {
+    text-align: center;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--text-dim);
+    margin-top: 0.5rem;
+  }
+
+  /* ============ MERMAID SVG OVERRIDES ============ */
+  .mermaid .nodeLabel {
+    font-family: var(--font-body) !important;
+    font-size: 16px !important;
+  }
+
+  .mermaid .edgeLabel {
+    font-family: var(--font-mono) !important;
+    font-size: 13px !important;
+  }
+
+  .mermaid .node rect,
+  .mermaid .node circle,
+  .mermaid .node polygon {
+    stroke-width: 1.5px !important;
+  }
+
+  .mermaid .edge-pattern-solid {
+    stroke-width: 1.5px !important;
+  }
+
+  /* ============ LEGEND ============ */
+  .legend {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+  }
+
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--text-dim);
+  }
+
+  .legend-swatch {
+    width: 12px;
+    height: 12px;
+    border-radius: 3px;
+  }
+
+  /* ============ CALLOUT ============ */
+  .callout {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--primary);
+    border-radius: 0 10px 10px 0;
+    padding: 16px 20px;
+    font-size: 13px;
+    line-height: 1.6;
+    color: var(--text-dim);
+    margin-top: 24px;
+  }
+
+  .callout strong { color: var(--text); }
+
+  .callout code {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    background: var(--primary-dim);
+    color: var(--primary);
+    padding: 1px 5px;
+    border-radius: 3px;
+  }
+
+  /* ============ RESPONSIVE ============ */
+  @media (max-width: 768px) {
+    body { padding: 16px; }
+    h1 { font-size: 22px; }
+    .mermaid-wrap { padding: 16px 12px; }
+  }
+</style>
+</head>
+<body>
+
+  <!-- Full-width diagram hero — outside .container so LR charts aren't clipped -->
+  <section class="diagram-hero animate" style="--i:0">
+    <h2>CI/CD Pipeline</h2>
+    <div class="zoom-controls">
+      <button id="btn-reset">&#8634; Reset view</button>
+    </div>
+    <div class="diagram-viewport" id="diagram-viewport">
+      <div id="mermaid-diagram"></div>
+    </div>
+    <p class="diagram-hint">Scroll to zoom &middot; Click &amp; drag to pan</p>
+  </section>
+
+<div class="container">
+
+  <h1 class="animate" style="--i:1">CI/CD Pipeline</h1>
+  <p class="subtitle animate" style="--i:2">github actions &rarr; staging &rarr; production</p>
+
+  <p class="description animate" style="--i:3">
+    Every push to <code>main</code> triggers the full pipeline. Tests and linting run in parallel,
+    then the build step produces a Docker image. Staging deploys automatically; production requires
+    manual approval via a GitHub environment gate.
+  </p>
+
+  <div class="legend animate" style="--i:4">
+    <div class="legend-item"><div class="legend-swatch" style="background:var(--primary)"></div> Automated step</div>
+    <div class="legend-item"><div class="legend-swatch" style="background:var(--tertiary)"></div> Decision gate</div>
+    <div class="legend-item"><div class="legend-swatch" style="background:var(--danger)"></div> Failure path</div>
+    <div class="legend-item"><div class="legend-swatch" style="background:var(--secondary)"></div> Success</div>
+  </div>
+
+  <div class="callout animate" style="--i:5">
+    <strong>Panzoom pattern.</strong> This template uses <code>startOnLoad: false</code> + async
+    <code>mermaid.render()</code>. SVG dimensions are set from <code>viewBox</code> after render
+    so the diagram is visible. The viewport uses <code>translate(tx,ty) scale(s)</code> with
+    <code>transform-origin: 0 0</code> — required for zoom-toward-cursor math.
+    Scroll to zoom, click-and-drag to pan, Reset to re-center.
+  </div>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10.6.1/dist/mermaid.min.js"></script>
+<script>
+  const isDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+
+  mermaid.initialize({
+    startOnLoad: false,   // REQUIRED: we render manually to post-process the SVG
+    theme: 'base',
+    themeVariables: {
+      primaryColor:        isDark ? '#115e59' : '#ccfbf1',
+      primaryBorderColor:  isDark ? '#2dd4bf' : '#0d9488',
+      primaryTextColor:    isDark ? '#ccfbf1' : '#134e4a',
+      lineColor:           isDark ? '#5eead4' : '#5f8a85',
+      // edgeLabelBackground MUST contrast with textColor — default #fff causes
+      // white-on-white labels when primaryTextColor is light
+      edgeLabelBackground: isDark ? '#0a3d3a' : '#f0fdfa',
+      fontSize: '15px',
+      fontFamily: "'Bricolage Grotesque', system-ui, sans-serif",
+    },
+    flowchart: {
+      useMaxWidth: false,   // REQUIRED: prevents Mermaid from capping SVG width
+      htmlLabels:  true,
+      curve:       'basis',
+      padding:     28
+    },
+    securityLevel: 'loose'
+  });
+
+  // ── Diagram source ────────────────────────────────────────────────────────
+  // classDef: exactly one space between node name and class name — extra spaces
+  // cause parse errors: "Expecting NODE_STRING, got SPACE"
+  const DIAGRAM_SOURCE = `
+flowchart LR
+    Push([Push to main])
+    Branch{Branch?}
+    Tests[Run Tests]
+    Lint[Lint + Type Check]
+    Unit[Unit Tests]
+    Int[Integration Tests]
+    Build[Build Docker Image]
+    Staging[Deploy to Staging]
+    Smoke{Smoke Tests?}
+    Approval[Manual Approval]
+    Rollback[Alert + Rollback]
+    Prod[Deploy to Production]
+    Health[Health Check]
+    Done([Done])
+
+    classDef startEnd  fill:#115e59,color:#ccfbf1,stroke:#2dd4bf,stroke-width:1.5px
+    classDef decision  fill:#2e2618,color:#fbbf24,stroke:#d97706,stroke-width:1.5px
+    classDef step      fill:#0a3d3a,color:#ccfbf1,stroke:#2dd4bf,stroke-width:1.5px
+    classDef danger    fill:#450a0a,color:#fca5a5,stroke:#dc2626,stroke-width:1.5px
+    classDef success   fill:#052e16,color:#bbf7d0,stroke:#16a34a,stroke-width:1.5px
+
+    Push --> Branch
+    Branch -->|main| Tests
+    Tests --> Lint
+    Tests --> Unit
+    Tests --> Int
+    Lint --> Build
+    Unit --> Build
+    Int --> Build
+    Build --> Staging
+    Staging --> Smoke
+    Smoke -->|Yes| Approval
+    Smoke -->|No| Rollback
+    Approval --> Prod
+    Prod --> Health
+    Health --> Done
+
+    class Push startEnd
+    class Done startEnd
+    class Branch decision
+    class Smoke decision
+    class Tests step
+    class Lint step
+    class Unit step
+    class Int step
+    class Build step
+    class Staging step
+    class Approval step
+    class Prod step
+    class Health step
+    class Rollback danger
+  `.trim();
+
+  // ── Render + panzoom ──────────────────────────────────────────────────────
+  document.addEventListener('DOMContentLoaded', async function () {
+    const diagramEl = document.getElementById('mermaid-diagram');
+    const viewport  = document.getElementById('diagram-viewport');
+
+    try {
+      const { svg } = await mermaid.render('mermaid-svg-out', DIAGRAM_SOURCE);
+      diagramEl.innerHTML = svg;
+
+      // Set explicit pixel dimensions from viewBox.
+      // Without this the SVG has no intrinsic size and renders as 0×0 (invisible).
+      const svgEl = diagramEl.querySelector('svg');
+      if (svgEl) {
+        const vb = svgEl.getAttribute('viewBox');
+        if (vb) {
+          const [, , w, h] = vb.trim().split(/[\s,]+/).map(Number);
+          svgEl.setAttribute('width',  w);
+          svgEl.setAttribute('height', h);
+        }
+        svgEl.style.maxWidth = 'none';
+        svgEl.style.display  = 'block';
+      }
+      initPanZoom(viewport, diagramEl);
+    } catch (err) {
+      console.error('Mermaid render error:', err);
+      diagramEl.innerHTML = `<div style="padding:2rem;color:#dc2626;text-align:center;">
+        Render error: ${err.message}</div>`;
+    }
+  });
+
+  function computeFit(viewport, diagramEl) {
+    const svgEl = diagramEl.querySelector('svg');
+    if (!svgEl) return { s: 1, tx: 0, ty: 0 };
+    const svgW = parseFloat(svgEl.getAttribute('width'));
+    const svgH = parseFloat(svgEl.getAttribute('height'));
+    const vpW  = viewport.clientWidth  || 900;
+    const vpH  = viewport.clientHeight || 440;
+    const pad  = 40;
+    const s    = Math.min((vpW - pad * 2) / svgW, (vpH - pad * 2) / svgH);
+    return { s, tx: (vpW - svgW * s) / 2, ty: (vpH - svgH * s) / 2 };
+  }
+
+  function initPanZoom(viewport, target) {
+    const fit = computeFit(viewport, target);
+    let scale  = fit.s;
+    let tx     = fit.tx;
+    let ty     = fit.ty;
+
+    function applyTransform() {
+      target.style.transform = `translate(${tx}px, ${ty}px) scale(${scale})`;
+    }
+    applyTransform();
+
+    function zoom(factor, cx, cy) {
+      const rect     = viewport.getBoundingClientRect();
+      const mx       = (cx !== undefined ? cx : rect.left + rect.width  / 2) - rect.left;
+      const my       = (cy !== undefined ? cy : rect.top  + rect.height / 2) - rect.top;
+      const newScale = Math.min(Math.max(0.1, scale * factor), 6);
+      const dx = (mx - tx) / scale;
+      const dy = (my - ty) / scale;
+      tx = mx - dx * newScale;
+      ty = my - dy * newScale;
+      scale = newScale;
+      applyTransform();
+    }
+
+    document.getElementById('btn-reset').addEventListener('click', () => {
+      const fit = computeFit(viewport, target);
+      scale = fit.s; tx = fit.tx; ty = fit.ty;
+      applyTransform();
+    });
+
+    viewport.addEventListener('wheel', (e) => {
+      e.preventDefault();
+      zoom(e.deltaY < 0 ? 1.1 : 0.9, e.clientX, e.clientY);
+    }, { passive: false });
+
+    let panning = false, panStartX, panStartY, panStartTX, panStartTY;
+
+    viewport.addEventListener('mousedown', (e) => {
+      if (e.button !== 0) return;
+      panning = true;
+      panStartX = e.clientX; panStartY = e.clientY;
+      panStartTX = tx;       panStartTY = ty;
+      viewport.classList.add('panning');
+      e.preventDefault();
+    });
+
+    window.addEventListener('mousemove', (e) => {
+      if (!panning) return;
+      tx = panStartTX + (e.clientX - panStartX);
+      ty = panStartTY + (e.clientY - panStartY);
+      applyTransform();
+    });
+
+    window.addEventListener('mouseup', () => {
+      if (panning) { panning = false; viewport.classList.remove('panning'); }
+    });
+  }
+</script>
+
+</body>
+</html>

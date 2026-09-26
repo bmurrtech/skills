@@ -1,0 +1,5 @@
+interface:
+  display_name: "Visual Explainer"
+  short_description: "HTML diagrams, reviews, slides → .scratch"
+policy:
+  allow_implicit_invocation: true
