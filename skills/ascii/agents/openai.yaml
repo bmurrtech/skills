@@ -1,0 +1,5 @@
+interface:
+  display_name: "ASCII"
+  short_description: "Plain-text structure diagrams"
+policy:
+  allow_implicit_invocation: true

@@ -1,0 +1,5 @@
+interface:
+  display_name: "Setup bmurrtech Skills"
+  short_description: "Provision repo agent conventions"
+policy:
+  allow_implicit_invocation: false

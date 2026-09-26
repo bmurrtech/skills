@@ -1,0 +1,5 @@
+interface:
+  display_name: "Implement"
+  short_description: "Ship work from a spec; repo checks + review"
+policy:
+  allow_implicit_invocation: false

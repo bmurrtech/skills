@@ -1,0 +1,49 @@
+# PM workspace — local developer only (notes, clones, scratch). Never track.
+/pm/
+/pm/*
+
+# Local PRDs — developer-only OKF concepts under docs/prd/. See docs/about-prd.md.
+/docs/prd/
+/docs/prd/*
+/docs/handoff/
+/docs/handoff/*
+
+# Local agent tooling — local developer only. Skills SoT is skills/.
+.claude/
+.agents/
+.cursor/
+
+# Secrets & local env
+.env
+.env.*
+!.env.example
+
+# OS / editor noise
+.DS_Store
+Thumbs.db
+*.swp
+*~
+
+# Logs & scratch
+*.log
+logs/
+debug/
+tmp/
+.tmp/
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.Python
+.venv/
+venv/
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Node
+node_modules/
+npm-debug.log*
+yarn-error.log*

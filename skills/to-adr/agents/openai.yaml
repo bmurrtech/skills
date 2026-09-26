@@ -1,0 +1,5 @@
+interface:
+  display_name: "To ADR"
+  short_description: "Author MADR decisions under docs/adr"
+policy:
+  allow_implicit_invocation: false

@@ -1,0 +1,5 @@
+interface:
+  display_name: "Upkeep"
+  short_description: "Maintain AGENTS.md and CLAUDE.md"
+policy:
+  allow_implicit_invocation: true

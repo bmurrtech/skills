@@ -1,0 +1,5 @@
+interface:
+  display_name: "Handoff"
+  short_description: "Temp handoff doc for next agent"
+policy:
+  allow_implicit_invocation: false
