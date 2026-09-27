@@ -7,6 +7,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.1-rc1] - 2026-09-27
+
+Scanner-posture harden + docx operator-install path.
+
+### Added
+
+- ADR 0011: prerequisite-driven scanner posture for published skills (no agent CLI download; local Spec; no font CDNs); [docs/accepted-risk.md](docs/accepted-risk.md) points here.
+- [docs/how-to-docx-cli.md](docs/how-to-docx-cli.md): operator install for pinned docx-cli (**0.26.0**); DIGESTS for manual verify only.
+
+### Changed
+
+- **`code-review`**: Spec sources are local only (user path → `docs/` / `specs/` / `.scratch/` / `docs/prd/` → ask); no tracker/`gh` fetch; trust wording is evidence-only without attack-demo phrases ([ADR 0011](docs/adr/0011-ADR-skill-scanner-posture-prereqs.md)). Optional `gh` Spec deferred to `.scratch/ideas/code-review-optional-gh-issue-context.md`.
+- **`to-adr`**: document repo-local `build_catalog.py` I/O + side effects; at-a-glance HTML uses system fonts only (no Google Fonts CDN).
+- **`docx`**: probe-only ensure (no `--install` / download); upstream capability fold-in (`references/commands.md` + richer workflows); README Prerequisites + Acknowledgements for [kklimuk/docx-cli](https://github.com/kklimuk/docx-cli); **`setup-bmurrtech-skills`** points at how-to.
+
 ## [0.1.0-rc1] - 2026-09-27
 
 First public beta (release candidate). Install via the skills CLI (GitHub source — not an npm package for this repo):

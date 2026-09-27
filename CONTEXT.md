@@ -84,12 +84,12 @@ Lean Agent Skill that turns architectures, diffs, plans, tables, and related int
 _Avoid_: ASCII/box-drawing as the primary artifact when this skill is loaded; writing diagrams under `/pm/` or agent install dirs; treating the `.md` companion as HTML source
 
 **docx**:
-Word `.docx` via pinned **docx-cli**; probes Word/LibreOffice and can install LibreOffice OS-specifically for render/import. Prefer **`ensure_toolchain`** façade; cores remain `ensure_docx` / `ensure_office`. **ToolchainReady** is the typed evidence report (pin ok ∧ office ready).
-_Avoid_: Anthropic proprietary office scripts; domain design-doc templates; fusing pin + OS install into one implementation module
+Word `.docx` via pinned **docx-cli** on PATH (operator-installed; pin **0.26.0**). Skill probes version/pin and prints OS-specific **manual** prereq commands on failure — does not download or auto-install CLI/office. Install how-to: [docs/how-to-docx-cli.md](docs/how-to-docx-cli.md). Word or LibreOffice required for render/import. Prefer **`ensure_toolchain`** façade; cores remain `ensure_docx` / `ensure_office`. **ToolchainReady** is the typed evidence report (pin ok ∧ office ready). DIGESTS = operator verify for the pin only. Posture: [ADR 0011](docs/adr/0011-ADR-skill-scanner-posture-prereqs.md).
+_Avoid_: agent binary download; `--install` in skill scripts; auto sudo / package-manager install; npx upstream skill install; attack-demo phrases in SKILL.md
 
 **Universal sprint skill**:
-Portable skill for any consumer repo: **`implement`**, **`code-review`**, **`tdd`**, plus soft-coupled **`grill-me`** / **`wait-what`** / **`handoff`**. Validation means the *target* repo’s checks; `upkeep`/`context` run only when installed and those artifacts exist.
-_Avoid_: requiring `quick_validate.py` for ordinary app/lib work; assuming every consumer is a skills monorepo
+Portable skill for any consumer repo: **`implement`**, **`code-review`**, **`tdd`**, plus soft-coupled **`grill-me`** / **`wait-what`** / **`handoff`**. Validation means the *target* repo’s checks; `upkeep`/`context` run only when installed and those artifacts exist. **`code-review`** Spec defaults to local diff + local Spec paths (no default tracker/`gh` fetch — [ADR 0011](docs/adr/0011-ADR-skill-scanner-posture-prereqs.md)).
+_Avoid_: requiring `quick_validate.py` for ordinary app/lib work; assuming every consumer is a skills monorepo; default issue-body fetch in code-review
 
 **Library-specific skill**:
 Opinionated for this library (or repos that opted into the convention): **`writing-for-agents`**, **`setup-bmurrtech-skills`**, **`docx`**, **`visual-explainer`**, **`to-prd`** / **`to-adr`** homes, **`upkeep`** / **`context`** as glossary/ops maintainers.

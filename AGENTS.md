@@ -81,6 +81,7 @@ One-liners → `knowledge/` test-maps for session-scoped runs (see **`tdd`**).
 
 - Never commit API keys, tokens, or `.env` files.
 - Prefer reading curl-installed scripts before piping to a shell.
+- Residual scanner findings for shipped skills: [docs/accepted-risk.md](docs/accepted-risk.md) (gate on unexplained capability / unreviewed remote exec / privilege escalation / failed trust tests — not zero MEDIUM).
 
 ## References
 
@@ -88,8 +89,10 @@ One-liners → `knowledge/` test-maps for session-scoped runs (see **`tdd`**).
 - [knowledge/index.md](knowledge/index.md)
 - [docs/adr/index.md](docs/adr/index.md)
 - [docs/about-prd.md](docs/about-prd.md) — thin pointer (ADR 0007); PRD how-to in how-to-bmurrtech-skills
+- [docs/accepted-risk.md](docs/accepted-risk.md) — residual MEDIUM notes after skill hardening
 - [README.md](README.md)
 - [docs/how-to-bmurrtech-skills.md](docs/how-to-bmurrtech-skills.md)
+- [docs/how-to-docx-cli.md](docs/how-to-docx-cli.md) — operator install for pinned docx-cli
 - [docs/how-to-adr.md](docs/how-to-adr.md)
 - [docs/how-to-visual-explainer.md](docs/how-to-visual-explainer.md)
 - [docs/skill-scaffold.md](docs/skill-scaffold.md)

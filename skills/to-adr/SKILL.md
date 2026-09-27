@@ -101,15 +101,22 @@ After create/supersede (or when the user asks for the decision log / catalog):
 1. If **`.scratch/adr-optics/`** is missing, run **`setup-bmurrtech-skills`**
    (creates `.scratch/`, `.scratch/diagrams/`, `.scratch/adr-optics/`, and the
    rest of the scaffold) — then continue.
-2. Rebuild and **open** the catalog:
+2. Rebuild and **open** the catalog with this skill’s **repo-local** helper
+   (ships beside this `SKILL.md`; no remote install):
+
+| | |
+|--|--|
+| **Script** | `scripts/build_catalog.py` under this skill directory (library path: `skills/to-adr/scripts/build_catalog.py`; harness installs: same relative path on the installed skill) |
+| **Reads** | Markdown ADRs under `--home` (default intent: `docs/adr/`); template `scripts/visualizer_template.html` |
+| **Writes** | Optional refresh of `docs/adr/index.md`; with `--visualize`: `.scratch/adr-optics/adr-catalog.json` + `adr-at-a-glance.html` |
+| **Side effects** | `--open` may launch the default browser on a `file://` URI; no network font/CDN loads (system fonts only) |
 
 ```bash
 python3 skills/to-adr/scripts/build_catalog.py --home docs/adr --visualize --open
 ```
 
 If this skill lives outside `skills/to-adr/` (harness install path), point at
-this skill’s `scripts/build_catalog.py` instead. Output defaults to
-`.scratch/adr-optics/adr-at-a-glance.html`.
+this skill’s `scripts/build_catalog.py` instead.
 
 `--open` launches the default browser (`file://`). If the harness cannot open a
 browser, report the absolute path and the `file://` URI from the script JSON.

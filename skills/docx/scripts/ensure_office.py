@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
-"""Probe for Word/LibreOffice; install LibreOffice via OS package manager if missing.
+"""Probe for Word/LibreOffice; print manual install hints when missing.
 
-Does not pipe remote scripts. Does not claim success without a working host.
+Does not pipe remote scripts. Does not run package managers or sudo.
+Does not claim success without a working host.
 """
 
 from __future__ import annotations
@@ -97,7 +98,7 @@ def libreoffice_install_plan(
     *,
     which: WhichFn | None = None,
 ) -> list[list[str]] | str:
-    """Return argv lists to run, or an error string if install cannot proceed."""
+    """Return argv lists the operator may run manually, or an error string."""
     lookup = which or shutil.which
     system = system.lower()
     if system == "darwin":
@@ -137,70 +138,43 @@ def libreoffice_install_plan(
     return f"unsupported platform: {system}"
 
 
-def run(cmd: list[str], *, check: bool = False) -> subprocess.CompletedProcess[str]:
-    print("+", " ".join(cmd), flush=True)
-    return subprocess.run(cmd, check=check, text=True)
-
-
-def install_libreoffice(
-    *,
+def manual_install_hint(
     system: str | None = None,
+    *,
     which: WhichFn | None = None,
-    run: RunFn | None = None,
-) -> str | None:
-    runner = run or globals()["run"]
+) -> str:
+    """Human-readable LibreOffice install steps (never executed by this script)."""
     plan = libreoffice_install_plan(system or platform.system(), which=which)
     if isinstance(plan, str):
         return plan
-    try:
-        for cmd in plan:
-            runner(cmd, check=True)
-    except (OSError, subprocess.CalledProcessError) as exc:
-        return f"LibreOffice install failed: {exc}"
-    return None
+    lines = ["Install LibreOffice manually (this skill will not run package managers):"]
+    for cmd in plan:
+        lines.append("  " + " ".join(cmd))
+    return "\n".join(lines)
 
 
 def ensure(
     *,
-    install: bool,
-    assume_yes: bool,
     probe: ProbeFn | None = None,
-    install_libreoffice: Callable[..., str | None] | None = None,
+    run: RunFn | None = None,
+    system: str | None = None,
+    which: WhichFn | None = None,
 ) -> int:
+    """Probe only. `run` is accepted for tests to prove no install commands execute."""
+    _ = run  # intentional: never invoke package managers from this skill
     probe_fn = probe or globals()["probe"]
-    install_fn = install_libreoffice or globals()["install_libreoffice"]
     state = probe_fn()
     print(f"Word present: {state['word']}")
     print(f"soffice: {state['soffice'] or 'not found'}")
     if state["ready"]:
         print("office host ready")
         return 0
-    if not install:
-        print(
-            "neither Word nor LibreOffice found; re-run with --install",
-            file=sys.stderr,
-        )
-        return 1
-    if not assume_yes:
-        print(
-            "refusing install without --yes (or confirm via setup-bmurrtech-skills)",
-            file=sys.stderr,
-        )
-        return 1
-    err = install_fn()
-    if err:
-        print(err, file=sys.stderr)
-        return 1
-    state = probe_fn()
-    print(f"soffice after install: {state['soffice'] or 'not found'}")
-    if not state["soffice"] and not state["word"]:
-        print(
-            "install finished but soffice still not on PATH; open a new shell or add LibreOffice to PATH",
-            file=sys.stderr,
-        )
-        return 1
-    print("office host ready")
-    return 0
+    print(
+        "neither Word nor LibreOffice found; install a host yourself, then re-probe",
+        file=sys.stderr,
+    )
+    print(manual_install_hint(system, which=which), file=sys.stderr)
+    return 1
 
 
 def _load_script(name: str):
@@ -221,20 +195,10 @@ def _load_script(name: str):
 
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(
-        description="Probe Word/LibreOffice; optionally install LibreOffice."
+        description="Probe Word/LibreOffice; print manual install hints (no auto-install)."
     )
-    parser.add_argument(
-        "--install",
-        action="store_true",
-        help="if neither host is present, install LibreOffice via brew/winget/apt/dnf/pacman",
-    )
-    parser.add_argument(
-        "--yes",
-        action="store_true",
-        help="required with --install (non-interactive confirm)",
-    )
-    args = parser.parse_args(argv)
-    code = ensure(install=args.install, assume_yes=args.yes)
+    parser.parse_args(argv)
+    code = ensure()
     try:
         ready_mod = _load_script("toolchain_ready")
         pin = _load_script("ensure_docx").PIN

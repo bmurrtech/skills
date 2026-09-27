@@ -118,6 +118,8 @@ class BuildCatalogTests(unittest.TestCase):
             self.assertTrue(html_path.is_file())
             html = html_path.read_text(encoding="utf-8")
             self.assertNotIn("__CATALOG_JSON__", html)
+            self.assertNotIn("fonts.googleapis.com", html)
+            self.assertNotIn("fonts.gstatic.com", html)
             self.assertIn("\\u003c", html)
             catalog_json = (out / catalog.CATALOG_NAME).read_text(encoding="utf-8")
             payload = json.loads(catalog_json)

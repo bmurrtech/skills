@@ -1,15 +1,15 @@
 ---
 title: Docx ensure
-description: Test map for ToolchainReady, docx asset names, LibreOffice plans, and install adapters.
+description: Test map for ToolchainReady, docx asset names, committed digests, LibreOffice hints, and probe-only ensure.
 type: test-map
 tags: [tests, docx, tdd]
 ---
 
 # Docx ensure
 
-**Seam:** `toolchain_ready.assess` (pin + office ready); `ensure_docx.asset_name` /
-`install_binary(download=…)`; `ensure_office.libreoffice_install_plan` /
-`install_libreoffice(run=…)` / `ensure(probe=…)`.
+**Seam:** `toolchain_ready.assess` (pin + office ready); `ensure_docx.load_digests` /
+`expected_digest` / `asset_name` / `ensure(which=…)` / `manual_install_hint`;
+`ensure_office.libreoffice_install_plan` / `manual_install_hint` / `ensure(probe=…, run=…)`.
 
 **Run:**
 
@@ -19,4 +19,5 @@ python3 -m unittest tests.test_docx_ensure -v
 
 **Tracked tests:** `tests/test_docx_ensure.py`
 
-Scratch smokes (not tracked): `.scratch/docx-smoke/` after `ensure_docx.py`.
+Operator install (not agent): [docs/how-to-docx-cli.md](../docs/how-to-docx-cli.md).
+Scratch smokes after manual CLI install: `.scratch/docx-smoke/`.

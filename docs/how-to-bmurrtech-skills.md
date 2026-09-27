@@ -238,7 +238,7 @@ Details live here (README keeps a short index only).
 | Skill | Role |
 |-------|------|
 | **`setup-bmurrtech-skills`** | Idempotent scaffold: gitignore, `.scratch/` (+ `diagrams/`, `adr-optics/`), AGENTS/CLAUDE/CONTEXT, knowledge stub, `docs/adr/`, `docs/prd` ignore. Optional **`docx`**. Never silent overwrite. Tree: [skill-scaffold.md](skill-scaffold.md). |
-| **`docx`** | Word `.docx` via pinned docx-cli; LibreOffice/Word probe. Opt in at setup or `--skill docx`. |
+| **`docx`** | Word `.docx` via pinned docx-cli (operator install — [how-to-docx-cli.md](how-to-docx-cli.md)); LibreOffice/Word probe. Opt in at setup or `--skill docx`. |
 
 ### Shape and record
 

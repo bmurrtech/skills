@@ -1,5 +1,5 @@
 interface:
   display_name: "Docx"
-  short_description: "Word docs via docx-cli; LibreOffice probe"
+  short_description: "Word docs via operator-installed docx-cli"
 policy:
   allow_implicit_invocation: true

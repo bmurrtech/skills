@@ -1,11 +1,10 @@
-"""Seams for docx ensure scripts (platform plans + release assets)."""
+"""Seams for docx ensure scripts (platform plans + probe-only readiness)."""
 
 from __future__ import annotations
 
 import importlib.util
 import subprocess
 import sys
-import tempfile
 import unittest
 from pathlib import Path
 
@@ -135,54 +134,87 @@ class ToolchainReadyTests(unittest.TestCase):
         self.assertTrue(report.ready)
 
 
-class EnsureDocxInstallAdapterTests(unittest.TestCase):
-    def test_sha_mismatch_raises(self) -> None:
+class EnsureDocxDigestTests(unittest.TestCase):
+    def test_committed_digests_cover_supported_assets(self) -> None:
+        digests = ensure_docx.load_digests()
+        for system, machine in (
+            ("Darwin", "arm64"),
+            ("Darwin", "x86_64"),
+            ("Linux", "x86_64"),
+            ("Linux", "aarch64"),
+            ("Windows", "AMD64"),
+        ):
+            name = ensure_docx.asset_name(system, machine)
+            self.assertIn(name, digests)
+            self.assertEqual(len(digests[name]), 64)
+
+    def test_expected_digest_matches_digests_file(self) -> None:
         name = ensure_docx.asset_name("Darwin", "arm64")
+        self.assertEqual(
+            ensure_docx.expected_digest(name),
+            "0050490bda31af2b0dc698aa95df583c13fbe210fd1effd5bc98291c634f0ccf",
+        )
 
-        def fake_download(url: str, dest: Path) -> None:
-            if url.endswith("SHA256SUMS"):
-                dest.write_text(
-                    f"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa  {name}\n",
-                    encoding="utf-8",
-                )
-            else:
-                dest.write_bytes(b"not-the-expected-bytes")
 
-        with tempfile.TemporaryDirectory() as tmp:
-            dest_dir = Path(tmp) / "bin"
-            with self.assertRaises(RuntimeError) as ctx:
-                ensure_docx.install_binary(
-                    system="Darwin",
-                    machine="arm64",
-                    dest_dir=dest_dir,
-                    download=fake_download,
-                )
-            self.assertIn("SHA-256", str(ctx.exception))
+class EnsureDocxProbeTests(unittest.TestCase):
+    def test_ensure_missing_points_at_how_to_not_install_flag(self) -> None:
+        err = ensure_docx.ensure(which=lambda _n: None)
+        self.assertIsNotNone(err)
+        self.assertIn(ensure_docx.HOW_TO, err or "")
+        self.assertIn(ensure_docx.PIN, err or "")
+        self.assertNotIn("--install", err or "")
+        self.assertNotIn("urllib", err or "")
+
+    def test_manual_hint_includes_platform_asset(self) -> None:
+        hint = ensure_docx.manual_install_hint(system="Darwin", machine="arm64")
+        self.assertIn("docx-darwin-arm64", hint)
+        self.assertIn(ensure_docx.HOW_TO, hint)
+        self.assertIn("bun-docx", hint)
+
+    def test_source_has_no_download_or_install_flag(self) -> None:
+        source = (SCRIPTS / "ensure_docx.py").read_text(encoding="utf-8")
+        self.assertNotIn("import urllib", source)
+        self.assertNotIn("urlopen", source)
+        self.assertNotIn("--install", source)
+        self.assertNotIn("def download", source)
+        self.assertNotIn("def install_binary", source)
+        facade = (SCRIPTS / "ensure_toolchain.py").read_text(encoding="utf-8")
+        self.assertNotIn("--install", facade)
 
 
 class EnsureOfficeInstallAdapterTests(unittest.TestCase):
-    def test_install_runs_plan_argv(self) -> None:
+    def test_manual_hint_includes_plan_commands(self) -> None:
+        hint = ensure_office.manual_install_hint(
+            "Darwin",
+            which=lambda n: "/opt/homebrew/bin/brew" if n == "brew" else None,
+        )
+        self.assertIn("brew", hint)
+        self.assertIn("libreoffice", hint)
+        self.assertNotIn("sudo", hint)
+
+    def test_debian_plan_documents_sudo_but_ensure_never_runs(self) -> None:
+        plan = ensure_office.libreoffice_install_plan(
+            "Linux", which=lambda n: "/usr/bin/apt-get" if n == "apt-get" else None
+        )
+        self.assertIsInstance(plan, list)
+        self.assertEqual(plan[0][0], "sudo")
         recorded: list[list[str]] = []
 
         def fake_run(cmd: list[str], *, check: bool = False):
             recorded.append(cmd)
             return subprocess.CompletedProcess(cmd, 0)
 
-        err = ensure_office.install_libreoffice(
-            system="Darwin",
-            which=lambda n: "/opt/homebrew/bin/brew" if n == "brew" else None,
+        code = ensure_office.ensure(
+            probe=lambda: {"soffice": None, "word": False, "ready": False},
             run=fake_run,
+            system="Linux",
+            which=lambda n: "/usr/bin/apt-get" if n == "apt-get" else None,
         )
-        self.assertIsNone(err)
-        self.assertEqual(
-            recorded,
-            [["/opt/homebrew/bin/brew", "install", "--cask", "libreoffice"]],
-        )
+        self.assertEqual(code, 1)
+        self.assertEqual(recorded, [])
 
     def test_ensure_probe_exit_0_when_ready(self) -> None:
         code = ensure_office.ensure(
-            install=False,
-            assume_yes=False,
             probe=lambda: {"soffice": "/opt/homebrew/bin/soffice", "word": False, "ready": True},
         )
         self.assertEqual(code, 0)

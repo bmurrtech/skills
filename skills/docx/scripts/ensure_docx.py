@@ -1,30 +1,33 @@
 #!/usr/bin/env python3
-"""Ensure a pinned docx-cli release binary is on PATH (SHA-256 verified).
+"""Probe for pinned docx-cli on PATH; print manual install hints on miss.
 
 Public contract: https://github.com/kklimuk/docx-cli/releases
+Pin + DIGESTS document the expected operator-installed version (manual verify).
+Does not download, fetch release binaries, pipe remote scripts, or install via npx.
 Does not install Word/LibreOffice — use ensure_office.py.
-Does not pipe remote scripts.
+Human install: docs/how-to-docx-cli.md (library) / README pointer.
 """
 
 from __future__ import annotations
 
 import argparse
-import hashlib
-import os
 import platform
 import shutil
 import subprocess
 import sys
-import tempfile
-import urllib.request
 from collections.abc import Callable
 from pathlib import Path
 
 PIN = "0.26.0"
 TAG = f"v{PIN}"
 REPO = "kklimuk/docx-cli"
+DIGESTS_PATH = Path(__file__).resolve().with_name("DIGESTS")
+HOW_TO = "docs/how-to-docx-cli.md"
+HOW_TO_URL = (
+    "https://github.com/bmurrtech/skills/blob/main/docs/how-to-docx-cli.md"
+)
 
-DownloadFn = Callable[[str, Path], None]
+WhichFn = Callable[[str], str | None]
 
 
 def asset_name(system: str, machine: str) -> str:
@@ -42,20 +45,12 @@ def asset_name(system: str, machine: str) -> str:
     raise ValueError(f"unsupported platform {system}/{machine}")
 
 
-def install_dir() -> Path:
-    if os.name == "nt":
-        base = os.environ.get("LOCALAPPDATA") or str(Path.home() / "AppData" / "Local")
-        return Path(base) / "docx-cli"
-    return Path.home() / ".local" / "bin"
-
-
-def binary_name() -> str:
-    return "docx.exe" if os.name == "nt" else "docx"
-
-
 def parse_sums(text: str) -> dict[str, str]:
     found: dict[str, str] = {}
     for line in text.splitlines():
+        line = line.strip()
+        if not line or line.startswith("#"):
+            continue
         parts = line.split()
         if len(parts) < 2:
             continue
@@ -63,12 +58,17 @@ def parse_sums(text: str) -> dict[str, str]:
     return found
 
 
-def sha256_file(path: Path) -> str:
-    digest = hashlib.sha256()
-    with path.open("rb") as handle:
-        for chunk in iter(lambda: handle.read(1 << 20), b""):
-            digest.update(chunk)
-    return digest.hexdigest()
+def load_digests(path: Path | None = None) -> dict[str, str]:
+    target = path or DIGESTS_PATH
+    return parse_sums(target.read_text(encoding="utf-8"))
+
+
+def expected_digest(name: str, *, digests: dict[str, str] | None = None) -> str:
+    table = digests if digests is not None else load_digests()
+    digest = table.get(name)
+    if not digest:
+        raise RuntimeError(f"no committed digest for {name} in {DIGESTS_PATH.name}")
+    return digest
 
 
 def version_of(docx: str) -> str | None:
@@ -87,82 +87,44 @@ def version_of(docx: str) -> str | None:
     return parts[-1] if parts else None
 
 
-def download(url: str, dest: Path) -> None:
-    with urllib.request.urlopen(url, timeout=120) as response:
-        dest.write_bytes(response.read())
-
-
-def install_binary(
+def manual_install_hint(
     *,
     system: str | None = None,
     machine: str | None = None,
-    dest_dir: Path | None = None,
-    download: DownloadFn | None = None,
-) -> Path:
-    fetch = download or globals()["download"]
-    name = asset_name(system or platform.system(), machine or platform.machine())
-    base = f"https://github.com/{REPO}/releases/download/{TAG}"
-    out_dir = dest_dir or install_dir()
-    out_dir.mkdir(parents=True, exist_ok=True)
-    dest = out_dir / binary_name()
-    with tempfile.TemporaryDirectory() as tmp:
-        root = Path(tmp)
-        sums_path = root / "SHA256SUMS"
-        blob = root / name
-        fetch(f"{base}/SHA256SUMS", sums_path)
-        fetch(f"{base}/{name}", blob)
-        expected = parse_sums(sums_path.read_text(encoding="utf-8")).get(name)
-        actual = sha256_file(blob)
-        if not expected or actual != expected:
-            raise RuntimeError(f"SHA-256 mismatch for {name}")
-        shutil.copyfile(blob, dest)
-    if os.name != "nt":
-        dest.chmod(dest.stat().st_mode | 0o111)
-    return dest
-
-
-def dir_on_path(directory: Path) -> bool:
-    want = str(directory.resolve()).lower()
-    for entry in os.environ.get("PATH", "").split(os.pathsep):
-        if not entry:
-            continue
-        try:
-            if str(Path(entry).resolve()).lower() == want:
-                return True
-        except OSError:
-            continue
-    return False
-
-
-def path_ok(dest: Path) -> str | None:
-    resolved = shutil.which("docx")
-    if not dir_on_path(dest.parent) or resolved is None:
-        return f"add to PATH: {dest.parent}"
+) -> str:
+    """Short OS hints for operators — never executed by this script."""
+    lines = [
+        f"Install docx-cli {PIN} yourself, then re-run this probe.",
+        f"How-to: {HOW_TO} ({HOW_TO_URL})",
+        "Quick paths (operator-run only):",
+        "  bun add -g bun-docx   # needs Bun >= 1.3; then check docx --version",
+        f"  # or standalone from https://github.com/{REPO}/releases/tag/{TAG}",
+        f"  # set VERSION={PIN} when using that release's install.sh; verify SHA-256",
+        f"  # against scripts/{DIGESTS_PATH.name} (or the release SHA256SUMS)",
+    ]
     try:
-        same = Path(resolved).resolve() == dest.resolve()
-    except OSError:
-        same = False
-    ver = version_of(resolved)
-    if not same or ver != PIN:
-        return f"docx on PATH is {ver or 'unknown'} ({resolved}), want {PIN} at {dest}"
-    return None
+        name = asset_name(system or platform.system(), machine or platform.machine())
+        digest = expected_digest(name)
+        lines.append(f"  # this platform asset: {name}  sha256:{digest}")
+    except (RuntimeError, ValueError, OSError):
+        pass
+    return "\n".join(lines)
 
 
-def ensure() -> str | None:
-    current = shutil.which("docx")
+def ensure(*, which: WhichFn | None = None) -> str | None:
+    lookup = which or shutil.which
+    current = lookup("docx")
     if current and version_of(current) == PIN:
         print(f"docx {PIN} already on PATH ({current})")
         return None
-    try:
-        dest = install_binary()
-    except (OSError, RuntimeError, ValueError) as exc:
-        return f"docx binary install failed: {exc}"
-    err = path_ok(dest)
-    if err:
-        print(f"installed {dest}", file=sys.stderr)
-        return err
-    print(f"installed {dest}")
-    return None
+    found = f" found {current}" if current else ""
+    ver = version_of(current) if current else None
+    if current and ver:
+        found = f" found {current} ({ver})"
+    return (
+        f"docx {PIN} not ready{found}.\n"
+        f"{manual_install_hint()}"
+    )
 
 
 def _load_script(name: str):
@@ -183,14 +145,11 @@ def _load_script(name: str):
 
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(
-        description=f"Ensure docx-cli {TAG} binary (SHA-256 verified)."
+        description=(
+            f"Probe for docx-cli {TAG} on PATH (operator-installed; no download)."
+        )
     )
-    parser.add_argument(
-        "--with-upstream-skill",
-        action="store_true",
-        help="also npx skills add kklimuk/docx-cli at the pin (global)",
-    )
-    args = parser.parse_args(argv)
+    parser.parse_args(argv)
 
     err = ensure()
     if err:
@@ -201,29 +160,6 @@ def main(argv: list[str] | None = None) -> int:
         print(ready_mod.format_report(ready_mod.snapshot(pin=PIN)))
     except (OSError, ImportError, RuntimeError) as exc:
         print(f"toolchain ready report failed: {exc}", file=sys.stderr)
-
-    if args.with_upstream_skill:
-        npx = shutil.which("npx")
-        if not npx:
-            print("npx not found; upstream skill not installed", file=sys.stderr)
-            return 1
-        completed = subprocess.run(
-            [
-                npx,
-                "--yes",
-                "skills",
-                "add",
-                f"{REPO}#{TAG}",
-                "-g",
-                "-y",
-                "--skill",
-                "docx-cli",
-            ],
-            check=False,
-        )
-        if err:
-            return 1
-        return completed.returncode
 
     return 1 if err else 0
 

@@ -51,7 +51,11 @@ Offer **once** (default **no** unless the user asked for Word/docx work):
 
 > Want AI to edit your `.docx` files?
 
-If yes: install **`docx`** if missing, then follow that skill’s **Ensure toolchain** step (`ensure_toolchain.py`, or the `ensure_docx.py` / `ensure_office.py` cores; optional `--with-upstream-skill`). Do not restate install matrices here.
+If yes: install **`docx`** skill if missing, point the operator at library
+[docs/how-to-docx-cli.md](https://github.com/bmurrtech/skills/blob/main/docs/how-to-docx-cli.md)
+(pin **0.26.0**), then run that skill’s **Ensure toolchain** probe
+(`ensure_toolchain.py`). Do not download the CLI or run `--install`. Office
+hosts stay manual. Do not restate install matrices here.
 
 ### `.scratch/` purpose
 

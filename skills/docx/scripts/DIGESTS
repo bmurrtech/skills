@@ -1,0 +1,8 @@
+# Expected digests for docx-cli v0.26.0 (kklimuk/docx-cli) — operator verify only.
+# Skill scripts probe PATH; they do not download. Bump PIN in ensure_docx.py
+# and refresh this file in the same change. Prefer release tag v0.26.0 over latest.
+0050490bda31af2b0dc698aa95df583c13fbe210fd1effd5bc98291c634f0ccf  docx-darwin-arm64
+e03710252ab6ebb715331517f22dc6c36631a5484402a9ffbb444af6eee2ae42  docx-darwin-x64
+f8a8c86a64571c7f3926c058c81b8b1e7456123ba22ce542ae1ec6e4ae6a5918  docx-linux-arm64
+9429431c38bc2cebe67f689decc96bdb1043758887919fa7dbf447da003a2fa4  docx-linux-x64
+548864f9a827291e05a32a1f08a15825df34caee5c8ea7d56542b35bd99f8f85  docx-windows-x64.exe

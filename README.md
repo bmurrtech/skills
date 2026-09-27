@@ -91,7 +91,7 @@ Safe without bmurrtech infrastructure: every skill here is first-party and runs 
 | Skill | What it does | Example prompt |
 |-------|----------------|----------------|
 | [`setup-bmurrtech-skills`](skills/setup-bmurrtech-skills/) | Drops AGENTS, CONTEXT, `.scratch/`, and an ADR home into your repo | `Run setup-bmurrtech-skills on this repo` |
-| [`docx`](skills/docx/) | Edit Word `.docx` files through a pinned docx-cli | `Install docx and fill this contract template` |
+| [`docx`](skills/docx/) | Edit Word `.docx` via pinned docx-cli (operator-installed) | `Fill this contract template with the docx skill` |
 
 ### Shape and record
 
@@ -131,7 +131,11 @@ Future exploration lives in **[docs/ROADMAP.md](docs/ROADMAP.md)**: unordered id
 
 ## Want AI to edit your `.docx` files?
 
-Optional skill **`docx`**. After install, run its ensure steps (pinned docx-cli + Word/LibreOffice probe). See the skill and glossary term in [`CONTEXT.md`](CONTEXT.md).
+### Prerequisites
+
+- **`docx`:** install [docx-cli](https://github.com/kklimuk/docx-cli) yourself at the skill pin (**0.26.0**), plus Word or LibreOffice for render/import. Agents only probe PATH — see **[docs/how-to-docx-cli.md](docs/how-to-docx-cli.md)**.
+
+Optional skill **`docx`**. Install the CLI yourself (pin **0.26.0**), then probe with `ensure_toolchain.py`. Word/LibreOffice stay a manual prerequisite for render/import. How-to: **[docs/how-to-docx-cli.md](docs/how-to-docx-cli.md)**. Residual risk: [docs/accepted-risk.md](docs/accepted-risk.md).
 
 ```bash
 npx skills@latest add bmurrtech/skills --skill docx
@@ -153,6 +157,7 @@ npx skills@latest add bmurrtech/skills --skill docx
 - [MADR](https://adr.github.io/madr/): interoperable ADR spine; full authoring contract in **`to-adr`** `references/mechanics.md`.
 - [Knowledge Catalog](https://github.com/GoogleCloudPlatform/knowledge-catalog/tree/main): open-source AI-powered data and metadata catalog.
 - [visual-explainer](https://github.com/nicobailon/visual-explainer): agent skill that turns complex terminal output into styled HTML pages you actually want to read. (MIT) Ask your agent to explain architecture, review a diff, or compare requirements against a plan. You get self-contained HTML in the browser instead of ASCII art.
+- [kklimuk/docx-cli](https://github.com/kklimuk/docx-cli): CLI for AI agents (Claude, Codex) to read, edit, and comment on `.docx` files with full format fidelity. (MIT)
 
 ## License
 

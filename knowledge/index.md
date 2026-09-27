@@ -13,7 +13,7 @@ Repo knowledge for agents. Start at [CONTEXT.md](../CONTEXT.md) for the glossary
 - [Test map](test-map.md) — OKF seam → smallest test run; AGENTS one-liner index
 - [Skills release artifact](skills-release-artifact.md) — filtered install tarball (`skills/` + LICENSE)
 - [Package skills](package-skills.md) — test map for release include/exclude
-- [Docx ensure](docx-ensure.md) — test map for ToolchainReady, assets, LibreOffice plans, install adapters
+- [Docx ensure](docx-ensure.md) — test map for ToolchainReady, digests, LibreOffice hints, probe-only ensure
 - [ADR](adr.md) — decisions under `docs/adr/`
 - [ADR catalog](adr-catalog.md) — test map for to-adr at-a-glance builder
 - [PRD](prd.md) — local OKF PRDs under `docs/prd/`

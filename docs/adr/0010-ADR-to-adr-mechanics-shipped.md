@@ -7,7 +7,7 @@ Accepted
 - **Date (optional):** 2026-09-26
 - **Supersedes:** [0003](0003-ADR-docs-adr-madr.md)
 - **Superseded by:** —
-- **Related ADRs:** [0005](0005-ADR-skills-release-artifact.md)
+- **Related ADRs:** [0005](0005-ADR-skills-release-artifact.md), [0011](0011-ADR-skill-scanner-posture-prereqs.md)
 - **Related PRDs:** —
 
 ## Context and Problem Statement
