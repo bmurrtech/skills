@@ -43,8 +43,16 @@ _Avoid_: `how-to-use-…` naming; duplicating setup into every topic how-to; sca
 
 
 **.scratch/**:
-Gitignored local scratch pad for exploratory, pre-PRD, and other agent artifact dumps related to these skills. Includes `.scratch/diagrams/` for **visual-explainer** HTML (optional Markdown companions) and `.scratch/adr-optics/` for **`to-adr`** at-a-glance catalog HTML. Not for handoffs (those use OS temp via `handoff`).
-_Avoid_: committing scratch; using tracked `docs/` for throwaways; `/pm/diagrams` or harness skill dirs as diagram SoT
+Gitignored local scratch pad for exploratory, pre-PRD, and other agent artifact dumps related to these skills. Includes `.scratch/diagrams/` for **visual-explainer** HTML (optional Markdown companions), `.scratch/adr-optics/` for **`to-adr`** at-a-glance catalog HTML, `.scratch/handoffs/` for **kept** (non-transitory) **`handoff`** docs, and `.scratch/ideas/` for **`idea`** brain dumps (promote only via **`roadmap`**). Default handoffs are throwaway under the OS temp dir; only an explicit keep signal lands under `.scratch/handoffs/`.
+_Avoid_: committing scratch; using tracked `docs/` for throwaways; `/pm/diagrams` or harness skill dirs as diagram SoT; writing default handoffs into the repo; treating scratch ideas as roadmap or tracker commitments
+
+**ROADMAP.md**:
+Tracked durable idea ledger under `docs/ROADMAP.md`. Unordered and undated; inclusion ≠ priority or sprint commitment. Owned by **`roadmap`** (promote / publish). Raw thoughts stay in `.scratch/ideas/` via **`idea`** until explicitly promoted.
+_Avoid_: dates/estimates/sprint assignments in the ledger; implicit promote or publish; using ROADMAP as the issue tracker
+
+**idea** / **roadmap** (skills):
+Capture-local vs durable-intent vs tracked-work commitment levels — **`idea`** preserves first under `.scratch/ideas/`; **`roadmap`** promotes into `docs/ROADMAP.md` and publishes to GitHub/Fizzy only on separate explicit intent.
+_Avoid_: collapsing capture/promote/publish into one step; inventing roadmap fields to fill the template
 
 **Test map**:
 OKF concept (`type: test-map`) under `knowledge/` naming a seam, the smallest run command, and tracked test paths. Indexed by a one-liner in `AGENTS.md` so agents load only session-relevant tests.
@@ -69,7 +77,7 @@ Compact pretrained token the agent thinks with while running a document (*tight*
 _Avoid_: coining words with no prior; restating the same idea as a phrase in three places
 
 **setup-bmurrtech-skills**:
-Idempotent provision of gitignore (incl. `.scratch/`), `.scratch/` + `.scratch/diagrams/` + `.scratch/adr-optics/`, AGENTS/CLAUDE/CONTEXT, knowledge stub, docs/adr index, docs/prd ignore; optional **`docx`** (docx-cli + office host). Does not install skill folders into harnesses (that is `npx skills`) and does not copy library how-tos / explainers into the consumer. Tree: [docs/skill-scaffold.md](docs/skill-scaffold.md); why: [knowledge/skill-scaffold.md](knowledge/skill-scaffold.md).
+Idempotent provision of gitignore (incl. `.scratch/`), `.scratch/` + `.scratch/diagrams/` + `.scratch/adr-optics/`, AGENTS/CLAUDE/CONTEXT, knowledge stub, docs/adr index, docs/prd ignore; optional **`docx`** (docx-cli + office host). Does not install skill folders into harnesses (that is `npx skills`) and does not copy library how-tos / explainers into the consumer. Does not pre-create `.scratch/handoffs/` — **`handoff`** creates it on **keep**. Tree: [docs/skill-scaffold.md](docs/skill-scaffold.md); why: [knowledge/skill-scaffold.md](knowledge/skill-scaffold.md).
 
 **visual-explainer**:
 Lean Agent Skill that turns architectures, diffs, plans, tables, and related intent into self-contained HTML under `.scratch/diagrams/`. Single entry with intent routing to modes (diagram, visual-plan, slides, diff-review, plan-review, project-recap, fact-check); modes also callable manually. Optional AI-readable Markdown companion (same basename) only when requested; ask before replace. Inspired by [nicobailon/visual-explainer](https://github.com/nicobailon/visual-explainer) (MIT); no Pi/MCP/PPTX bundle in this remake.
@@ -104,5 +112,6 @@ Post-`implement`/`code-review` housekeeping lives in [`AGENTS.md`](AGENTS.md) Bo
 
 - [knowledge/index.md](knowledge/index.md)
 - [docs/adr/index.md](docs/adr/index.md)
+- [docs/ROADMAP.md](docs/ROADMAP.md)
 - [docs/how-to-bmurrtech-skills.md](docs/how-to-bmurrtech-skills.md)
 - [AGENTS.md](AGENTS.md)

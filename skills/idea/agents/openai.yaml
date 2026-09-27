@@ -1,0 +1,5 @@
+interface:
+  display_name: "Idea"
+  short_description: "Capture local scratch ideas without promoting"
+policy:
+  allow_implicit_invocation: true

@@ -1,37 +1,62 @@
 ---
 name: handoff
 description: >
-  Compact the conversation into a handoff doc for a fresh agent. Saves under the
-  OS temp dir as bmurrtech-skills-handoff-*.md. Use when switching sessions,
-  before muddy ADR/PRD authoring, or when the user asks for a handoff.
+  Throwaway handoff: compact the conversation for a fresh agent under the OS
+  temp dir; when the user says keep (or clear persist intent), write under
+  .scratch/handoffs/ with a date-prefixed filename. Use when switching
+  sessions, before muddy ADR/PRD authoring, or when the user asks for a
+  handoff.
 disable-model-invocation: true
 ---
 
 # handoff
 
-Write a handoff so another agent can continue without this chat.
+Write a **throwaway** handoff so another agent can continue without this chat.
+Default destination is the OS temp dir (not the workspace). Persist only on an
+explicit **keep** signal.
 
-## Output path
+## Boundaries
 
-Save **outside the workspace** in the OS temp directory:
+- Do **not** write a transitory handoff into the repo (`docs/`, `pm/`, `skills/`,
+  or `.scratch/`).
+- Do **not** write a **keep** handoff anywhere except
+  `.scratch/handoffs/{yyyyMMdd-HHmmss}-handoff.md`.
+- Do **not** paste specs, plans, ADRs, issues, commits, or diffs — **reference**
+  by path/URL.
+- Do **not** include secrets, tokens, passwords, or PII.
 
-`{tmpdir}/bmurrtech-skills-handoff-{yyyyMMdd-HHmmss}.md`
+## Workflow
 
-Never write handoffs into the repo (not under `docs/`, `pm/`, or skills).
+### 1. Classify destination
 
-## Contents
+**keep** when the invoke prompt says *keep* or clearly asks to persist /
+retain (not throwaway). Otherwise temp.
+
+| Signal | Destination |
+|--------|-------------|
+| Absent (default) | `{tmpdir}/bmurrtech-skills-handoff-{yyyyMMdd-HHmmss}.md` |
+| **keep** | `.scratch/handoffs/{yyyyMMdd-HHmmss}-handoff.md` (create dirs if missing) |
+
+If ambiguous → ask once; default remains temp.
+
+**Done when:** destination path chosen.
+
+### 2. Draft contents
+
+Include:
 
 - Goal / current position (short)
-- Settled decisions (link ADRs/PRDs/CONTEXT — do not paste them)
+- Settled decisions (link ADRs/PRDs/CONTEXT)
 - Open frontier / next questions
 - Artifacts touched (paths only)
 - **Suggested skills** to invoke next (names only)
 - If the user passed a focus argument, tailor the next-session section to it
 
-## Rules
+**Done when:** draft covers every bullet above (or N/A noted).
 
-- Do not duplicate specs, plans, ADRs, issues, commits, or diffs — **reference** by path/URL
-- Redact secrets, tokens, passwords, and PII
-- Tell the user the absolute path written
+### 3. Write + report
 
-**Done when:** file exists at the temp path and the path was reported.
+Write the file to the path from step 1. Tell the user the absolute path and
+whether it was **throwaway** (temp) or **kept** (`.scratch/handoffs/`).
+
+**Done when:** file exists at that path and the path was reported.

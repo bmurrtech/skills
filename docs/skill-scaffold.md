@@ -17,7 +17,8 @@ missing pieces; asks before replacing non-empty files.
 ├── .gitignore              # patched: ignore local-only paths below
 ├── .scratch/               # created on disk; gitignored
 │   ├── diagrams/           # visual-explainer HTML (+ optional .md companions)
-│   └── adr-optics/         # to-adr at-a-glance catalog HTML
+│   ├── adr-optics/         # to-adr at-a-glance catalog HTML
+│   └── ideas/              # idea brain dumps (on demand; promote via roadmap)
 ├── AGENTS.md               # agent ops manual
 ├── CLAUDE.md               # body is exactly: AGENTS.md
 ├── CONTEXT.md              # glossary SoT (OKF root)
@@ -38,7 +39,7 @@ Optional docx toolchain if you opt in during setup.
 | Path | What setup does |
 |------|-----------------|
 | `.gitignore` | Appends missing ignore lines for `/pm/`, agent dirs, `/docs/prd/`, `.scratch/`, etc. Prefers append over rewrite. |
-| `.scratch/` | Creates on disk (ignored). Exploratory dumps. Not for handoffs. |
+| `.scratch/` | Creates on disk (ignored). Exploratory dumps. Default handoffs stay in OS temp; **keep** → `.scratch/handoffs/` (created on demand by **`handoff`**). Ideas → `.scratch/ideas/` (created on demand by **`idea`**). |
 | `.scratch/diagrams/` | Creates on disk. **visual-explainer** HTML (+ optional `.md` companions). |
 | `.scratch/adr-optics/` | Creates on disk. **`to-adr`** at-a-glance catalog (`adr-at-a-glance.html`). |
 | `AGENTS.md` | Lean ops manual stub (commands, boundaries, Test index stub). |

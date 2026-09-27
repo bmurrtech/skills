@@ -10,16 +10,17 @@
 - `CONTEXT.md` / `knowledge/` — glossary + OKF (**tracked, not shipped**)
 - `scripts/package_skills.py` — builds filtered release tarball + sha256
 - `scripts/quick_validate.py` / `scripts/init_skill.py` — skill frontmatter validate + scaffold CLIs (library CI/ops; not product skills)
-- `.github/workflows/ci.yml` — unittest + package smoke
-- `.github/workflows/release.yml` — on `v*` tags: package + GitHub Release assets
+- `.github/workflows/ci.yml` — unittest (package/docx/adr/roadmap) + all-skills validate + package smoke
+- `.github/workflows/release.yml` — on `v*` tags: same unittests + package + GitHub Release assets
 - `docs/adr/` — tracked ADRs
 - `docs/how-to-bmurrtech-skills.md` — consumer how-to (flows + branches + local PRDs); README links here
 - `docs/how-to-adr.md` — ADR authoring + at-a-glance prompts
 - `docs/how-to-visual-explainer.md` — visual-explainer modes + prompts
 - `docs/skill-scaffold.md` — folders/files setup creates (whys → `knowledge/skill-scaffold.md`)
+- `docs/ROADMAP.md` — durable unordered idea ledger (**`roadmap`**; capture → **`idea`**)
 - `CHANGELOG.md` — Keep a Changelog (Unreleased maintained by **upkeep**)
 - `docs/prd/` — local PRDs (ignored)
-- `.scratch/` — untracked agent scratch pad (subdir roles → [CONTEXT.md](CONTEXT.md) **.scratch/**)
+- `.scratch/` — untracked agent scratch pad (subdir roles → [CONTEXT.md](CONTEXT.md) **.scratch/**; ideas → `.scratch/ideas/`)
 - `docs/about-license.md` — license explainer
 - `AGENTS.md` / `CLAUDE.md` — ops manual + pointer
 - `pm/`, `.agents/`, `.claude/`, `.cursor/` — local-only; ignored
@@ -41,7 +42,7 @@ Release packaging: `scripts/package_skills.py` (see [ADR 0005](docs/adr/0005-ADR
 
 ```bash
 python3 scripts/quick_validate.py skills/<name>
-python3 -m unittest tests.test_package_skills tests.test_docx_ensure tests.test_adr_catalog -v
+python3 -m unittest tests.test_package_skills tests.test_docx_ensure tests.test_adr_catalog tests.test_roadmap_promote -v
 ```
 
 - Validate every new or edited skill locally with `scripts/quick_validate.py` (CI also validates all `skills/*/SKILL.md` on PR/`main`).
@@ -54,6 +55,7 @@ One-liners → `knowledge/` test-maps for session-scoped runs (see **`tdd`**).
 - [Package skills](knowledge/package-skills.md) — `python3 -m unittest tests.test_package_skills -v`
 - [Docx ensure](knowledge/docx-ensure.md) — `python3 -m unittest tests.test_docx_ensure -v`
 - [ADR catalog](knowledge/adr-catalog.md) — `python3 -m unittest tests.test_adr_catalog -v`
+- [Roadmap promote](knowledge/roadmap-promote.md) — `python3 -m unittest tests.test_roadmap_promote -v`
 
 ## Code style
 
@@ -72,7 +74,7 @@ One-liners → `knowledge/` test-maps for session-scoped runs (see **`tdd`**).
 - Tracked/published skills only under `skills/` (never dual-track SoT into agent dirs). Library-local / maintainer skills may live under ignored `.agents/skills/` so hosts (Cursor) can load them — not tracked, not shipped, not catalog SoT ([ADR 0009](docs/adr/0009-ADR-local-maintainer-skills-host-path.md)).
 - After `implement` or `code-review` **in this library**, run **upkeep** then **context** (universal skills soft-skip when those artifacts are absent in consumer repos).
 - Accepted ADRs are immutable — supersede via **to-adr**.
-- Handoffs go to OS temp as `bmurrtech-skills-handoff-*.md`, not the repo.
+- Handoffs: default OS temp; **keep** → `.scratch/handoffs/` ([CONTEXT.md](CONTEXT.md) **.scratch/**).
 - Prefer **grill-me** before implementing ambiguous designs.
 
 ## Security
@@ -91,4 +93,5 @@ One-liners → `knowledge/` test-maps for session-scoped runs (see **`tdd`**).
 - [docs/how-to-adr.md](docs/how-to-adr.md)
 - [docs/how-to-visual-explainer.md](docs/how-to-visual-explainer.md)
 - [docs/skill-scaffold.md](docs/skill-scaffold.md)
+- [docs/ROADMAP.md](docs/ROADMAP.md)
 - [CHANGELOG.md](CHANGELOG.md)

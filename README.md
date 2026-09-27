@@ -24,82 +24,65 @@ New repo with no scaffold? After install, run **`setup-bmurrtech-skills`**.
 
 ## How to use
 
-Install → optional scaffold → pick a **shape** entry → record (PRD/ADR) when needed → **ship** (`implement` → `code-review`). Dashed paths are optional.
+Default cycle after install:
 
 ```text
-+========================+
-| npx skills@latest add  |
-| bmurrtech/skills       |
-+-----------+------------+
-            |
-            | [Optional] setup-bmurrtech-skills
-            |            (+ docx?)
-            v
-+===========+=================================+
-| shape: one entry                            |
-|   unclear  --------> grill-me               |
-|     | - - - - - - > wait-what / handoff     |
-|   have target -----> (skip to ship)         |
-|   scaffold only ---> (conventions ready)    |
-+===========+=================================+
-            |
-            + - - [decision?] - - > to-adr
-            + - - [product spec?] > to-prd
-            |                       (ascii as needed)
-            v
-+========================+
-| implement              |
-|   prefer tdd           |
-|   target-repo checks   |
-|   v                    |
-| code-review            |
-|   v                    |
-| upkeep → context [opt] |
-+========================+
+setup-bmurrtech-skills [if needed]
+        |
+        v
+     grill-me
+        |
+        +-- [decision?] --> to-adr
+        |
+        v
+      to-prd
+        |
+        v
+     implement  (+ tdd)
+        |
+        v
+      handoff  -->  code-review   [fresh agent; recommended]
 ```
 
-Branches, side loops, skill clusters, and maintainer notes: **[docs/how-to-bmurrtech-skills.md](docs/how-to-bmurrtech-skills.md)** — not duplicated here.
+Flows, branches, and every skill: **[docs/how-to-bmurrtech-skills.md](docs/how-to-bmurrtech-skills.md)**.
 
 ## What `setup-bmurrtech-skills` adds to *your* repo
 
-After `npx skills add`, run **`setup-bmurrtech-skills`** in the consumer project when conventions are missing. It scaffolds agent process files (not skill folders). Idempotent; confirms before overwrite.
+After install, run **`setup-bmurrtech-skills`** when conventions are missing. It scaffolds agent process files (not skill folders) — tree and whys:
+**[docs/skill-scaffold.md](docs/skill-scaffold.md)** · [knowledge/skill-scaffold.md](knowledge/skill-scaffold.md).
 
-```text
-.
-├── .gitignore          # ignore .scratch/, docs/prd/, pm/, local agent dirs
-├── .scratch/           # local exploratory dumps (not handoffs)
-│   ├── diagrams/       # visual-explainer HTML (+ optional .md)
-│   └── adr-optics/     # to-adr at-a-glance catalog HTML
-├── AGENTS.md           # ops manual for agents
-├── CLAUDE.md           # pointer → AGENTS.md
-├── CONTEXT.md          # glossary SoT
-├── knowledge/index.md  # OKF catalog stub
-└── docs/
-    ├── adr/index.md    # tracked ADR catalog
-    └── prd/            # ignored local PRDs (authored later)
-```
-
-Optional: docx toolchain if you opt in. **What setup creates:** **[docs/skill-scaffold.md](docs/skill-scaffold.md)**. **Why:** [knowledge/skill-scaffold.md](knowledge/skill-scaffold.md). Visuals: **[docs/how-to-visual-explainer.md](docs/how-to-visual-explainer.md)**. ADRs: **[docs/how-to-adr.md](docs/how-to-adr.md)**.
+Also: [docs/how-to-visual-explainer.md](docs/how-to-visual-explainer.md) · [docs/how-to-adr.md](docs/how-to-adr.md) · [docs/ROADMAP.md](docs/ROADMAP.md).
 
 ## Features
 
+Short index only — when/how for each skill:
+**[docs/how-to-bmurrtech-skills.md](docs/how-to-bmurrtech-skills.md#skill-registry)**.
+
 | Skill | What it does |
 |-------|----------------|
-| [`setup-bmurrtech-skills`](skills/setup-bmurrtech-skills/) | Provision gitignore (`.scratch/` + `diagrams/` + `adr-optics/`), AGENTS/CLAUDE/CONTEXT, OKF + ADR indexes; optional docx |
-| [`docx`](skills/docx/) | Create/edit Word `.docx` via pinned docx-cli; LibreOffice probe/install |
-| [`visual-explainer`](skills/visual-explainer/) | Intent-routed HTML diagrams, reviews, slides under `.scratch/diagrams/` |
-| [`writing-for-agents`](skills/writing-for-agents/) | Writing levers for skills and repeatable agent instructions |
-| [`grill-me`](skills/grill-me/) | Design-tree interview; glossary/OKF when present |
-| [`context`](skills/context/) | Maintain `CONTEXT.md` and `knowledge/` |
-| [`upkeep`](skills/upkeep/) | Maintain `AGENTS.md`; ensure `CLAUDE.md` pointer |
-| [`to-adr`](skills/to-adr/) | Author/supersede ADRs under `docs/adr/`; optional at-a-glance HTML |
-| [`to-prd`](skills/to-prd/) | Author local OKF PRDs under `docs/prd/` |
-| [`tdd`](skills/tdd/) | Red-green at seams; OKF test-maps + AGENTS index for session scope |
-| [`implement`](skills/implement/) | Ship from a spec: TDD, target-repo checks, code-review |
-| [`code-review`](skills/code-review/) | Two-axis Standards vs Spec review; severity + ship recommendation |
-| [`ascii`](skills/ascii/) | Plain-text diagrams when structure beats prose |
-| [`wait-what`](skills/wait-what/) | Re-pitch in STE using glossary language |
-| [`handoff`](skills/handoff/) | Temp `bmurrtech-skills-handoff-*.md` for the next agent |
+| [`setup-bmurrtech-skills`](skills/setup-bmurrtech-skills/) | Scaffold AGENTS/CONTEXT/`.scratch`/ADR home |
+| [`grill-me`](skills/grill-me/) | Design-tree interview to shared understanding |
+| [`to-prd`](skills/to-prd/) | Local OKF PRD under `docs/prd/` |
+| [`to-adr`](skills/to-adr/) | Tracked ADR under `docs/adr/` |
+| [`implement`](skills/implement/) | Spec → TDD → checks → code-review |
+| [`tdd`](skills/tdd/) | Red-green at agreed seams |
+| [`code-review`](skills/code-review/) | Standards ‖ Spec review + ship call |
+| [`handoff`](skills/handoff/) | Compact for a fresh agent (temp or keep) |
+| [`idea`](skills/idea/) | Scratch brain dump under `.scratch/ideas/` |
+| [`roadmap`](skills/roadmap/) | Promote ideas → [docs/ROADMAP.md](docs/ROADMAP.md) |
+| [`wait-what`](skills/wait-what/) | STE re-pitch when explanation failed |
+| [`ascii`](skills/ascii/) | Plain-text structure diagrams |
+| [`visual-explainer`](skills/visual-explainer/) | HTML diagrams/reviews under `.scratch/diagrams/` |
+| [`upkeep`](skills/upkeep/) | AGENTS / CLAUDE / CHANGELOG Unreleased |
+| [`context`](skills/context/) | CONTEXT.md + knowledge OKF |
+| [`writing-for-agents`](skills/writing-for-agents/) | Levers for agent-facing instructions |
+| [`docx`](skills/docx/) | Word `.docx` via pinned docx-cli |
+
+## Roadmap
+
+Future exploration lives in **[docs/ROADMAP.md](docs/ROADMAP.md)** — unordered ideas, not a sprint plan or commitment queue.
+
+**Have an idea or improvement?** [Open a GitHub issue](https://github.com/bmurrtech/skills/issues/new) — bugs, feature requests, and skill suggestions welcome.
 
 ## Want AI to edit your `.docx` files?
 

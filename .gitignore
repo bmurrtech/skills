@@ -12,6 +12,10 @@
 .scratch/
 .scratch/*
 
+# OMX / Ralph session state (local only)
+.omx/
+.omx/*
+
 # Local agent tooling — local developer only. Skills SoT is skills/.
 .claude/
 .agents/

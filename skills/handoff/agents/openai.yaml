@@ -1,5 +1,5 @@
 interface:
   display_name: "Handoff"
-  short_description: "Temp handoff doc for next agent"
+  short_description: "Throwaway temp handoff; keep → .scratch/handoffs"
 policy:
   allow_implicit_invocation: false

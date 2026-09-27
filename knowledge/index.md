@@ -18,5 +18,7 @@ Repo knowledge for agents. Start at [CONTEXT.md](../CONTEXT.md) for the glossary
 - [ADR catalog](adr-catalog.md) — test map for to-adr at-a-glance builder
 - [PRD](prd.md) — local OKF PRDs under `docs/prd/`
 - [Skill scaffold](skill-scaffold.md) — why setup provisions consumer process files
+- [Roadmap](roadmap.md) — durable idea ledger; capture → promote → publish
+- [Roadmap promote](roadmap-promote.md) — test map for roadmap ensure/append/mark scripts
 - [upkeep](upkeep.md) — AGENTS.md maintenance
 - [context](context.md) — glossary and OKF maintenance

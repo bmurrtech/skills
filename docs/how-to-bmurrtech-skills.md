@@ -74,6 +74,14 @@ Spine from install through ship. Three shape entries; take one.
                  |      |
                  |      +--> to-prd  (docs/prd/, gitignored)
                  |           cite ADRs; ascii for structure
+                 | [not this sprint / brain dump?]
+                 |      |
+                 |      +--> idea  (.scratch/ideas/)
+                 |           promote later via roadmap → docs/ROADMAP.md
+                 | [session switch / fresh agent?]
+                 |      |
+                 |      +--> handoff  (OS temp; keep → .scratch/handoffs/)
+                 |           often before code-review (fresh model)
                  v
 +=================================+
 | ship                            |
@@ -81,7 +89,7 @@ Spine from install through ship. Three shape entries; take one.
 |   | prefer tdd at agreed seams  |
 |   | target-repo checks          |
 |   v                             |
-| code-review                     |
+| handoff [rec.] → code-review    |
 |   | Standards || Spec           |
 |   | severity + ship call        |
 |   v                             |
@@ -89,6 +97,11 @@ Spine from install through ship. Three shape entries; take one.
 |   AGENTS / CHANGELOG / OKF      |
 +=================================+
 ```
+
+`idea` and `handoff` sit beside each other on the record spine: **`idea`** parks
+thoughts that are not sprint work; **`handoff`** packs *current* work for a
+fresh agent (review, continue, or muddy ADR/PRD authoring). Promote durable
+intent with **`roadmap`**; do not treat scratch capture as a tracker ticket.
 
 ### Same idea later (edit loop)
 
@@ -130,21 +143,45 @@ Spine from install through ship. Three shape entries; take one.
 +-----------+
 ```
 
-### Session switch
+### Session switch / park a thought
 
 ```text
-+---------+
-| handoff |
-+----+----+
-     |
-     | OS temp:
-     | bmurrtech-skills-handoff-*.md
-     v
-+------------------+
-| fresh agent      |
-| resume from file |
-+------------------+
++---------------------------+
+| mid-session fork          |
++-------------+-------------+
+              |
+     +--------+--------+
+     |                 |
+     v                 v
++---------+      +-----------+
+| handoff |      | idea      |
++----+----+      +-----+-----+
+     |                 |
+     | continue work   | not this sprint
+     | for fresh agent | preserve first
+     v                 v
++------------------+  +------------------+
+| OS temp (default)|  | .scratch/ideas/  |
+| or keep →        |  |                  |
+| .scratch/        |  | explicit promote  |
+|   handoffs/      |  | → roadmap        |
++--------+---------+  | → docs/ROADMAP.md|
+         |            +--------+---------+
+         v                     |
++------------------+           | optional
+| fresh agent      |           v
+| resume / review  |    +--------------+
++------------------+    | GitHub issue |
+                        | / Fizzy card |
+                        | (publish)    |
+                        +--------------+
 ```
+
+- **`handoff`** — compact *active* thread for another agent (review bias break,
+  muddy grill → ADR/PRD, session end).
+- **`idea`** — local brain dump; never promotes or opens trackers by itself.
+- **`roadmap`** — explicit promote into [ROADMAP.md](ROADMAP.md); publish is a
+  separate explicit step.
 
 ## Branch map (when to reach for what)
 
@@ -153,11 +190,14 @@ Spine from install through ship. Three shape entries; take one.
 | Skills not installed | `npx skills@latest add bmurrtech/skills` |
 | Repo lacks AGENTS / CONTEXT / ADR / `.scratch` conventions | **`setup-bmurrtech-skills`** ([tree](skill-scaffold.md)) |
 | Design ambiguous; need shared understanding | **`grill-me`** |
-| Need a local PRD | **`to-prd`** (see [Local PRDs](#local-prds-docsprd) below) |
+| Need a local PRD / focused sprint spec | **`to-prd`** (see [Local PRDs](#local-prds-docsprd) below) |
 | Costly-to-reverse decision | **`to-adr`** ([how-to](how-to-adr.md)) |
+| Park a thought for later (not this sprint) | **`idea`** → `.scratch/ideas/` |
+| Promote durable idea to public ledger | **`roadmap`** → [ROADMAP.md](ROADMAP.md) |
+| Publish idea to GitHub / Fizzy | **`roadmap`** publish (explicit; not from capture alone) |
 | Structure clearer as a diagram | **`ascii`** (terminal) or **`visual-explainer`** (HTML under `.scratch/diagrams/`) |
 | Build from a clear acceptance target | **`implement`** (pulls **`tdd`**, then **`code-review`**) |
-| Review only (branch / PR / local diff) | **`code-review`** |
+| Review only (branch / PR / local diff) | **`code-review`** (prefer after **`handoff`** to a fresh agent) |
 | Red-green at agreed seams | **`tdd`** |
 | Author or tighten a skill / agent instructions | **`writing-for-agents`** |
 | Word `.docx` edit path | **`docx`** (+ ensure scripts) |
@@ -189,34 +229,48 @@ Why → [knowledge/prd.md](../knowledge/prd.md). Thin library pointer also at [a
 - Local catalog: `docs/prd/index.md` (also gitignored)
 - Author with **`to-prd`**; cite ADRs under tracked `docs/adr/` via **`to-adr`**
 
-## Skill clusters
+## Skill registry
+
+Details live here (README keeps a short index only).
 
 ### Bootstrap
 
-- **`setup-bmurrtech-skills`** — idempotent scaffold; never silent overwrite
-- **`docx`** — optional; asked during setup or install with `--skill docx`
+| Skill | Role |
+|-------|------|
+| **`setup-bmurrtech-skills`** | Idempotent scaffold: gitignore, `.scratch/` (+ `diagrams/`, `adr-optics/`), AGENTS/CLAUDE/CONTEXT, knowledge stub, `docs/adr/`, `docs/prd` ignore. Optional **`docx`**. Never silent overwrite. Tree: [skill-scaffold.md](skill-scaffold.md). |
+| **`docx`** | Word `.docx` via pinned docx-cli; LibreOffice/Word probe. Opt in at setup or `--skill docx`. |
 
 ### Shape and record
 
-- **`grill-me`** — design-tree interview; updates glossary/OKF when present
-- **`to-prd`** — local OKF PRDs under `docs/prd/` (ignored)
-- **`to-adr`** — ADRs under tracked `docs/adr/` ([how-to](how-to-adr.md))
-- **`ascii`** — plain-text structure diagrams
-- **`visual-explainer`** — intent-routed HTML under `.scratch/diagrams/` ([how-to](how-to-visual-explainer.md))
-- **`writing-for-agents`** — levers for skills and repeatable agent instructions
+| Skill | Role |
+|-------|------|
+| **`grill-me`** | Design-tree interview until shared understanding; updates glossary/OKF when present; may warrant **`to-adr`**. |
+| **`to-prd`** | Local OKF PRDs under gitignored `docs/prd/` for a focused sprint. Cite ADRs; use **`ascii`** for structure. |
+| **`to-adr`** | Tracked ADRs under `docs/adr/`; optional at-a-glance under `.scratch/adr-optics/`. [how-to-adr.md](how-to-adr.md). |
+| **`ascii`** | Plain-text structure diagrams in-terminal. |
+| **`visual-explainer`** | Intent-routed HTML under `.scratch/diagrams/`. [how-to-visual-explainer.md](how-to-visual-explainer.md). |
+| **`writing-for-agents`** | Levers for skills and other agent-facing instructions (pointers, hierarchy, Boundaries, pruning). |
 
 ### Ship
 
-- **`tdd`** — seams first; OKF test-maps + AGENTS Test index when conventions exist
-- **`implement`** — TDD → target checks → code-review; soft-gates upkeep/context
-- **`code-review`** — Standards ‖ Spec; severity; APPROVE / REQUEST CHANGES / COMMENT
+| Skill | Role |
+|-------|------|
+| **`tdd`** | Red-green at agreed seams; OKF test-maps + AGENTS Test index when conventions exist. |
+| **`implement`** | Spec/tickets → prefer TDD → target-repo checks → **`code-review`**; soft-gates **`upkeep`** / **`context`**. |
+| **`code-review`** | Standards ‖ Spec; severity; APPROVE / REQUEST CHANGES / COMMENT. Prefer a **`handoff`** to a fresh agent first. |
 
-### Session hygiene
+### Session hygiene / ideas
 
-- **`upkeep`** — `AGENTS.md`, `CLAUDE.md` pointer, `CHANGELOG.md` Unreleased
-- **`context`** — `CONTEXT.md` + `knowledge/`
-- **`wait-what`** — STE re-pitch
-- **`handoff`** — temp handoff outside the repo
+| Skill | Role |
+|-------|------|
+| **`handoff`** | Compact *active* work for a fresh agent. Default: OS temp. **keep** → `.scratch/handoffs/`. |
+| **`idea`** | Preserve-first brain dump under `.scratch/ideas/`. No promote, no trackers, no implement. |
+| **`roadmap`** | Ensure/promote into public [ROADMAP.md](ROADMAP.md); GitHub/Fizzy publish only on separate explicit intent. Templates: `skills/roadmap/references/`. |
+| **`wait-what`** | STE re-pitch when an explanation did not land. |
+| **`upkeep`** | `AGENTS.md`, `CLAUDE.md` pointer, `CHANGELOG.md` Unreleased. |
+| **`context`** | `CONTEXT.md` + `knowledge/` OKF — no ops-manual edits. |
+
+Future orchestration (`ultrawork` / `ralph` OMX integration): [ROADMAP.md](ROADMAP.md) — not minted yet.
 
 ## Library maintainers (this repo)
 
@@ -235,10 +289,12 @@ glossary/ops housekeeping.
 
 ## Related
 
-- [README.md](../README.md) — quick start + compact map
+- [README.md](../README.md) — quick start + skill index
+- [ROADMAP.md](ROADMAP.md) — durable idea ledger (`idea` → promote → publish)
 - [skill-scaffold.md](skill-scaffold.md) — folders/files setup creates
 - [how-to-adr.md](how-to-adr.md) — ADR authoring + at-a-glance
 - [how-to-visual-explainer.md](how-to-visual-explainer.md) — visual-explainer prompts
 - [about-license.md](about-license.md) — Apache-2.0
 - [adr/index.md](adr/index.md) — decisions
 - [CONTEXT.md](../CONTEXT.md) — glossary (library SoT; not shipped in release artifact)
+- [Skill registry](#skill-registry) — this doc

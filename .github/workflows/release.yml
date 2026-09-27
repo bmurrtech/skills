@@ -40,7 +40,7 @@ jobs:
           echo "tag=$TAG" >> "$GITHUB_OUTPUT"
 
       - name: Unit tests
-        run: python3 -m unittest tests.test_package_skills tests.test_docx_ensure -v
+        run: python3 -m unittest tests.test_package_skills tests.test_docx_ensure tests.test_adr_catalog tests.test_roadmap_promote -v
 
       - name: Build skills release artifact
         run: |

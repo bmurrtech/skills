@@ -55,7 +55,7 @@ If yes: install **`docx`** if missing, then follow that skill’s **Ensure toolc
 
 ### `.scratch/` purpose
 
-Untracked scratch pad for exploratory, pre-PRD, and other **agent artifact dumps** tied to these skills (draft notes, session dumps). **`.scratch/diagrams/`** is the default home for **visual-explainer** HTML (and optional Markdown companions). **`.scratch/adr-optics/`** holds **`to-adr`** at-a-glance catalog HTML. Never commit it. Prefer it over polluting `docs/`, `pm/`, or tracked trees. Handoffs still go to OS temp (`handoff` skill), not `.scratch/`. Harness skill install dirs remain **`npx skills`** — setup does not create Cursor/Claude/Pi/OpenClaw skill trees.
+Untracked scratch pad for exploratory, pre-PRD, and other **agent artifact dumps** tied to these skills (draft notes, session dumps). **`.scratch/diagrams/`** is the default home for **visual-explainer** HTML (and optional Markdown companions). **`.scratch/adr-optics/`** holds **`to-adr`** at-a-glance catalog HTML. **`.scratch/handoffs/`** holds **kept** (non-transitory) **`handoff`** docs only — default handoffs stay in OS temp. **`.scratch/ideas/`** holds **`idea`** brain dumps (created on demand; promote only via **`roadmap`**). Never commit it. Prefer it over polluting `docs/`, `pm/`, or tracked trees. Harness skill install dirs remain **`npx skills`** — setup does not create Cursor/Claude/Pi/OpenClaw skill trees.
 
 Wait for confirmation before writing.
 

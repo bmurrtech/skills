@@ -29,7 +29,7 @@ AGENTS / CLAUDE / glossary independently.
 | Artifact | Why |
 |----------|-----|
 | `.gitignore` patches | Separates collaboration SoT (tracked) from local working surfaces (ignored). |
-| `.scratch/` (+ `diagrams/`, `adr-optics/`) | Known dump pad so drafts do not land in `docs/`, `pm/`, or repo root. `diagrams/` → visual-explainer; `adr-optics/` → to-adr catalog. Handoffs stay in OS temp via **`handoff`**. |
+| `.scratch/` (+ `diagrams/`, `adr-optics/`; `handoffs/` on **keep**; `ideas/` on **idea** capture) | Known dump pad so drafts do not land in `docs/`, `pm/`, or repo root. `diagrams/` → visual-explainer; `adr-optics/` → to-adr catalog. Default handoffs are throwaway (OS temp via **`handoff`**); **keep** → `.scratch/handoffs/`. Brain dumps → `.scratch/ideas/` via **`idea`**; promote only via **`roadmap`**. |
 | `AGENTS.md` | Short executable ops surface; domain vocab stays in CONTEXT/knowledge. Owned by **`upkeep`**. |
 | `CLAUDE.md` → `AGENTS.md` | Claude hosts look for `CLAUDE.md`; pointer avoids two manuals. |
 | `CONTEXT.md` + `knowledge/` | Shared ubiquitous language + progressive disclosure. Consumer glossary is yours — library OKF is not shipped into consumers ([skills-release-artifact](skills-release-artifact.md)). |

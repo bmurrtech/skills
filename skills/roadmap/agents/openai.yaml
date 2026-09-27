@@ -1,0 +1,5 @@
+interface:
+  display_name: "Roadmap"
+  short_description: "Promote ideas to docs/ROADMAP.md ledger"
+policy:
+  allow_implicit_invocation: false
