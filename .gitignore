@@ -20,6 +20,7 @@
 .claude/
 .agents/
 .cursor/
+skills-lock.json
 
 # Secrets & local env
 .env
