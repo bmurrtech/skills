@@ -1,0 +1,40 @@
+{
+  "$schema": "https://skills.sh/schemas/skills.sh.schema.json",
+  "notGrouped": "bottom",
+  "groupings": [
+    {
+      "title": "Bootstrap",
+      "description": "Scaffold repo conventions and optional Word tooling.",
+      "skills": ["setup-bmurrtech-skills", "docx"]
+    },
+    {
+      "title": "Shape and record",
+      "description": "Grill designs, write PRDs and ADRs, and diagram the result.",
+      "skills": [
+        "grill-me",
+        "to-prd",
+        "to-adr",
+        "ascii",
+        "visual-explainer",
+        "writing-for-agents"
+      ]
+    },
+    {
+      "title": "Ship",
+      "description": "Build with TDD, implement from a spec, and review before merge.",
+      "skills": ["tdd", "implement", "code-review"]
+    },
+    {
+      "title": "Session hygiene / ideas",
+      "description": "Handoff sessions, park ideas, keep the OKF and ops docs honest.",
+      "skills": [
+        "handoff",
+        "idea",
+        "roadmap",
+        "wait-what",
+        "upkeep",
+        "context"
+      ]
+    }
+  ]
+}

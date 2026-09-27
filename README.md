@@ -82,44 +82,46 @@ Tree and whys: **[docs/skill-scaffold.md](docs/skill-scaffold.md)** · [knowledg
 
 ## Features
 
-When/how for each skill: **[docs/how-to-bmurrtech-skills.md](docs/how-to-bmurrtech-skills.md#skill-registry)**.
+When/how for each skill: **[docs/how-to-bmurrtech-skills.md](docs/how-to-bmurrtech-skills.md#skill-registry)**. Groups below match [`skills.sh.json`](skills.sh.json) on [skills.sh/bmurrtech/skills](https://skills.sh/bmurrtech/skills).
+
+Safe without bmurrtech infrastructure: every skill here is first-party and runs in your repo. Optional: **`docx`** needs Word or LibreOffice on the machine.
 
 ### Bootstrap
 
-| Skill | What it does |
-|-------|----------------|
-| [`setup-bmurrtech-skills`](skills/setup-bmurrtech-skills/) | Drops AGENTS, CONTEXT, `.scratch/`, and an ADR home into your repo |
-| [`docx`](skills/docx/) | Edit Word `.docx` files through a pinned docx-cli |
+| Skill | What it does | Example prompt |
+|-------|----------------|----------------|
+| [`setup-bmurrtech-skills`](skills/setup-bmurrtech-skills/) | Drops AGENTS, CONTEXT, `.scratch/`, and an ADR home into your repo | `Run setup-bmurrtech-skills on this repo` |
+| [`docx`](skills/docx/) | Edit Word `.docx` files through a pinned docx-cli | `Install docx and fill this contract template` |
 
 ### Shape and record
 
-| Skill | What it does |
-|-------|----------------|
-| [`grill-me`](skills/grill-me/) | Interviews you until the design tree is resolved |
-| [`to-prd`](skills/to-prd/) | Writes a local sprint PRD under `docs/prd/` |
-| [`to-adr`](skills/to-adr/) | Records a tracked ADR under `docs/adr/` |
-| [`ascii`](skills/ascii/) | Draws structure as plain text in the terminal |
-| [`visual-explainer`](skills/visual-explainer/) | Builds HTML diagrams under `.scratch/diagrams/` |
-| [`writing-for-agents`](skills/writing-for-agents/) | Tightens skills and other agent-facing docs |
+| Skill | What it does | Example prompt |
+|-------|----------------|----------------|
+| [`grill-me`](skills/grill-me/) | Interviews you until the design tree is resolved | `Grill me on this auth redesign before we code` |
+| [`to-prd`](skills/to-prd/) | Writes a local sprint PRD under `docs/prd/` | `Turn that grill into a PRD for the MVP` |
+| [`to-adr`](skills/to-adr/) | Records a tracked ADR under `docs/adr/` | `Write an ADR for picking Postgres over SQLite` |
+| [`ascii`](skills/ascii/) | Draws structure as plain text in the terminal | `ASCII the request path through the API gateway` |
+| [`visual-explainer`](skills/visual-explainer/) | Builds HTML diagrams under `.scratch/diagrams/` | `Visual explainer for this architecture diff` |
+| [`writing-for-agents`](skills/writing-for-agents/) | Tightens skills and other agent-facing docs | `Rewrite this SKILL.md with writing-for-agents` |
 
 ### Ship
 
-| Skill | What it does |
-|-------|----------------|
-| [`tdd`](skills/tdd/) | Red-green loops at seams you agree on first |
-| [`implement`](skills/implement/) | Turns a spec into working code, with TDD and a review pass |
-| [`code-review`](skills/code-review/) | Standards and Spec review with a ship call |
+| Skill | What it does | Example prompt |
+|-------|----------------|----------------|
+| [`tdd`](skills/tdd/) | Red-green loops at seams you agree on first | `TDD the invoice total calculator at this seam` |
+| [`implement`](skills/implement/) | Turns a spec into working code, with TDD and a review pass | `Implement the PRD; prefer tdd at the seams we listed` |
+| [`code-review`](skills/code-review/) | Standards and Spec review with a ship call | `Code-review the diff since main` |
 
 ### Session hygiene / ideas
 
-| Skill | What it does |
-|-------|----------------|
-| [`handoff`](skills/handoff/) | Packs the session for a fresh agent (temp file, or keep under `.scratch/handoffs/`) |
-| [`idea`](skills/idea/) | Parks a brain dump under `.scratch/ideas/` without promoting it |
-| [`roadmap`](skills/roadmap/) | Moves durable ideas into [docs/ROADMAP.md](docs/ROADMAP.md) |
-| [`wait-what`](skills/wait-what/) | Re-explains when the last message did not land |
-| [`upkeep`](skills/upkeep/) | Keeps AGENTS, the CLAUDE pointer, and CHANGELOG Unreleased honest |
-| [`context`](skills/context/) | Maintains `CONTEXT.md` and the `knowledge/` OKF |
+| Skill | What it does | Example prompt |
+|-------|----------------|----------------|
+| [`handoff`](skills/handoff/) | Packs the session for a fresh agent (temp file, or keep under `.scratch/handoffs/`) | `Handoff this session; keep it under .scratch` |
+| [`idea`](skills/idea/) | Parks a brain dump under `.scratch/ideas/` without promoting it | `Capture this idea; don't work on it now` |
+| [`roadmap`](skills/roadmap/) | Moves durable ideas into [docs/ROADMAP.md](docs/ROADMAP.md) | `Promote that scratch idea onto the roadmap` |
+| [`wait-what`](skills/wait-what/) | Re-explains when the last message did not land | `Wait-what; re-pitch that last explanation` |
+| [`upkeep`](skills/upkeep/) | Keeps AGENTS, the CLAUDE pointer, and CHANGELOG Unreleased honest | `Run upkeep after that layout change` |
+| [`context`](skills/context/) | Maintains `CONTEXT.md` and the `knowledge/` OKF | `Update CONTEXT for the new billing terms` |
 
 ## Roadmap
 
