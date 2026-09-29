@@ -137,3 +137,12 @@ Research and later mint library-native skills that take the best of existing OMX
 - Key research refs (host/OMX, not library SoT): oh-my-codex / OMX **ultrawork** and **ralph** skill bodies; agent-tier / state persistence patterns those skills document.
 - Sprint breakout: grill → optional PRD/handoff → mint via skill-create only after spikes.
 
+## Release skill (tag-triggered GitHub Releases)
+
+**Status:** Done — absorbed into **`release`** (with **`commit`** / **`merge`**); suite shipped in **0.2.0**.
+
+**Domain:** `skills / release / CI/CD`
+
+Shipped under `skills/release/`. Tag-triggered `v*` + filtered artifact dogfood:
+ADR 0005. Remaining open questions (multi-target matrices, draft releases): see
+`.scratch/ideas/release-skill.md`.

@@ -25,6 +25,11 @@
       "skills": ["tdd", "implement", "code-review"]
     },
     {
+      "title": "Git lifecycle",
+      "description": "Commit locally or for review, merge under GitHub gates, cut versioned releases.",
+      "skills": ["commit", "merge", "release"]
+    },
+    {
       "title": "Session hygiene / ideas",
       "description": "Handoff sessions, park ideas, keep the OKF and ops docs honest.",
       "skills": [

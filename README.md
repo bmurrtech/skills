@@ -10,12 +10,9 @@ Built around [Open Knowledge Format (OKF)](https://cloud.google.com/blog/product
 
 [![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](LICENSE)
 [![GitHub stars](https://img.shields.io/github/stars/bmurrtech/skills?style=social)](https://github.com/bmurrtech/skills)
-[![Skills](https://img.shields.io/badge/skills-agent-ready-0A7.svg)](skills/)
 [![skills.sh](https://skills.sh/b/bmurrtech/skills)](https://skills.sh/bmurrtech/skills)
 
 ## Quick start
-
-No skills.sh pack required. Point the CLI at this GitHub repo:
 
 ```bash
 npx skills@latest add bmurrtech/skills --list
@@ -31,6 +28,16 @@ npx skills@latest add bmurrtech/skills --skill grill-me
 A full GitHub URL or a path into a skill folder works too.
 
 New repo with no scaffold? After install, run **`setup-bmurrtech-skills`**.
+
+### Update installed skills
+
+After a new release of this pack, refresh from **`bmurrtech/skills`**:
+
+```bash
+npx skills@latest add bmurrtech/skills --all
+```
+
+That reinstalls every skill in this repo (not every skill on your machine). Scope with `-g` (global) or omit for project. Named skills only: `npx skills@latest update grill-me to-prd` (`-p` / `-g` / `-y` still apply to `update`).
 
 ## How to use
 
@@ -58,8 +65,6 @@ Flows, branches, and every skill: **[docs/how-to-bmurrtech-skills.md](docs/how-t
 
 ## What `setup-bmurrtech-skills` adds to *your* repo
 
-After install, run **`setup-bmurrtech-skills`** when conventions are missing. It scaffolds agent process files (not skill folders).
-
 ```text
 .
 ├── .gitignore              # patched: ignore local-only paths below
@@ -81,10 +86,6 @@ After install, run **`setup-bmurrtech-skills`** when conventions are missing. It
 Tree and whys: **[docs/skill-scaffold.md](docs/skill-scaffold.md)** · [knowledge/skill-scaffold.md](knowledge/skill-scaffold.md). Also: [docs/how-to-visual-explainer.md](docs/how-to-visual-explainer.md) · [docs/how-to-adr.md](docs/how-to-adr.md) · [docs/ROADMAP.md](docs/ROADMAP.md).
 
 ## Features
-
-When/how for each skill: **[docs/how-to-bmurrtech-skills.md](docs/how-to-bmurrtech-skills.md#skill-registry)**. Groups below match [`skills.sh.json`](skills.sh.json) on [skills.sh/bmurrtech/skills](https://skills.sh/bmurrtech/skills).
-
-Safe without bmurrtech infrastructure: every skill here is first-party and runs in your repo. Optional: **`docx`** needs Word or LibreOffice on the machine.
 
 ### Bootstrap
 
@@ -112,6 +113,16 @@ Safe without bmurrtech infrastructure: every skill here is first-party and runs 
 | [`implement`](skills/implement/) | Turns a spec into working code, with TDD and a review pass | `Implement the PRD; prefer tdd at the seams we listed` |
 | [`code-review`](skills/code-review/) | Standards and Spec review with a ship call | `Code-review the diff since main` |
 
+### Git lifecycle
+
+| Skill | What it does | Example prompt |
+|-------|----------------|----------------|
+| [`commit`](skills/commit/) | Local-first commit; push/PR only on intent | `Commit this` · `Commit and push this` · `Push this directly to main` |
+| [`merge`](skills/merge/) | Integrate a chosen PR under GitHub gates | `Merge PR #42` |
+| [`release`](skills/release/) | Build-before-tag; push one `v*` tag | `Release 0.2.0` |
+
+Defaults and overrides: **[how-to](docs/how-to-bmurrtech-skills.md#git-lifecycle)**.
+
 ### Session hygiene / ideas
 
 | Skill | What it does | Example prompt |
@@ -122,12 +133,6 @@ Safe without bmurrtech infrastructure: every skill here is first-party and runs 
 | [`wait-what`](skills/wait-what/) | Re-explains when the last message did not land | `Wait-what; re-pitch that last explanation` |
 | [`upkeep`](skills/upkeep/) | Keeps AGENTS, the CLAUDE pointer, and CHANGELOG Unreleased honest | `Run upkeep after that layout change` |
 | [`context`](skills/context/) | Maintains `CONTEXT.md` and the `knowledge/` OKF | `Update CONTEXT for the new billing terms` |
-
-## Roadmap
-
-Future exploration lives in **[docs/ROADMAP.md](docs/ROADMAP.md)**: unordered ideas, not a sprint plan or commitment queue.
-
-**Have an idea or improvement?** [Open a GitHub issue](https://github.com/bmurrtech/skills/issues/new). Bugs, feature requests, and skill suggestions welcome.
 
 ## Want AI to edit your `.docx` files?
 
@@ -140,6 +145,12 @@ Optional skill **`docx`**. Install the CLI yourself (pin **0.26.0**), then probe
 ```bash
 npx skills@latest add bmurrtech/skills --skill docx
 ```
+
+## Roadmap
+
+Future exploration lives in **[docs/ROADMAP.md](docs/ROADMAP.md)**: unordered ideas, not a sprint plan or commitment queue.
+
+**Have an idea or improvement?** [Open a GitHub issue](https://github.com/bmurrtech/skills/issues/new). Bugs, feature requests, and skill suggestions welcome.
 
 ## Support open source
 

@@ -99,6 +99,10 @@ _Avoid_: shipping library layout rules inside universal sprint skills
 Versioned install tarball of `skills/` + `LICENSE` only. Library `knowledge/` / `CONTEXT.md` / ops / docs stay **tracked** in git but are **excluded** by packaging (`scripts/package_skills.py`). Do not gitignore library OKF to keep consumer installs clean.
 _Avoid_: shipping full-repo trees as the install artifact; overlaying library OKF onto consumer roots
 
+**Git lifecycle**:
+Composable skills **`commit`** / **`merge`** / **`release`** (catalog group in `skills.sh.json`, README, how-to): durable local change + optional review-branch/PR; integrate a chosen PR under GitHub-enforced gates; prove repo-native build contract then deliberate `v*` tag (existing contract > ecosystem defaults; this library dogfoods ADR 0005). Stages do not duplicate each other’s ops.
+_Avoid_: one mega-git skill; default push without intent; inventing merge gates beyond GitHub policy; naming **`code-review`** inside **`merge`**; tagging in the same run as first release-workflow bootstrap; alternate packaging when `package_skills.py` + tag workflow exist
+
 ## Hard rules
 
 1. **Tracked/published skills live only in `skills/`.** Library-local skills may sit under ignored `.agents/skills/` (host-readable; not product; not OKF; not release).

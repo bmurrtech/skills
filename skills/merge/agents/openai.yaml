@@ -1,0 +1,5 @@
+interface:
+  display_name: "Merge"
+  short_description: "Gate-aware PR merge with safe cleanup"
+policy:
+  allow_implicit_invocation: false

@@ -199,6 +199,11 @@ intent with **`roadmap`**; do not treat scratch capture as a tracker ticket.
 | Build from a clear acceptance target | **`implement`** (pulls **`tdd`**, then **`code-review`**) |
 | Review only (branch / PR / local diff) | **`code-review`** (prefer after **`handoff`** to a fresh agent) |
 | Red-green at agreed seams | **`tdd`** |
+| Local commit / checkpoint (default: no push) | **`commit`** |
+| Commit and open/update a PR | **`commit`** with push intent |
+| Push directly to main (override) | **`commit`** with canonical intent |
+| Merge a reviewed PR | **`merge`** |
+| Cut a versioned GitHub Release | **`release`** |
 | Author or tighten a skill / agent instructions | **`writing-for-agents`** |
 | Word `.docx` edit path | **`docx`** (+ ensure scripts) |
 | HTML diagrams / slides / visual reviews | **`visual-explainer`** ([how-to](how-to-visual-explainer.md)) |
@@ -258,6 +263,33 @@ Details live here (README keeps a short index only).
 | **`tdd`** | Red-green at agreed seams; OKF test-maps + AGENTS Test index when conventions exist. |
 | **`implement`** | Spec/tickets → prefer TDD → target-repo checks → **`code-review`**; soft-gates **`upkeep`** / **`context`**. |
 | **`code-review`** | Standards ‖ Spec; severity; APPROVE / REQUEST CHANGES / COMMENT. Prefer a **`handoff`** to a fresh agent first. |
+
+### Git lifecycle
+
+Safe Git/GitHub publish → integrate → cut. Defaults favor local durability and review; overrides are explicit in the prompt.
+
+| Skill | Role |
+|-------|------|
+| **`commit`** | Local-first commit; on push intent → short branch + PR; on “push to main” → canonical push when allowed. |
+| **`merge`** | Choose PR; hard-stop on GitHub-enforced gates; surface advisory findings; expected-head merge/queue; safe cleanup. |
+| **`release`** | Discover contract (existing > ecosystem defaults); build before annotated `v*` tag; bootstrap thin workflow only when earned (no tag same run). |
+
+**Defaults vs overrides (`commit`):** Intent→Mode matrix lives in
+[`skills/commit/SKILL.md`](../skills/commit/SKILL.md#intent) (SoT). Prompt
+examples:
+
+| Prompt example | Behavior |
+|----------------|----------|
+| `Commit this` / `Checkpoint this` | Local commit only |
+| `Commit and push` / `Raise a PR` / `Publish this` | Review branch + push + one PR |
+| `Push this directly to main` | Canonical push if allowed; else fall back to PR |
+
+More examples:
+
+- `Merge PR #42` — resolve that PR; respect required checks/reviews; squash unless policy says otherwise
+- `Merge this` — only if one unambiguous PR; else ask
+- `Release 0.2.0` — CHANGELOG promote, local package/build, annotated `v0.2.0`, push that tag only
+- Dogfood here: `python3 scripts/package_skills.py` + existing `release.yml` (ADR 0005) — do not invent a second publication path
 
 ### Session hygiene / ideas
 

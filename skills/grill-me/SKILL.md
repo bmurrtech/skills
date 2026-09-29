@@ -19,8 +19,9 @@ Every decision branches into the decisions that hang off it. The **frontier** is
 
 1. Ask the **whole current frontier** in one round.
 2. Wait for answers.
-3. Settled decisions push the frontier outward; recompute; ask the next round.
-4. A question that depends on another question still open in this round belongs to a **later** round.
+3. Apply **rec-default**: if the reply is only affirmatives (“yes”, “agreed”, “LGTM”, “ship it”, …), treat **every** ➡️ recommendation in that round as accepted. If the reply answers some questions and is silent on others, accept the unanswered recommendations unless the user contradicts them. Do not re-ask unanswered questions.
+4. Settled decisions push the frontier outward; recompute; ask the next round.
+5. A question that depends on another question still open in this round belongs to a **later** round.
 
 Finding **facts** is your job (filesystem, tools, sub-agents) — never the user's. A running exploration is an unsettled prerequisite: ask the rest of the frontier now; only downstream questions wait. **Decisions** are the user's — put each to them and wait.
 
@@ -41,6 +42,11 @@ Finding **facts** is your job (filesystem, tools, sub-agents) — never the user
 ```
 
 Number questions per round. Always give your recommended answer.
+
+## Boundaries
+
+- Do not re-ask a round’s unanswered questions after **rec-default** applies.
+- Do not invent answers the user contradicted; contradictions override **rec-default**.
 
 ## Docs (if applicable)
 

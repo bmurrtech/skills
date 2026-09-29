@@ -7,6 +7,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.2.0] - 2026-09-28
+
+### Added
+
+- **Git lifecycle** skills: **`commit`**, **`merge`**, **`release`** — local-first commits / gate-aware PR merge / build-before-tag releases; catalog group in `skills.sh.json`, README, and [docs/how-to-bmurrtech-skills.md](docs/how-to-bmurrtech-skills.md#git-lifecycle).
+- **`grill-me`**: **rec-default** — affirmative or silent answers accept unanswered ➡️ recommendations.
+
+### Changed
+
+- ROADMAP “Release skill” → **Done** (absorbed into **`release`** / suite).
+- **`commit`**: branch-before-commit for review publish; how-to Intent matrix points at skill SoT.
+- README: update-via `npx skills@latest add bmurrtech/skills --all`; leaner Features; docx section above Roadmap.
+
 ## [0.1.1-rc1] - 2026-09-27
 
 Scanner-posture harden + docx operator-install path.
