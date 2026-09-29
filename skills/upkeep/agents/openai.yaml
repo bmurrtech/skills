@@ -1,5 +1,5 @@
 interface:
   display_name: "Upkeep"
-  short_description: "Maintain AGENTS.md, CLAUDE.md, CHANGELOG"
+  short_description: "AGENTS, CLAUDE pointer, CHANGELOG (incl. release-cut)"
 policy:
   allow_implicit_invocation: true

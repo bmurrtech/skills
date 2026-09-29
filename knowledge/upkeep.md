@@ -13,23 +13,25 @@ tags: [agents, upkeep, changelog]
 
 - [`AGENTS.md`](../AGENTS.md) — structure, commands, boundaries, verification
 - [`CLAUDE.md`](../CLAUDE.md) — body must be exactly `AGENTS.md` (create if missing)
-- [`CHANGELOG.md`](../CHANGELOG.md) — Keep a Changelog; ensure file exists; keep `## [Unreleased]` current after implement/code-review
+- [`CHANGELOG.md`](../CHANGELOG.md) — Keep a Changelog; ensure file exists; keep `## [Unreleased]` current after implement/code-review; **release-cut** promotes Unreleased → dated when `release_intent` + confirmed version
 
 ## Does not own
 
 - [`CONTEXT.md`](../CONTEXT.md) or [`knowledge/`](index.md) — those belong to **context**
-- Version bumps / moving Unreleased into a dated release — only when the user is cutting a release
+- Inventing a SemVer bump without release context — consume authorized version only
 
 ## When
 
-Run after [`implement`](../skills/implement/SKILL.md) and [`code-review`](../skills/code-review/SKILL.md), and whenever repo layout, checks, workflows, or boundaries change.
+Run after [`implement`](../skills/implement/SKILL.md) and [`code-review`](../skills/code-review/SKILL.md), when **`commit`** orchestrates maintenance, and whenever repo layout, checks, workflows, or boundaries change.
 
 ## Changelog rules
 
-1. Missing `CHANGELOG.md` → create stub with Unreleased.
-2. After implement/review → add missing Unreleased bullets for notable session changes.
-3. Do not invent SemVer tags in the changelog unless releasing.
+See skill [references/release-cut.md](../skills/upkeep/references/release-cut.md)
+and [commit maintenance](../skills/commit/references/maintenance.md). Summary:
+ordinary = Unreleased honesty; release-cut = promote only with authorized
+version; missing CHANGELOG under `release_intent` hard-stops unless waived.
 
 ## Related
 
 - Skill: [`skills/upkeep`](../skills/upkeep/SKILL.md)
+- Glossary: [Release context](../CONTEXT.md), [Version gate](../CONTEXT.md)

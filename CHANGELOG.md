@@ -7,6 +7,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.2.1-rc1] - 2026-09-29
+
+### Added
+
+- **`release`**: **version gate** + **publication gate**; structured **release context** into **`commit`** / **`upkeep`** (refs under `skills/release/references/`).
+- **`commit`**: maintenance orchestration — always **`upkeep`** when applicable; conditional **`roadmap` status** on ledger impact / release context ([`references/maintenance.md`](skills/commit/references/maintenance.md)).
+- **`upkeep`**: **release-cut** mode — Unreleased → dated section when `release_intent` + confirmed version.
+- **`roadmap`**: **status** action (Done / Advanced / Superseded + optional shipped-in-version); [`references/status.md`](skills/roadmap/references/status.md).
+- **`merge`**: hard-stop when required maintenance is missing on the reviewed head; route back through **`commit`** (no merge-time mutation).
+
+### Changed
+
+- CHANGELOG SoC: `release` no longer promotes Unreleased → dated; **`upkeep`** owns all CHANGELOG mutation.
+- How-to / README / `skills.sh.json` **Git lifecycle** callouts for gates + maintenance.
+- Glossary: **Git lifecycle**, **Version gate** / **publication gate**, **Release context** (CONTEXT.md).
+
 ## [0.2.0] - 2026-09-28
 
 ### Added

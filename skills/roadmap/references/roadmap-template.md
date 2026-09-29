@@ -16,6 +16,8 @@ It is intentionally **unordered and undated**. Inclusion means an idea is worth 
 
 ## <Idea title>
 
+**Status:** `<omit while open | Done | Advanced | Superseded — optional shipped-in-version>`
+
 **Domain:** `<area / subsystem / skill / integration>`
 
 **Intent**  

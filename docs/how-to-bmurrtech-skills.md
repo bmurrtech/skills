@@ -270,9 +270,9 @@ Safe Git/GitHub publish → integrate → cut. Defaults favor local durability a
 
 | Skill | Role |
 |-------|------|
-| **`commit`** | Local-first commit; on push intent → short branch + PR; on “push to main” → canonical push when allowed. |
-| **`merge`** | Choose PR; hard-stop on GitHub-enforced gates; surface advisory findings; expected-head merge/queue; safe cleanup. |
-| **`release`** | Discover contract (existing > ecosystem defaults); build before annotated `v*` tag; bootstrap thin workflow only when earned (no tag same run). |
+| **`commit`** | Local-first commit; orchestrates **`upkeep`** (+ **`roadmap` status** on ledger impact); on push intent → short branch + PR; on “push to main” → canonical push when allowed. Canonical push never skips maintenance. |
+| **`merge`** | Choose PR; hard-stop on GitHub-enforced gates **or** missing maintenance on the reviewed head (route back to **`commit`**); surface advisory findings; expected-head merge/queue; safe cleanup. |
+| **`release`** | Discover contract (existing > ecosystem defaults); **version gate** → prep via **`commit`** (release context) → local validate → **publication gate** → annotated `v*` tag; bootstrap thin workflow only when earned (no tag same run). Does not mutate CHANGELOG. |
 
 **Defaults vs overrides (`commit`):** Intent→Mode matrix lives in
 [`skills/commit/SKILL.md`](../skills/commit/SKILL.md#intent) (SoT). Prompt
@@ -280,15 +280,22 @@ examples:
 
 | Prompt example | Behavior |
 |----------------|----------|
-| `Commit this` / `Checkpoint this` | Local commit only |
+| `Commit this` / `Checkpoint this` | Local commit only (still runs upkeep when applicable) |
 | `Commit and push` / `Raise a PR` / `Publish this` | Review branch + push + one PR |
-| `Push this directly to main` | Canonical push if allowed; else fall back to PR |
+| `Push this directly to main` | Canonical push if allowed; else fall back to PR — maintenance still runs |
+
+**Release gates (defaults):**
+
+| Prompt example | Behavior |
+|----------------|----------|
+| `Release` (no version) | Version gate recommends; user authorizes version **and** channel; then prep |
+| `Release 0.2.1-rc1` | Version + prerelease channel already stated — skip re-ask; still run publication gate before tag push |
+| Affirmative after validate | Publication gate: yes/proceed/LGTM binds exact tag + SHA |
 
 More examples:
 
-- `Merge PR #42` — resolve that PR; respect required checks/reviews; squash unless policy says otherwise
+- `Merge PR #42` — resolve that PR; respect required checks/reviews; hard-stop if maintenance missing → **`commit`** first
 - `Merge this` — only if one unambiguous PR; else ask
-- `Release 0.2.0` — CHANGELOG promote, local package/build, annotated `v0.2.0`, push that tag only
 - Dogfood here: `python3 scripts/package_skills.py` + existing `release.yml` (ADR 0005) — do not invent a second publication path
 
 ### Session hygiene / ideas
@@ -297,9 +304,9 @@ More examples:
 |-------|------|
 | **`handoff`** | Compact *active* work for a fresh agent. Default: OS temp. **keep** → `.scratch/handoffs/`. |
 | **`idea`** | Preserve-first brain dump under `.scratch/ideas/`. No promote, no trackers, no implement. |
-| **`roadmap`** | Ensure/promote into public [ROADMAP.md](ROADMAP.md); GitHub/Fizzy publish only on separate explicit intent. Templates: `skills/roadmap/references/`. |
+| **`roadmap`** | Ensure/promote/status into public [ROADMAP.md](ROADMAP.md); GitHub/Fizzy publish only on separate explicit intent. Templates: `skills/roadmap/references/`. |
 | **`wait-what`** | STE re-pitch when an explanation did not land. |
-| **`upkeep`** | `AGENTS.md`, `CLAUDE.md` pointer, `CHANGELOG.md` Unreleased. |
+| **`upkeep`** | `AGENTS.md`, `CLAUDE.md` pointer, `CHANGELOG.md` Unreleased; **release-cut** promotes Unreleased → dated when `release_intent` + confirmed version. |
 | **`context`** | `CONTEXT.md` + `knowledge/` OKF — no ops-manual edits. |
 
 Future orchestration (`ultrawork` / `ralph` OMX integration): [ROADMAP.md](ROADMAP.md) — not minted yet.

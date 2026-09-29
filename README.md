@@ -117,9 +117,9 @@ Tree and whys: **[docs/skill-scaffold.md](docs/skill-scaffold.md)** · [knowledg
 
 | Skill | What it does | Example prompt |
 |-------|----------------|----------------|
-| [`commit`](skills/commit/) | Local-first commit; push/PR only on intent | `Commit this` · `Commit and push this` · `Push this directly to main` |
-| [`merge`](skills/merge/) | Integrate a chosen PR under GitHub gates | `Merge PR #42` |
-| [`release`](skills/release/) | Build-before-tag; push one `v*` tag | `Release 0.2.0` |
+| [`commit`](skills/commit/) | Local-first commit + maintenance (`upkeep` / roadmap status); push/PR only on intent | `Commit this` · `Commit and push this` · `Push this directly to main` |
+| [`merge`](skills/merge/) | Integrate a chosen PR under GitHub gates; hard-stop if maintenance missing | `Merge PR #42` |
+| [`release`](skills/release/) | Version + publication gates; build-before-tag; one `v*` tag | `Release` · `Release 0.2.1-rc1` |
 
 Defaults and overrides: **[how-to](docs/how-to-bmurrtech-skills.md#git-lifecycle)**.
 
@@ -131,7 +131,7 @@ Defaults and overrides: **[how-to](docs/how-to-bmurrtech-skills.md#git-lifecycle
 | [`idea`](skills/idea/) | Parks a brain dump under `.scratch/ideas/` without promoting it | `Capture this idea; don't work on it now` |
 | [`roadmap`](skills/roadmap/) | Moves durable ideas into [docs/ROADMAP.md](docs/ROADMAP.md) | `Promote that scratch idea onto the roadmap` |
 | [`wait-what`](skills/wait-what/) | Re-explains when the last message did not land | `Wait-what; re-pitch that last explanation` |
-| [`upkeep`](skills/upkeep/) | Keeps AGENTS, the CLAUDE pointer, and CHANGELOG Unreleased honest | `Run upkeep after that layout change` |
+| [`upkeep`](skills/upkeep/) | AGENTS, CLAUDE pointer, CHANGELOG Unreleased; release-cut promote on intent | `Run upkeep after that layout change` |
 | [`context`](skills/context/) | Maintains `CONTEXT.md` and the `knowledge/` OKF | `Update CONTEXT for the new billing terms` |
 
 ## Want AI to edit your `.docx` files?

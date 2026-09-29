@@ -1,21 +1,23 @@
 ---
 name: release
 description: >
-  Cut a versioned release: discover repo contract, build before tag, push one
-  annotated v* tag, verify GitHub Release. Use when the user asks to release,
-  cut a version, tag a release, or bootstrap missing release CI.
+  Cut a versioned release: discover repo contract, version gate, prep via
+  commit, build before tag, publication gate, push one annotated v* tag, verify
+  GitHub Release. Use when the user asks to release, cut a version, tag a
+  release, or bootstrap missing release CI.
 disable-model-invocation: true
 ---
 
 # release
 
 Prove the canonical version builds, then deliberately publish it. Owns version
-choice, CHANGELOG promotion for the cut, local validation, tagging, and
-verification — not routine commits/PRs (**`commit`**) or PR integration
-(**`merge`**, only when prep must enter via PR).
+and channel intent, **version gate**, **publication gate**, local validation,
+tagging, and verification — not routine commits/PRs (**`commit`**) or PR
+integration (**`merge`**, only when prep must enter via PR). Does **not** mutate
+CHANGELOG — that is **`upkeep`** (via **`commit`** with release context).
 
-Invariant: **build before tag**. Session Unreleased hygiene is **`upkeep`**;
-this skill only promotes Unreleased → dated version for the cut.
+Invariant: **build before tag**. Session Unreleased hygiene and Unreleased →
+dated promotion are **`upkeep`**; this skill authorizes the cut and tags.
 
 ## Workflow
 
@@ -39,19 +41,30 @@ Confidence gates and thin-workflow rules:
 
 **Done when:** scaffolded+handed to **`commit`**, or stopped with plan/gaps.
 
-### 3. Prepare version + CHANGELOG
+### 3. Version gate
 
-Determine version (`vMAJOR.MINOR.PATCH` or prerelease). Promote Unreleased →
-dated `## [X.Y.Z…]`; leave empty Unreleased. Compose notes from that section +
+Authorize version **and** channel before prep. Rules and recommendation:
+[references/version-gate.md](references/version-gate.md).
+
+Build structured **release context** after authorization — field schema in
+[references/version-gate.md](references/version-gate.md).
+
+**Done when:** version + channel authorized; release context ready.
+
+### 4. Prepare via commit
+
+Pass release context into **`commit`** (prep). `commit` orchestrates
+**`upkeep`** release-cut and conditional **`roadmap` status** — do not promote
+CHANGELOG here. Invoke **`merge`** only when policy requires PR into the
+release branch. Identify canonical release SHA after prep lands.
+
+Compose release notes from the dated CHANGELOG section (after upkeep) +
 [references/release-notes-template.md](references/release-notes-template.md).
 
-If prep creates source changes → invoke **`commit`** (and **`merge`** only when
-policy requires PR into the release branch). Identify canonical release SHA.
+**Done when:** release commit SHA known; CHANGELOG dated on that commit (or
+hard-stop / waive recorded).
 
-**Done when:** version + release commit SHA known; CHANGELOG promoted on that
-commit (or no CHANGELOG and noted).
-
-### 4. Validate locally
+### 5. Validate locally
 
 Run repo-required tests, then the release build command, then artifact checks
 where applicable ([references/local-build.md](references/local-build.md)).
@@ -61,16 +74,20 @@ On failure → **do not tag**. Fix via ordinary change flow; resume later.
 
 **Done when:** local validation passed for this SHA.
 
-### 5. Tag, push, verify
+### 6. Publication gate → tag → verify
 
-Confirm version, tag, SHA, branch, validation. Create **annotated** tag
-`v…`; push **only that tag** (never `git push --tags` as normal). Observe the
-release workflow; verify GitHub Release + expected artifacts.
+Confirm exact tag + SHA + validation per
+[references/publication-gate.md](references/publication-gate.md). Affirmative
+enough after version was authorized.
+
+Then create **annotated** tag `v…`; push **only that tag** (never
+`git push --tags` as normal). Observe the release workflow; verify GitHub
+Release + expected artifacts.
 
 Pushed tags are **immutable** — never move/delete/recreate; cut a new version.
 
-**Done when:** tag pushed; release verified (or workflow failure reported without
-retagging).
+**Done when:** publication authorized; tag pushed; release verified (or workflow
+failure reported without retagging).
 
 ## Boundaries
 
@@ -78,4 +95,8 @@ retagging).
 - Do not scaffold workflow and tag in the same first bootstrap operation.
 - Do not invent registry publish (npm/PyPI/crates/Docker).
 - Never force-move release tags; never embed secrets in workflows/scripts.
-- Do not reimplement **`upkeep`** session Unreleased editing outside the cut.
+- Do not silently choose version or channel.
+- Do not tag or push without publication-gate authorization.
+- Do not promote Unreleased → dated CHANGELOG here — name **`upkeep`** via
+  **`commit`**.
+- Do not duplicate **`commit`** / **`upkeep`** / **`roadmap`** bodies.

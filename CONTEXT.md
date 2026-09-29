@@ -100,8 +100,16 @@ Versioned install tarball of `skills/` + `LICENSE` only. Library `knowledge/` / 
 _Avoid_: shipping full-repo trees as the install artifact; overlaying library OKF onto consumer roots
 
 **Git lifecycle**:
-Composable skills **`commit`** / **`merge`** / **`release`** (catalog group in `skills.sh.json`, README, how-to): durable local change + optional review-branch/PR; integrate a chosen PR under GitHub-enforced gates; prove repo-native build contract then deliberate `v*` tag (existing contract > ecosystem defaults; this library dogfoods ADR 0005). Stages do not duplicate each other’s ops.
-_Avoid_: one mega-git skill; default push without intent; inventing merge gates beyond GitHub policy; naming **`code-review`** inside **`merge`**; tagging in the same run as first release-workflow bootstrap; alternate packaging when `package_skills.py` + tag workflow exist
+Composable skills **`commit`** / **`merge`** / **`release`** (catalog group in `skills.sh.json`, README, how-to): durable local change + optional review-branch/PR; integrate a chosen PR under GitHub-enforced gates; prove repo-native build contract then deliberate `v*` tag (existing contract > ecosystem defaults; this library dogfoods ADR 0005). **`commit`** orchestrates maintenance (**`upkeep`** always when applicable; **`roadmap`** status when ledger impact); **`release`** owns version/channel intent + gates, not file mutation; **`merge`** never mutates a reviewed head for missing maintenance.
+_Avoid_: one mega-git skill; default push without intent; inventing merge gates beyond GitHub policy; naming **`code-review`** inside **`merge`**; tagging in the same run as first release-workflow bootstrap; alternate packaging when `package_skills.py` + tag workflow exist; silent version/channel choice; skipping upkeep on release cuts
+
+**Version gate** / **publication gate**:
+Two deliberate `release` confirmations — authorize version+channel, then authorize exact tag@SHA after validate. Procedure: `skills/release/references/`.
+_Avoid_: one overloaded “OK to release?”; treating branch push as publication; silent version/channel choice
+
+**Release context**:
+Structured handoff from `release` → `commit`/`upkeep` after the version gate (`release_intent` marks a cut). Field schema: `skills/release/references/version-gate.md`. Soft-skip vs hard-stop: `skills/commit/references/maintenance.md`.
+_Avoid_: promoting Unreleased→dated outside `upkeep`; inventing version in `commit`
 
 ## Hard rules
 

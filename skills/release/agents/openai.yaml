@@ -1,5 +1,5 @@
 interface:
   display_name: "Release"
-  short_description: "Build-before-tag versioned GitHub Release"
+  short_description: "Gated build-before-tag GitHub Release"
 policy:
   allow_implicit_invocation: false

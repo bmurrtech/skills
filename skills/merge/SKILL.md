@@ -2,8 +2,9 @@
 name: merge
 description: >
   Safely integrate a chosen GitHub PR under repository-enforced gates with
-  expected-head guard and safe cleanup. Use when the user asks to merge a PR,
-  land a branch, or submit to the merge queue.
+  expected-head guard and safe cleanup; hard-stop if required maintenance is
+  missing on the reviewed head. Use when the user asks to merge a PR, land a
+  branch, or submit to the merge queue.
 disable-model-invocation: true
 ---
 
@@ -12,6 +13,7 @@ disable-model-invocation: true
 Integrate reviewed work the user actually intends. Owns PR selection, gate
 evaluation, merge/queue submission, and safe cleanup — not committing new
 product changes (use **`commit`**) and not cutting releases (use **`release`**).
+Never mutates a reviewed head to fix missing maintenance.
 
 ## Workflow
 
@@ -40,11 +42,17 @@ Hard-stop on any **GitHub-enforced** blocking state. Surface material
 **advisory** review findings (optional bots, unresolved non-required threads)
 before proceeding — report them; do not invent gates.
 
-If intended local changes still need committing → invoke **`commit`** first;
-then re-enter from step 1.
+**Maintenance check:** apply
+[references/maintenance-check.md](references/maintenance-check.md). On miss →
+**hard-stop**; route through **`commit`**. Do **not** edit the PR head; do
+**not** auto-invoke upkeep inside merge. After maintenance lands, re-enter from
+step 1.
+
+If intended *local* (uncommitted) product changes still need committing → invoke
+**`commit`** first; then re-enter from step 1.
 
 **Done when:** required gates green (or blockers reported and stopped); advisory
-findings listed.
+findings listed; maintenance OK or hard-stopped.
 
 ### 3. Merge or queue
 
@@ -72,5 +80,8 @@ destructive reset. Preserve unique local commits.
 
 - Do not run a second independent AI code review of the diff.
 - Do not invent merge gates from optional bot comments.
+- Do not mutate the reviewed head for missing maintenance — stop and route to
+  **`commit`**.
+- Do not auto-invoke **`upkeep`** / **`roadmap`** inside merge.
 - Never admin-bypass, `--force`, `reset --hard`, or `clean -fd` as routine.
 - Do not treat “merge” invocation alone as proof of success — verify GitHub state.

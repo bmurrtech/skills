@@ -1,5 +1,5 @@
 interface:
   display_name: "Commit"
-  short_description: "Local-first commit; branch+PR on push intent"
+  short_description: "Commit with maintenance; branch+PR on push intent"
 policy:
   allow_implicit_invocation: false

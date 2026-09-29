@@ -139,7 +139,7 @@ Research and later mint library-native skills that take the best of existing OMX
 
 ## Release skill (tag-triggered GitHub Releases)
 
-**Status:** Done — absorbed into **`release`** (with **`commit`** / **`merge`**); suite shipped in **0.2.0**.
+**Status:** Done — absorbed into **`release`** (with **`commit`** / **`merge`**); suite shipped in **0.2.0**; gates + maintenance orchestration in **0.2.1-rc1**.
 
 **Domain:** `skills / release / CI/CD`
 

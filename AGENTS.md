@@ -18,7 +18,7 @@
 - `docs/how-to-visual-explainer.md` — visual-explainer modes + prompts
 - `docs/skill-scaffold.md` — folders/files setup creates (whys → `knowledge/skill-scaffold.md`)
 - `docs/ROADMAP.md` — durable unordered idea ledger (**`roadmap`**; capture → **`idea`**)
-- `CHANGELOG.md` — Keep a Changelog (Unreleased maintained by **upkeep**)
+- `CHANGELOG.md` — Keep a Changelog (Unreleased + release-cut owned by **upkeep**)
 - `docs/prd/` — local PRDs (ignored)
 - `.scratch/` — untracked agent scratch pad (subdir roles → [CONTEXT.md](CONTEXT.md) **.scratch/**; ideas → `.scratch/ideas/`)
 - `docs/about-license.md` — license explainer
