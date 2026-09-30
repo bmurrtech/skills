@@ -7,6 +7,33 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+### Changed
+
+### Fixed
+
+## [0.2.2-rc2] - 2026-09-30
+
+Operator-facing ship: setup **Commit PRDs?** A/B (ADR 0013), grill post-frontier A/B/C routes, and tighter release CHANGELOG verify — plus version-gate **recommend-as-default**.
+
+### Added
+
+- **[ADR 0013](docs/adr/0013-ADR-prd-tracking-choice.md)** — setup **Commit PRDs?** A ignore (default) / B track; supersedes [0007](docs/adr/0007-ADR-scaffold-omit-about-prd.md)’s always-ignore constraint (still omits `about-prd.md` from scaffold).
+
+### Changed
+
+- **`setup-bmurrtech-skills`**: re-asks PRD A/B every run; writes `.gitignore` + `AGENTS.md` (+ `CONTEXT.md` when stub/edit ok) per [references/prd-tracking.md](skills/setup-bmurrtech-skills/references/prd-tracking.md).
+- **`to-prd`**, OKF (`knowledge/prd.md`), skill-scaffold, how-to, README, CONTEXT/AGENTS: dual policy (ignore or track).
+- **`grill-me`**: after frontier empty, prompt A/B/C next steps (recommend **A** `/to-prd`; **B** auto-`handoff` implement/`impl`; **C**/`Go` bare implement without `/implement`) — replaces separate “confirm shared understanding” beat; details in `references/next-steps.md`. Light cross-links in `to-prd`, `implement`, `handoff` `impl` kind, how-to, CONTEXT.
+- **`release` version gate**: channel-preserving primary **recommend** is ➡️ default when no override (LGTM / affirmatives / “go with recommended” authorize that pair); still never invent outside the table. Wired through `release` / `commit` maintenance, how-to, CONTEXT, README.
+
+### Fixed
+
+- **Review nits (PRD tracking / grill exit):** B-flip strips any contiguous `docs/prd` policy comment (not only “local PRDs”); **`upkeep`** + `knowledge/upkeep.md` bound “don’t heal B” (no re-add `/docs/prd/` ignore); drop leftover “local PRD” blurbs; disambiguate setup policy A/B vs grill next-step A/B/C in prompts; AGENTS Overview/Structure templates in `prd-tracking.md`.
+- **`release` / `commit` / `upkeep`**: under `release_intent`, require **`upkeep`** release-cut then **CHANGELOG verify** (dated `## [<version>]` present; Unreleased must not still hold ship bullets) before stage/commit/push/tag — hard-stop if cut skipped.
+- **README**: “Update installed skills” documents `npx skills list` / `ls` for installed status (no invented pack SemVer); points updates at `add --all` / `update`.
+
 ## [0.2.2-rc1] - 2026-09-30
 
 Operator-facing ship: clearer **handoff** cold-starts and an **implement** path that pauses for fresh review instead of owning Git.

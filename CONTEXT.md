@@ -23,7 +23,7 @@ The skill entry document: YAML frontmatter (`name`, `description`) plus Markdown
 Host UI metadata (`interface`) and `policy.allow_implicit_invocation` for a skill.
 
 **OKF bundle**:
-A directory of Markdown concept files with YAML frontmatter, linked for progressive disclosure. Root glossary is this file; concepts live under `knowledge/`. Local PRDs are OKF concepts under gitignored `docs/prd/`.
+A directory of Markdown concept files with YAML frontmatter, linked for progressive disclosure. Root glossary is this file; concepts live under `knowledge/`. PRDs are OKF concepts under `docs/prd/` (ignore or track via setup; this library ignores).
 
 **CONTEXT.md**:
 This glossary. Owned by the `context` skill. Not an ops manual.
@@ -67,7 +67,7 @@ OKF concept (`type: test-map`) under `knowledge/` naming a seam, the smallest ru
 _Avoid_: dumping the whole `tests/` tree into context each session
 
 **grill-me**:
-Design-tree interview in frontier rounds; updates glossary via `context`; warrants ADRs via `to-adr`.
+Design-tree interview in frontier rounds; after frontier empty, A/B/C route (**A** `to-prd` recommended, **B** `handoff`→implement, **C** bare `Go`); updates glossary via `context`; warrants ADRs via `to-adr`.
 
 **upkeep** / **context** (skills):
 Ops manual vs glossary/OKF ownership — never cross-edit.
@@ -85,7 +85,7 @@ Compact pretrained token the agent thinks with while running a document (*tight*
 _Avoid_: coining words with no prior; restating the same idea as a phrase in three places
 
 **setup-bmurrtech-skills**:
-Idempotent provision of gitignore (incl. `.scratch/`), `.scratch/` + `.scratch/diagrams/` + `.scratch/adr-optics/`, AGENTS/CLAUDE/CONTEXT, knowledge stub, docs/adr index, docs/prd ignore; optional **`docx`** (docx-cli + office host). Does not install skill folders into harnesses (that is `npx skills`) and does not copy library how-tos / explainers into the consumer. Does not pre-create `.scratch/handoffs/` — **`handoff`** creates it on **keep**. Tree: [docs/skill-scaffold.md](docs/skill-scaffold.md); why: [knowledge/skill-scaffold.md](knowledge/skill-scaffold.md).
+Idempotent provision of gitignore (incl. `.scratch/`), `.scratch/` + `.scratch/diagrams/` + `.scratch/adr-optics/`, AGENTS/CLAUDE/CONTEXT, knowledge stub, docs/adr index; **Commit PRDs?** A ignore (default) / B track ([ADR 0013](docs/adr/0013-ADR-prd-tracking-choice.md)); optional **`docx`**. Does not install skill folders into harnesses (that is `npx skills`) and does not copy library how-tos / explainers into the consumer. Does not pre-create `.scratch/handoffs/` — **`handoff`** creates it on **keep**. Tree: [docs/skill-scaffold.md](docs/skill-scaffold.md); why: [knowledge/skill-scaffold.md](knowledge/skill-scaffold.md).
 
 **visual-explainer**:
 Lean Agent Skill that turns architectures, diffs, plans, tables, and related intent into self-contained HTML under `.scratch/diagrams/`. Single entry with intent routing to modes (diagram, visual-plan, slides, diff-review, plan-review, project-recap, fact-check); modes also callable manually. Optional AI-readable Markdown companion (same basename) only when requested; ask before replace. Inspired by [nicobailon/visual-explainer](https://github.com/nicobailon/visual-explainer) (MIT); no Pi/MCP/PPTX bundle in this remake.
@@ -108,22 +108,22 @@ Versioned install tarball of `skills/` + `LICENSE` only. Library `knowledge/` / 
 _Avoid_: shipping full-repo trees as the install artifact; overlaying library OKF onto consumer roots
 
 **Git lifecycle**:
-Composable skills **`commit`** / **`merge`** / **`release`** (catalog group in `skills.sh.json`, README, how-to): durable local change + optional review-branch/PR; integrate a chosen PR under GitHub-enforced gates; prove repo-native build contract then deliberate `v*` tag (existing contract > ecosystem defaults; this library dogfoods ADR 0005). **`commit`** orchestrates maintenance (**`upkeep`** always when applicable; **`roadmap`** status when ledger impact); **`release`** owns version/channel intent + gates, not file mutation; **`merge`** never mutates a reviewed head for missing maintenance.
-_Avoid_: one mega-git skill; default push without intent; inventing merge gates beyond GitHub policy; naming **`code-review`** inside **`merge`**; tagging in the same run as first release-workflow bootstrap; alternate packaging when `package_skills.py` + tag workflow exist; silent version/channel choice; skipping upkeep on release cuts
+Composable skills **`commit`** / **`merge`** / **`release`** (catalog group in `skills.sh.json`, README, how-to): durable local change + optional review-branch/PR; integrate a chosen PR under GitHub-enforced gates; prove repo-native build contract then deliberate `v*` tag (existing contract > ecosystem defaults; this library dogfoods ADR 0005). **`commit`** orchestrates maintenance (**`upkeep`** always when applicable; **`roadmap`** status when ledger impact); under `release_intent`, **`commit`** / **`release`** require **`upkeep`** release-cut then **CHANGELOG verify** before stage/commit/push/tag; **`release`** owns version/channel intent + gates, not file mutation; **`merge`** never mutates a reviewed head for missing maintenance.
+_Avoid_: one mega-git skill; default push without intent; inventing merge gates beyond GitHub policy; naming **`code-review`** inside **`merge`**; tagging in the same run as first release-workflow bootstrap; alternate packaging when `package_skills.py` + tag workflow exist; inventing version outside the gate table; skipping upkeep or CHANGELOG verify on release cuts
 
 **Version gate** / **publication gate**:
-Two deliberate `release` confirmations — authorize version+channel, then authorize exact tag@SHA after validate. Procedure: `skills/release/references/`.
-_Avoid_: one overloaded “OK to release?”; treating branch push as publication; silent version/channel choice
+Two deliberate `release` confirmations — authorize version+channel (channel-preserving **recommend** is the default when no override), then authorize exact tag@SHA after validate. Procedure: `skills/release/references/`.
+_Avoid_: one overloaded “OK to release?”; treating branch push as publication; inventing versions outside the recommend table; skipping the gate when nothing was stated
 
 **Release context**:
-Structured handoff from `release` → `commit`/`upkeep` after the version gate (`release_intent` marks a cut). Field schema: `skills/release/references/version-gate.md`. Soft-skip vs hard-stop: `skills/commit/references/maintenance.md`.
-_Avoid_: promoting Unreleased→dated outside `upkeep`; inventing version in `commit`
+Structured handoff from `release` → `commit`/`upkeep` after the version gate (`release_intent` marks a cut). Field schema: `skills/release/references/version-gate.md`. Soft-skip vs hard-stop + **CHANGELOG verify**: `skills/commit/references/maintenance.md`.
+_Avoid_: promoting Unreleased→dated outside `upkeep`; inventing version in `commit`; treating soft “dated somehow” as enough without verify evidence
 
 ## Hard rules
 
 1. **Tracked/published skills live only in `skills/`.** Library-local skills may sit under ignored `.agents/skills/` (host-readable; not product; not OKF; not release).
 2. **No glossary/ops duplication.**
-3. **`docs/prd/` is local-only** (gitignored); ADRs stay tracked.
+3. **`docs/prd/` policy** — setup A/B ([ADR 0013](docs/adr/0013-ADR-prd-tracking-choice.md)); this library **A**. Ops bullets in `AGENTS.md`. ADRs stay tracked.
 4. **Release artifacts exclude library OKF/ops/docs** — filter at package time; keep `knowledge/` tracked.
 
 Post-`implement`/`code-review` housekeeping lives in [`AGENTS.md`](AGENTS.md) Boundaries — not restated here.

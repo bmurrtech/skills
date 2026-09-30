@@ -13,6 +13,20 @@ Read when **release context** is present (`release_intent: true` + confirmed
 Consume authorized `version` only — do not invent or alter it. Schema:
 [`../../release/references/version-gate.md`](../../release/references/version-gate.md).
 
+## Release-cut Done-when (evidence)
+
+After promoting, **`CHANGELOG.md` must show**:
+
+1. A dated heading `## [<authorized-version>]` (Keep a Changelog date OK) whose
+   body holds the bullets just shipped — not still under Unreleased.
+2. `## [Unreleased]` still present above dated releases; may be empty or a stub
+   (section headers only). It must **not** retain the bullets for this cut.
+
+If either fails → cut is incomplete; do not report success. Callers
+(**`commit`** / **`release`**) hard-stop before stage/commit/push/tag — see
+[`../../commit/references/maintenance.md`](../../commit/references/maintenance.md)
+**CHANGELOG verify**.
+
 ## Missing CHANGELOG
 
 | Condition | Behavior |

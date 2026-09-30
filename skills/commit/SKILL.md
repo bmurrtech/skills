@@ -41,7 +41,9 @@ canonical base (usually `main`/`master`). If secrets/credentials/`.env` appear
 in the intended diff, or the stage set is ambiguous / mixes unrelated work →
 **stop**; preserve state; report. Do not commit.
 
-Note release context if passed (`release_intent`, version, channel, tag).
+Note release context if passed (`release_intent`, version, channel, tag). Under
+`release_intent`, version/channel come from the **`release`** version gate
+(authorized recommend default or explicit override) — never invent here.
 
 **Done when:** intended paths are clear and safe, or stopped with reason.
 
@@ -52,11 +54,15 @@ After inspect, **before** branch/stage: run maintenance per
 
 - Always invoke **`upkeep`** when applicable (soft-skip vs `release_intent`
   hard-stop rules in that reference).
+- When `release_intent: true` + authorized `version`: require **`upkeep`**
+  release-cut, then **CHANGELOG verify** (dated `## [<version>]` present;
+  Unreleased must not still hold ship bullets). Hard-stop before stage if
+  verify fails.
 - Invoke **`roadmap` status** only on ledger impact or release context.
 - Re-diff after maintenance edits.
 
-**Done when:** upkeep/roadmap ran or soft-/hard-stopped per policy; full diff
-reviewed.
+**Done when:** upkeep/roadmap ran or soft-/hard-stopped per policy; under
+`release_intent`, CHANGELOG verify passed (or waive); full diff reviewed.
 
 ### 3. Branch (review publish only)
 

@@ -6,7 +6,7 @@ Built around [Open Knowledge Format (OKF)](https://cloud.google.com/blog/product
 
 - Progressive disclosure = token efficiency: agents load only the concepts they need, not the entire wiki, delivering the benefits of RAG without window bloat or text embedding pipelines
 - Shared language and knowledge live in the repo (`CONTEXT.md` + `knowledge/`), never trapped in transient chat history
-- Unified OKF shape for glossary, local PRDs, and test maps means skills compose cleanly without custom glue
+- Unified OKF shape for glossary, PRDs (ignore or track), and test maps means skills compose cleanly without custom glue
 
 [![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](LICENSE)
 [![GitHub stars](https://img.shields.io/github/stars/bmurrtech/skills?style=social)](https://github.com/bmurrtech/skills)
@@ -37,7 +37,7 @@ After a new release of this pack, refresh from **`bmurrtech/skills`**:
 npx skills@latest add bmurrtech/skills --all
 ```
 
-That reinstalls every skill in this repo (not every skill on your machine). Scope with `-g` (global) or omit for project. Named skills only: `npx skills@latest update grill-me to-prd` (`-p` / `-g` / `-y` still apply to `update`).
+That reinstalls every skill in this repo (not every skill on your machine). Scope with `-g` (global) or omit for project. Named skills only: `npx skills@latest update grill-me to-prd` (`-p` / `-g` / `-y` still apply to `update`). To refresh already-installed skills without re-picking the package: `npx skills@latest update` (same `-p` / `-g` / `-y`).
 
 ## How to use
 
@@ -80,10 +80,10 @@ Flows, branches, and every skill: **[docs/how-to-bmurrtech-skills.md](docs/how-t
 └── docs/
     ├── adr/
     │   └── index.md        # empty ADR catalog (tracked decisions home)
-    └── prd/                # usually not created as files yet; path ignored
+    └── prd/                # to-prd home; ignore (A default) or track (B)
 ```
 
-Tree and whys: **[docs/skill-scaffold.md](docs/skill-scaffold.md)** · [knowledge/skill-scaffold.md](knowledge/skill-scaffold.md). Also: [docs/how-to-visual-explainer.md](docs/how-to-visual-explainer.md) · [docs/how-to-adr.md](docs/how-to-adr.md) · [docs/ROADMAP.md](docs/ROADMAP.md).
+Tree and whys: **[docs/skill-scaffold.md](docs/skill-scaffold.md)** · [knowledge/skill-scaffold.md](knowledge/skill-scaffold.md). Also: [docs/how-to-visual-explainer.md](docs/how-to-visual-explainer.md) · [docs/how-to-adr.md](docs/how-to-adr.md) · [docs/ROADMAP.md](docs/ROADMAP.md). Setup asks **Commit PRDs?** ([ADR 0013](docs/adr/0013-ADR-prd-tracking-choice.md)).
 
 ## Features
 
@@ -91,15 +91,15 @@ Tree and whys: **[docs/skill-scaffold.md](docs/skill-scaffold.md)** · [knowledg
 
 | Skill | What it does | Example prompt |
 |-------|----------------|----------------|
-| [`setup-bmurrtech-skills`](skills/setup-bmurrtech-skills/) | Drops AGENTS, CONTEXT, `.scratch/`, and an ADR home into your repo | `Run setup-bmurrtech-skills on this repo` |
+| [`setup-bmurrtech-skills`](skills/setup-bmurrtech-skills/) | Scaffold AGENTS/CONTEXT/`.scratch`/ADR home; **Commit PRDs?** A/B | `Run setup-bmurrtech-skills on this repo` |
 | [`docx`](skills/docx/) | Edit Word `.docx` via pinned docx-cli (operator-installed) | `Fill this contract template with the docx skill` |
 
 ### Shape and record
 
 | Skill | What it does | Example prompt |
 |-------|----------------|----------------|
-| [`grill-me`](skills/grill-me/) | Interviews you until the design tree is resolved | `Grill me on this auth redesign before we code` |
-| [`to-prd`](skills/to-prd/) | Writes a local sprint PRD under `docs/prd/` | `Turn that grill into a PRD for the MVP` |
+| [`grill-me`](skills/grill-me/) | Interviews until the design tree is resolved; then A/B/C (PRD / handoff→implement / Go) | `Grill me on this auth redesign before we code` |
+| [`to-prd`](skills/to-prd/) | Writes a sprint PRD under `docs/prd/` (ignore or track per setup) | `Turn that grill into a PRD for the MVP` |
 | [`to-adr`](skills/to-adr/) | Records a tracked ADR under `docs/adr/` | `Write an ADR for picking Postgres over SQLite` |
 | [`ascii`](skills/ascii/) | Draws structure as plain text in the terminal | `ASCII the request path through the API gateway` |
 | [`visual-explainer`](skills/visual-explainer/) | Builds HTML diagrams under `.scratch/diagrams/` | `Visual explainer for this architecture diff` |
@@ -119,7 +119,7 @@ Tree and whys: **[docs/skill-scaffold.md](docs/skill-scaffold.md)** · [knowledg
 |-------|----------------|----------------|
 | [`commit`](skills/commit/) | Local-first commit + maintenance (`upkeep` / roadmap status); push/PR only on intent | `Commit this` · `Commit and push this` · `Push this directly to main` |
 | [`merge`](skills/merge/) | Integrate a chosen PR under GitHub gates; hard-stop if maintenance missing | `Merge PR #42` |
-| [`release`](skills/release/) | Version + publication gates; build-before-tag; one `v*` tag | `Release` · `Release 0.2.1-rc1` |
+| [`release`](skills/release/) | Version + publication gates; channel-preserving recommend as default; build-before-tag; one `v*` tag | `Release` · `Release 0.2.1-rc1` |
 
 Defaults and overrides: **[how-to](docs/how-to-bmurrtech-skills.md#git-lifecycle)**.
 

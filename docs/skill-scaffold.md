@@ -27,27 +27,28 @@ missing pieces; asks before replacing non-empty files.
 └── docs/
     ├── adr/
     │   └── index.md        # empty ADR catalog (tracked decisions home)
-    └── prd/                # usually not created as files yet; path ignored
+    └── prd/                # to-prd home; ignore (A) or track (B) per setup
 ```
 
 Skill folders land wherever your agent host installs them (often
 `.agents/skills/` or similar) via **`npx skills`**, not via this setup skill.
-Optional docx toolchain if you opt in during setup.
+Optional docx toolchain if you opt in during setup. PRD track vs ignore:
+setup **Commit PRDs?** ([ADR 0013](adr/0013-ADR-prd-tracking-choice.md)).
 
 ## Artifacts (what)
 
 | Path | What setup does |
 |------|-----------------|
-| `.gitignore` | Appends missing ignore lines for `/pm/`, agent dirs, `/docs/prd/`, `.scratch/`, etc. Prefers append over rewrite. |
+| `.gitignore` | Appends missing ignore lines for `/pm/`, agent dirs, `.scratch/`, etc. **`/docs/prd/`** only when PRD choice is **A** (default). Prefers append over rewrite. |
 | `.scratch/` | Creates on disk (ignored). Exploratory dumps. Default handoffs stay in OS temp; **keep** → `.scratch/handoffs/` (created on demand by **`handoff`**). Ideas → `.scratch/ideas/` (created on demand by **`idea`**). |
 | `.scratch/diagrams/` | Creates on disk. **visual-explainer** HTML (+ optional `.md` companions). |
 | `.scratch/adr-optics/` | Creates on disk. **`to-adr`** at-a-glance catalog (`adr-at-a-glance.html`). |
-| `AGENTS.md` | Lean ops manual stub (commands, boundaries, Test index stub). |
+| `AGENTS.md` | Lean ops manual stub (commands, boundaries, Test index stub). PRD bullets match setup A/B. |
 | `CLAUDE.md` | Body exactly `AGENTS.md` (optional trailing newline). |
-| `CONTEXT.md` | Root glossary stub (OKF). |
+| `CONTEXT.md` | Root glossary stub (OKF). PRD locality matches A/B when stub/edit applies. |
 | `knowledge/index.md` | Minimal OKF catalog pointing at `CONTEXT.md`. |
 | `docs/adr/index.md` | Empty tracked ADR catalog table. |
-| `docs/prd/` | Ensures **ignore** only; PRD files authored later with **`to-prd`**. |
+| `docs/prd/` | Policy via setup **Commit PRDs?** — **A** ignore (default) / **B** track ([ADR 0013](adr/0013-ADR-prd-tracking-choice.md)). Files authored later with **`to-prd`**. |
 | Optional docx | If you opt in: ensure **`docx`** skill path / toolchain. Default **no**. |
 
 ## Tracked vs local (after scaffold)
@@ -55,9 +56,13 @@ Optional docx toolchain if you opt in during setup.
 | Commit to the remote | Keep local (ignored) |
 |----------------------|----------------------|
 | `AGENTS.md`, `CLAUDE.md` | `.scratch/` |
-| `CONTEXT.md`, `knowledge/**` (your glossary) | `docs/prd/**` |
-| `docs/adr/**` | `pm/`, `.agents/`, `.claude/`, `.cursor/` |
-| Project source as usual | `.env`, secrets |
+| `CONTEXT.md`, `knowledge/**` (your glossary) | `pm/`, `.agents/`, `.claude/`, `.cursor/` |
+| `docs/adr/**` | `.env`, secrets |
+| Project source as usual | |
+| `docs/prd/**` when setup **B** | `docs/prd/**` when setup **A** (default) |
+
+`docs/prd/` is never both: setup chooses **A** or **B** ([ADR 0013](adr/0013-ADR-prd-tracking-choice.md)).
+
 
 ## Related
 

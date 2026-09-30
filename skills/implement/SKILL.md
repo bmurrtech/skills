@@ -28,6 +28,9 @@ Locate the acceptance target, in order:
 
 If scope is still a design tree with open frontier, **suggest** **`grill-me`**
 (or **`to-prd`** when they want a written PRD) — do not hard-gate every ticket.
+Post-grill routes that land here: **`grill-me` B** → **`handoff`** (`impl`);
+**C**/`Go` is bare implement *without* this skill — do not treat that as an
+**`implement`** invoke.
 
 If design cracks mid-build, **soft-suggest** a **new-session** **`grill-me`** or
 **`handoff`** (operator brings prior context manually). Do **not** auto-run

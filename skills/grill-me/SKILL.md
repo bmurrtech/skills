@@ -2,14 +2,15 @@
 name: grill-me
 description: >
   Relentless design-tree interview until shared understanding; when glossary/OKF
-  skills and files exist, update them on the fly and offer to-adr when warranted.
+  skills and files exist, update them on the fly and offer to-adr when warranted;
+  after the frontier empties, route A/B/C (to-prd / handoff→implement / bare Go).
   Use when stress-testing a plan, grilling a design, or before implementing ambiguous work.
 disable-model-invocation: true
 ---
 
 # grill-me
 
-Interview until the design tree is empty. Map decisions as a tree; work **frontier rounds** only. On settled terms and warranted decisions, update docs via **`context`** / **`to-adr`** **when those skills are available and the target files exist**. Do not implement until the user confirms shared understanding.
+Interview until the design tree is empty. Map decisions as a tree; work **frontier rounds** only. On settled terms and warranted decisions, update docs via **`context`** / **`to-adr`** **when those skills are available and the target files exist**. Do not implement until the user picks a post-grill route (A/B/C).
 
 ## Design tree
 
@@ -25,7 +26,7 @@ Every decision branches into the decisions that hang off it. The **frontier** is
 
 Finding **facts** is your job (filesystem, tools, sub-agents) — never the user's. A running exploration is an unsettled prerequisite: ask the rest of the frontier now; only downstream questions wait. **Decisions** are the user's — put each to them and wait.
 
-**Done when:** frontier empty; nothing silently assumed. Then stop and await explicit confirmation before acting.
+**Done when:** frontier empty; nothing silently assumed. Then present the **next-steps** A/B/C prompt (not a separate confirm beat).
 
 ## Question format
 
@@ -54,8 +55,8 @@ If **`context`** is installed and `CONTEXT.md` / `knowledge/` exist (or the user
 
 When a settled choice passes the ADR warrant (costly to reverse · real alternatives · future “why?”) and **`to-adr`** is available: ask once to create via **`to-adr`**. Yes → follow `to-adr` then cite. No → continue; optional todo. If authoring would muddy the grill thread, suggest **`handoff`** first.
 
-Do **not** auto-author PRDs; that is **`to-prd`** after the grill when the user asks.
+Do **not** auto-author PRDs during rounds — that is post-grill **A** (`to-prd`).
 
 ## Completion bar
 
-Shared understanding confirmed by the user; glossary/OKF updated when applicable; warranted ADRs created or explicitly deferred.
+Frontier empty → prompt A/B/C per [references/next-steps.md](references/next-steps.md). Choosing a route affirms shared understanding. Recommend **A**. Glossary/OKF updated when applicable; warranted ADRs created or explicitly deferred.

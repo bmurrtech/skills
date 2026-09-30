@@ -1,9 +1,9 @@
 ---
 name: to-prd
 description: >
-  Author local OKF-shaped PRDs under docs/prd/ (gitignored): MVP journey, FRs,
-  DoD, bug appendix; cite docs/adr via to-adr; diagrams via ascii. Use when turning
-  a grilled idea into a product requirement doc or editing an existing PRD.
+  Author OKF-shaped PRDs under docs/prd/ (ignore or track per setup): MVP journey,
+  FRs, DoD, bug appendix; cite docs/adr via to-adr; diagrams via ascii. Use when
+  turning a grilled idea into a product requirement doc or editing an existing PRD.
 disable-model-invocation: true
 ---
 
@@ -11,14 +11,16 @@ disable-model-invocation: true
 
 Author **PRDs** — MVP scope, one critical journey, behavioral FRs, DoD, living bug appendix. Durable “why” lives in **ADRs** via **`to-adr`**, not here.
 
+Common entry: **`grill-me`** post-grill **A** (recommended default) auto-runs this skill from settled decisions.
+
 ## Homes
 
-- PRD home: `docs/prd/` (local-only; gitignored). Rationale: library [how-to-bmurrtech-skills — Local PRDs](https://github.com/bmurrtech/skills/blob/main/docs/how-to-bmurrtech-skills.md#local-prds-docsprd) / [knowledge/prd.md](https://github.com/bmurrtech/skills/blob/main/knowledge/prd.md) — not required in the consumer tree.
+- PRD home: `docs/prd/` — **ignore or track** is a **`setup-bmurrtech-skills`** choice (default ignore; [ADR 0013](https://github.com/bmurrtech/skills/blob/main/docs/adr/0013-ADR-prd-tracking-choice.md)). Rationale: library [how-to-bmurrtech-skills — PRDs](https://github.com/bmurrtech/skills/blob/main/docs/how-to-bmurrtech-skills.md#prds-docsprd) / [knowledge/prd.md](https://github.com/bmurrtech/skills/blob/main/knowledge/prd.md) — not required in the consumer tree.
 - Filename: `NNNN-PRD-<slug>.md` (no project-key prefix)
-- Catalog: `docs/prd/index.md` (local)
+- Catalog: `docs/prd/index.md` (same track/ignore policy as the directory)
 - ADR home: `docs/adr/` (tracked)
 
-Missing ignore/scaffold → run **`setup-bmurrtech-skills`**.
+Missing scaffold / unclear PRD policy → run **`setup-bmurrtech-skills`** (re-asks Commit PRDs?).
 
 ## Action
 

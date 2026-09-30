@@ -2,7 +2,7 @@
 
 ## Project overview
 
-`bmurrtech/skills` is a library of Agent Skills for agentic coding. Create skills only under `skills/`. Glossary/OKF: `CONTEXT.md` + `knowledge/`. ADRs: `docs/adr/`. Local PRDs: gitignored `docs/prd/` (see [how-to-bmurrtech-skills](docs/how-to-bmurrtech-skills.md#local-prds-docsprd); why → [knowledge/prd.md](knowledge/prd.md)).
+`bmurrtech/skills` is a library of Agent Skills for agentic coding. Create skills only under `skills/`. Glossary/OKF: `CONTEXT.md` + `knowledge/`. ADRs: `docs/adr/`. This library: gitignored `docs/prd/` (setup **A**). Consumers: setup **Commit PRDs?** A ignore / B track — [how-to PRDs](docs/how-to-bmurrtech-skills.md#prds-docsprd); why → [knowledge/prd.md](knowledge/prd.md); [ADR 0013](docs/adr/0013-ADR-prd-tracking-choice.md).
 
 ## Project structure
 
@@ -13,13 +13,13 @@
 - `.github/workflows/ci.yml` — unittest (package/docx/adr/roadmap) + all-skills validate + package smoke
 - `.github/workflows/release.yml` — on `v*` tags: same unittests + package + GitHub Release assets
 - `docs/adr/` — tracked ADRs
-- `docs/how-to-bmurrtech-skills.md` — consumer how-to (flows + branches + local PRDs); README links here
+- `docs/how-to-bmurrtech-skills.md` — consumer how-to (flows + branches + PRDs A/B); README links here
 - `docs/how-to-adr.md` — ADR authoring + at-a-glance prompts
 - `docs/how-to-visual-explainer.md` — visual-explainer modes + prompts
 - `docs/skill-scaffold.md` — folders/files setup creates (whys → `knowledge/skill-scaffold.md`)
 - `docs/ROADMAP.md` — durable unordered idea ledger (**`roadmap`**; capture → **`idea`**)
 - `CHANGELOG.md` — Keep a Changelog (Unreleased + release-cut owned by **upkeep**)
-- `docs/prd/` — local PRDs (ignored)
+- `docs/prd/` — PRDs (ignored here; setup **A**; consumers may choose **B** track)
 - `.scratch/` — untracked agent scratch pad (subdir roles → [CONTEXT.md](CONTEXT.md) **.scratch/**; ideas → `.scratch/ideas/`)
 - `docs/about-license.md` — license explainer
 - `AGENTS.md` / `CLAUDE.md` — ops manual + pointer
@@ -89,7 +89,8 @@ One-liners → `knowledge/` test-maps for session-scoped runs (see **`tdd`**).
 - [CONTEXT.md](CONTEXT.md)
 - [knowledge/index.md](knowledge/index.md)
 - [docs/adr/index.md](docs/adr/index.md)
-- [docs/about-prd.md](docs/about-prd.md) — thin pointer (ADR 0007); PRD how-to in how-to-bmurrtech-skills
+- [docs/about-prd.md](docs/about-prd.md) — thin pointer (ADR 0013); PRD how-to in how-to-bmurrtech-skills
+- [docs/adr/0013-ADR-prd-tracking-choice.md](docs/adr/0013-ADR-prd-tracking-choice.md) — setup PRD track vs ignore
 - [docs/accepted-risk.md](docs/accepted-risk.md) — residual MEDIUM notes after skill hardening
 - [README.md](README.md)
 - [docs/how-to-bmurrtech-skills.md](docs/how-to-bmurrtech-skills.md)

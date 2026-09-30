@@ -1,5 +1,5 @@
 interface:
   display_name: "To PRD"
-  short_description: "Author local OKF PRDs under docs/prd"
+  short_description: "Author OKF PRDs under docs/prd (ignore or track)"
 policy:
   allow_implicit_invocation: false

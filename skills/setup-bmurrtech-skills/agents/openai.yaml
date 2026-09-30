@@ -1,5 +1,5 @@
 interface:
   display_name: "Setup bmurrtech Skills"
-  short_description: "Provision conventions incl. .scratch/"
+  short_description: "Scaffold + PRD track/ignore choice"
 policy:
   allow_implicit_invocation: false

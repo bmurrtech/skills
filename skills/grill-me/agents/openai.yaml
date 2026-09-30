@@ -1,5 +1,5 @@
 interface:
   display_name: "Grill Me"
-  short_description: "Design-tree interview; docs if present"
+  short_description: "Design interview; then A/B/C route"
 policy:
   allow_implicit_invocation: false

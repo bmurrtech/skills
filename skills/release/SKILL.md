@@ -43,26 +43,37 @@ Confidence gates and thin-workflow rules:
 
 ### 3. Version gate
 
-Authorize version **and** channel before prep. Rules and recommendation:
+Authorize version **and** channel before prep. Infer **primary recommendation**
+from prior release (channel-preserving); that recommend is the **default** when
+the user gives no override. Full rules:
 [references/version-gate.md](references/version-gate.md).
 
 Build structured **release context** after authorization — field schema in
 [references/version-gate.md](references/version-gate.md).
 
-**Done when:** version + channel authorized; release context ready.
+**Done when:** version + channel authorized (default-accept of recommend, or
+explicit override); release context ready.
 
 ### 4. Prepare via commit
 
-Pass release context into **`commit`** (prep). `commit` orchestrates
-**`upkeep`** release-cut and conditional **`roadmap` status** — do not promote
-CHANGELOG here. Invoke **`merge`** only when policy requires PR into the
-release branch. Identify canonical release SHA after prep lands.
+Pass release context into **`commit`** (prep). `commit` **must** run
+**`upkeep`** release-cut, then **CHANGELOG verify**, before stage/commit/push
+([`../commit/references/maintenance.md`](../commit/references/maintenance.md)) —
+do not promote CHANGELOG here. Invoke **`merge`** only when policy requires PR
+into the release branch. Identify canonical release SHA after prep lands.
 
-Compose release notes from the dated CHANGELOG section (after upkeep) +
+Before local validate / publication gate, **re-confirm** on that SHA:
+
+- dated `## [<authorized-version>]` exists with the cut content
+- `## [Unreleased]` does not still hold those bullets (empty/stub OK)
+
+Hard-stop if verify fails (unless user explicitly waives). Compose release notes
+from the dated CHANGELOG section +
 [references/release-notes-template.md](references/release-notes-template.md).
 
-**Done when:** release commit SHA known; CHANGELOG dated on that commit (or
-hard-stop / waive recorded).
+**Done when:** release commit SHA known **and** CHANGELOG verify passed on that
+commit (or explicit waive recorded). No soft “dated somehow” — missing cut =
+stop.
 
 ### 5. Validate locally
 
@@ -95,8 +106,10 @@ failure reported without retagging).
 - Do not scaffold workflow and tag in the same first bootstrap operation.
 - Do not invent registry publish (npm/PyPI/crates/Docker).
 - Never force-move release tags; never embed secrets in workflows/scripts.
-- Do not silently choose version or channel.
+- Do not invent version/channel outside the version-gate table; do not skip the
+  gate when neither was stated — default-accept of **recommend** is authorization,
+  not silent invention.
 - Do not tag or push without publication-gate authorization.
 - Do not promote Unreleased → dated CHANGELOG here — name **`upkeep`** via
-  **`commit`**.
+  **`commit`**. Hard-stop (do not tag) if CHANGELOG verify fails after prep.
 - Do not duplicate **`commit`** / **`upkeep`** / **`roadmap`** bodies.

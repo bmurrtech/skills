@@ -6,6 +6,9 @@ Delta only — apply on top of [handoff-base.md](../handoff-base.md).
 
 Next session should **`implement`** a known plan/spec. Do not re-grill.
 
+Common entry: **`grill-me`** post-grill **B** auto-runs **`handoff`** with this
+kind (aim implement). Spec = grilled plan / linked paths.
+
 ## Extra / specialize
 
 ### Kind block — implement

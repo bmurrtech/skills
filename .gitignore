@@ -2,7 +2,7 @@
 /pm/
 /pm/*
 
-# Local PRDs — developer-only OKF concepts under docs/prd/. See docs/how-to-bmurrtech-skills.md / knowledge/prd.md.
+# PRDs — OKF concepts under docs/prd/. Default ignored (setup A); track via setup B. See docs/how-to-bmurrtech-skills.md / knowledge/prd.md.
 /docs/prd/
 /docs/prd/*
 /docs/handoff/

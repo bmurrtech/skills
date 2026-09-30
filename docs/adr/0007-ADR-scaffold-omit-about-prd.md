@@ -3,10 +3,10 @@
 <!-- File: docs/adr/0007-ADR-scaffold-omit-about-prd.md -->
 
 ## Status
-Accepted
+Superseded
 - **Date (optional):** 2026-09-26
 - **Supersedes:** [0004-ADR-local-okf-prds.md](0004-ADR-local-okf-prds.md)
-- **Superseded by:** —
+- **Superseded by:** [0013-ADR-prd-tracking-choice.md](0013-ADR-prd-tracking-choice.md)
 - **Related ADRs:** [0002-ADR-glossary-okf.md](0002-ADR-glossary-okf.md)
 - **Related PRDs:** —
 

@@ -45,7 +45,7 @@ Spine from install through ship. Three shape entries; take one.
 |   .scratch/ (+ diagrams,          |
 |   adr-optics), AGENTS, CLAUDE,    |
 |   CONTEXT, knowledge/, docs/adr   |
-|   docs/prd ignore; optional docx  |
+|   docs/prd A/B; optional docx |
 +================+================+
                  |
                  v
@@ -72,7 +72,7 @@ Spine from install through ship. Three shape entries; take one.
                  |      +--> /to-adr  (docs/adr/)
                  | [need local product spec?]
                  |      |
-                 |      +--> /to-prd  (docs/prd/, gitignored)
+                 |      +--> /to-prd  (docs/prd/; ignore or track per setup)
                  |           cite ADRs; /ascii for structure
                  | [not this sprint / brain dump?]
                  |      |
@@ -205,8 +205,8 @@ intent with **`roadmap`**; do not treat scratch capture as a tracker ticket.
 |-----------|----------|
 | Skills not installed | `npx skills@latest add bmurrtech/skills` |
 | Repo lacks AGENTS / CONTEXT / ADR / `.scratch` conventions | **`setup-bmurrtech-skills`** ([tree](skill-scaffold.md)) |
-| Design ambiguous; need shared understanding | **`grill-me`** |
-| Need a local PRD / focused sprint spec | **`to-prd`** (see [Local PRDs](#local-prds-docsprd) below) |
+| Design ambiguous; need shared understanding | **`grill-me`** (ends with A→`to-prd` / B→`handoff` impl / C→`Go`) |
+| Need a PRD / focused sprint spec | **`to-prd`** (see [PRDs](#prds-docsprd) below) |
 | Costly-to-reverse decision | **`to-adr`** ([how-to](how-to-adr.md)) |
 | Park a thought for later (not this sprint) | **`idea`** → `.scratch/ideas/` |
 | Promote durable idea to public ledger | **`roadmap`** → [ROADMAP.md](ROADMAP.md) |
@@ -228,17 +228,18 @@ intent with **`roadmap`**; do not treat scratch capture as a tracker ticket.
 | Ops manual / Unreleased changelog drift | **`upkeep`** |
 | Glossary / OKF drift | **`context`** |
 
-## Local PRDs (`docs/prd/`)
+## PRDs (`docs/prd/`)
 
-Human how-to (layout + flows): [how-to-bmurrtech-skills.md — Local PRDs](how-to-bmurrtech-skills.md#local-prds-docsprd).
-Why → [knowledge/prd.md](../knowledge/prd.md). Thin library pointer also at [about-prd.md](about-prd.md) (ADR 0007).
+Why / track-vs-ignore: [knowledge/prd.md](../knowledge/prd.md). Thin library pointer: [about-prd.md](about-prd.md) ([ADR 0013](adr/0013-ADR-prd-tracking-choice.md)).
+
+**Setup choice (re-asked every run):** **A** ignore (default) · **B** track — retargets `.gitignore` + `AGENTS.md` (+ `CONTEXT.md` when applicable).
 
 ```text
 +------------------+     +------------------+
-| Tracked          |     | Local (ignored)  |
-| docs/adr/        |     | docs/prd/        |
-| CONTEXT.md       |     | docs/prd/index.md|
-| knowledge/       |     | PRD bodies       |
+| Always tracked   |     | docs/prd/        |
+| docs/adr/        |     | A: gitignored    |
+| CONTEXT.md       |     | B: tracked       |
+| knowledge/       |     | (bodies+index)   |
 +------------------+     +------------------+
          ^                        |
          | cite                   | author with to-prd
@@ -247,7 +248,7 @@ Why → [knowledge/prd.md](../knowledge/prd.md). Thin library pointer also at [a
 
 - Path: `docs/prd/NNNN-PRD-<slug>.md` (four-digit sequence, no project-key prefix)
 - Each file is an OKF concept (YAML frontmatter + Markdown body)
-- Local catalog: `docs/prd/index.md` (also gitignored)
+- Catalog: `docs/prd/index.md` (same track/ignore policy as the directory)
 - Author with **`to-prd`**; cite ADRs under tracked `docs/adr/` via **`to-adr`**
 
 ## Skill registry
@@ -258,15 +259,15 @@ Details live here (README keeps a short index only).
 
 | Skill | Role |
 |-------|------|
-| **`setup-bmurrtech-skills`** | Idempotent scaffold: gitignore, `.scratch/` (+ `diagrams/`, `adr-optics/`), AGENTS/CLAUDE/CONTEXT, knowledge stub, `docs/adr/`, `docs/prd` ignore. Optional **`docx`**. Never silent overwrite. Tree: [skill-scaffold.md](skill-scaffold.md). |
+| **`setup-bmurrtech-skills`** | Idempotent scaffold: gitignore, `.scratch/` (+ `diagrams/`, `adr-optics/`), AGENTS/CLAUDE/CONTEXT, knowledge stub, `docs/adr/`, **Commit PRDs?** A ignore / B track (default A; re-ask on re-run). Optional **`docx`**. Never silent overwrite. Tree: [skill-scaffold.md](skill-scaffold.md). |
 | **`docx`** | Word `.docx` via pinned docx-cli (operator install — [how-to-docx-cli.md](how-to-docx-cli.md)); LibreOffice/Word probe. Opt in at setup or `--skill docx`. |
 
 ### Shape and record
 
 | Skill | Role |
 |-------|------|
-| **`grill-me`** | Design-tree interview until shared understanding; updates glossary/OKF when present; may warrant **`to-adr`**. |
-| **`to-prd`** | Local OKF PRDs under gitignored `docs/prd/` for a focused sprint. Cite ADRs; use **`ascii`** for structure. |
+| **`grill-me`** | Design-tree interview until shared understanding; then A/B/C next step (**A** `/to-prd` recommended, **B** `/handoff`→implement, **C** `Go` bare implement); updates glossary/OKF when present; may warrant **`to-adr`**. |
+| **`to-prd`** | OKF PRDs under `docs/prd/` (ignore or track per setup). Cite ADRs; use **`ascii`** for structure. |
 | **`to-adr`** | Tracked ADRs under `docs/adr/`; optional at-a-glance under `.scratch/adr-optics/`. [how-to-adr.md](how-to-adr.md). |
 | **`ascii`** | Plain-text structure diagrams in-terminal. |
 | **`visual-explainer`** | Intent-routed HTML under `.scratch/diagrams/`. [how-to-visual-explainer.md](how-to-visual-explainer.md). |
@@ -304,7 +305,7 @@ examples:
 
 | Prompt example | Behavior |
 |----------------|----------|
-| `Release` (no version) | Version gate recommends; user authorizes version **and** channel; then prep |
+| `Release` (no version) | Version gate: channel-preserving **recommend** is ➡️ default; LGTM / affirmatives / “go with recommended” authorize that pair; then prep |
 | `Release 0.2.1-rc1` | Version + prerelease channel already stated — skip re-ask; still run publication gate before tag push |
 | Affirmative after validate | Publication gate: yes/proceed/LGTM binds exact tag + SHA |
 

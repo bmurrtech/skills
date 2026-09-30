@@ -34,7 +34,7 @@ AGENTS / CLAUDE / glossary independently.
 | `CLAUDE.md` → `AGENTS.md` | Claude hosts look for `CLAUDE.md`; pointer avoids two manuals. |
 | `CONTEXT.md` + `knowledge/` | Shared ubiquitous language + progressive disclosure. Consumer glossary is yours — library OKF is not shipped into consumers ([skills-release-artifact](skills-release-artifact.md)). |
 | `docs/adr/` | Costly-to-reverse decisions need a **tracked** trail. |
-| `docs/prd/` ignore | Day-to-day specs churn; keep local to avoid PR noise while giving **`to-prd`** a stable home ([prd](prd.md)). |
+| `docs/prd/` | Home for **`to-prd`**; **ignore (A, default)** or **track (B)** via setup — [ADR 0013](../docs/adr/0013-ADR-prd-tracking-choice.md) |
 | Optional docx | Needs host apps + pinned CLI; opt-in keeps scaffold light. |
 
 ## Related
@@ -42,4 +42,4 @@ AGENTS / CLAUDE / glossary independently.
 - Tree: [docs/skill-scaffold.md](../docs/skill-scaffold.md)
 - Flows: [docs/how-to-bmurrtech-skills.md](../docs/how-to-bmurrtech-skills.md)
 - Skill: [`setup-bmurrtech-skills`](../skills/setup-bmurrtech-skills/SKILL.md)
-- ADRs: [0002](../docs/adr/0002-ADR-glossary-okf.md), [0007](../docs/adr/0007-ADR-scaffold-omit-about-prd.md)
+- ADRs: [0002](../docs/adr/0002-ADR-glossary-okf.md), [0013](../docs/adr/0013-ADR-prd-tracking-choice.md)

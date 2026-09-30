@@ -7,6 +7,10 @@ Delta only — apply on top of [handoff-base.md](../handoff-base.md).
 Next session should author or edit a PRD via **`to-prd`**. Handoff does **not**
 write the PRD body.
 
+Common entry: **`grill-me`** post-grill **A** usually auto-runs **`to-prd`**
+in-session (no handoff). Use this kind when the operator still wants a packed
+brief before PRD authoring.
+
 ## Extra / specialize
 
 ### Kind block — PRD

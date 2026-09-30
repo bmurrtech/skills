@@ -18,7 +18,7 @@ live in the skill — not duplicated here:
 [`skills/to-adr/references/mechanics.md`](../skills/to-adr/references/mechanics.md).
 
 OKF split: glossary owns terms (`CONTEXT.md` / `knowledge/`); ADRs own *which
-option won and why*; PRDs (`docs/prd/`, local) cite ADRs; ops stay in `AGENTS.md`.
+option won and why*; PRDs (`docs/prd/`, ignore or track per setup) cite ADRs; ops stay in `AGENTS.md`.
 
 ## Authoring prompts
 

@@ -22,7 +22,7 @@ Done when:
 
 - `AGENTS.md` matches repo evidence
 - `CLAUDE.md` exists and its full body is exactly the six characters `AGENTS.md` plus optional trailing newline
-- `CHANGELOG.md` exists (Keep a Changelog shape) with session-notable items under `## [Unreleased]` when this run follows implement/code-review work — **or**, in release-cut mode, Unreleased promoted to dated `## [X.Y.Z…]` and a fresh empty Unreleased left
+- `CHANGELOG.md` exists (Keep a Changelog shape) with session-notable items under `## [Unreleased]` when this run follows implement/code-review work — **or**, in release-cut mode, Unreleased promoted to dated `## [X.Y.Z…]` with cut content **and** a fresh empty/stub Unreleased (ship bullets must not remain under Unreleased; see [references/release-cut.md](references/release-cut.md))
 - no glossary definitions were copied into `AGENTS.md`
 
 ## Workflow
@@ -67,8 +67,11 @@ If it **exists** and this upkeep follows **`implement`** / **`code-review`** /
    [references/release-cut.md](references/release-cut.md). Without release
    context: do **not** invent a version bump.
 
-**Done when:** changelog exists; Unreleased reflects the session (ordinary) or
-dated section exists for the cut (release-cut).
+**Done when:** changelog exists; Unreleased reflects the session (ordinary); or
+in release-cut, evidence in
+[references/release-cut.md](references/release-cut.md) holds — dated
+`## [<authorized-version>]` with cut content **and** Unreleased empty/stub
+(not still holding those bullets).
 
 ### 4. Draft or patch AGENTS.md
 
@@ -108,6 +111,10 @@ material.
   `release_intent` + confirmed version.
 - Do not invent CHANGELOG content to unblock a release when CHANGELOG is
   missing — hard-stop or honor explicit waive.
+- Do **not** “heal” setup **B** repos by re-adding `/docs/prd/` (or equivalent)
+  ignore lines — PRD track-vs-ignore is owned by **`setup-bmurrtech-skills`**
+  ([ADR 0013](../../docs/adr/0013-ADR-prd-tracking-choice.md)); upkeep has no
+  gitignore PRD mandate.
 
 ## Template
 

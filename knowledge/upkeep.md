@@ -19,6 +19,7 @@ tags: [agents, upkeep, changelog]
 
 - [`CONTEXT.md`](../CONTEXT.md) or [`knowledge/`](index.md) — those belong to **context**
 - Inventing a SemVer bump without release context — consume authorized version only
+- `docs/prd/` track-vs-ignore policy — owned by **`setup-bmurrtech-skills`** ([ADR 0013](../docs/adr/0013-ADR-prd-tracking-choice.md)); do **not** “heal” setup **B** by re-adding `/docs/prd/` ignore lines
 
 ## When
 
@@ -29,7 +30,10 @@ Run after [`implement`](../skills/implement/SKILL.md) and [`code-review`](../ski
 See skill [references/release-cut.md](../skills/upkeep/references/release-cut.md)
 and [commit maintenance](../skills/commit/references/maintenance.md). Summary:
 ordinary = Unreleased honesty; release-cut = promote only with authorized
-version; missing CHANGELOG under `release_intent` hard-stops unless waived.
+version; Done-when evidence = dated `## [<version>]` holds cut content and
+Unreleased is empty/stub (not still carrying those bullets); callers
+(**`commit`** / **`release`**) **CHANGELOG verify** before stage/push/tag;
+missing CHANGELOG under `release_intent` hard-stops unless waived.
 
 ## Related
 
