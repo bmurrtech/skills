@@ -7,6 +7,7 @@ Accepted
 - **Date (optional):** 2026-09-25
 - **Supersedes:** —
 - **Superseded by:** —
+- **Related ADRs:** [0012](0012-ADR-handoff-hybrid-kinds.md)
 - **Related PRDs:** —
 
 ## Context and Problem Statement

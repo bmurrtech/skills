@@ -1,5 +1,5 @@
 interface:
   display_name: "Handoff"
-  short_description: "Throwaway temp handoff; keep → .scratch/handoffs"
+  short_description: "Portable session brief; temp or keep; glance"
 policy:
   allow_implicit_invocation: false

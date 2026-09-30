@@ -1,62 +1,99 @@
 ---
 name: handoff
 description: >
-  Throwaway handoff: compact the conversation for a fresh agent under the OS
-  temp dir; when the user says keep (or clear persist intent), write under
-  .scratch/handoffs/ with a date-prefixed filename. Use when switching
-  sessions, before muddy ADR/PRD authoring, or when the user asks for a
-  handoff.
+  Handoff: write a portable session brief for a fresh agent (OS temp by
+  default; keep → .scratch/handoffs/). Hybrid content + kind overlays; post-write
+  glance for human check. Use when switching sessions, forking ADR/PRD/idea work
+  out of a muddy chat, or when the user asks for a handoff.
 disable-model-invocation: true
 ---
 
 # handoff
 
-Write a **throwaway** handoff so another agent can continue without this chat.
-Default destination is the OS temp dir (not the workspace). Persist only on an
-explicit **keep** signal.
+Write one markdown file so a fresh agent can continue **without this chat**.
+Full detail lives in the file. The reply is a short **at-a-glance** only.
+
+Read [references/handoff-base.md](references/handoff-base.md) when drafting.
+Read [references/kind-legend.md](references/kind-legend.md) to match a kind.
+When a kind matches, read that overlay under `references/kinds/` and apply its
+deltas — do not copy the base into the kind file.
 
 ## Boundaries
 
-- Do **not** write a transitory handoff into the repo (`docs/`, `pm/`, `skills/`,
-  or `.scratch/`).
-- Do **not** write a **keep** handoff anywhere except
-  `.scratch/handoffs/{yyyyMMdd-HHmmss}-handoff.md`.
-- Do **not** paste specs, plans, ADRs, issues, commits, or diffs — **reference**
-  by path/URL.
+- Do **not** write a default (temp) handoff into the repo (`docs/`, `pm/`,
+  `skills/`, or `.scratch/`).
+- Do **not** write a **keep** handoff anywhere except `.scratch/handoffs/`.
+- Do **not** invent kind slugs or use a `generic` kind — closed set only.
+- Do **not** paste full specs, plans, ADRs, issues, commits, or diffs — **path /
+  URL refs**. Put short acceptance, constraints, verdict, and ADR candidacy
+  **inline** (hybrid).
+- Do **not** use “see this chat/transcript” as the carrier of a fact — write the
+  fact into the file or omit it.
+- Do **not** paste the full handoff into chat — glance only.
 - Do **not** include secrets, tokens, passwords, or PII.
+- Do **not** author ADR or PRD bodies here — point at **`to-adr`** / **`to-prd`**.
+- Do **not** overwrite an existing handoff on correct/reprompt — write a **new**
+  timestamped file.
 
 ## Workflow
 
 ### 1. Classify destination
 
-**keep** when the invoke prompt says *keep* or clearly asks to persist /
-retain (not throwaway). Otherwise temp.
+**keep** when the invoke prompt says *keep*, *save this file*, or clear persist
+intent. Otherwise temp.
 
 | Signal | Destination |
 |--------|-------------|
-| Absent (default) | `{tmpdir}/bmurrtech-skills-handoff-{yyyyMMdd-HHmmss}.md` |
-| **keep** | `.scratch/handoffs/{yyyyMMdd-HHmmss}-handoff.md` (create dirs if missing) |
+| Absent (default) | `{tmpdir}/{filename}` |
+| **keep** | `.scratch/handoffs/{filename}` (create dirs if missing) |
 
-If ambiguous → ask once; default remains temp.
+If destination ambiguous → ask once; default remains temp.
 
-**Done when:** destination path chosen.
+**Filename:** `{kind}-{slug}-{yyyyMMdd-HHmmss}.md` when a legend kind matches;
+else `{slug}-{yyyyMMdd-HHmmss}.md`. Infer a short kebab `slug` from aim.
 
-### 2. Draft contents
+**Done when:** destination path + filename chosen.
 
-Include:
+### 2. Resolve aim
 
-- Goal / current position (short)
-- Settled decisions (link ADRs/PRDs/CONTEXT)
-- Open frontier / next questions
-- Artifacts touched (paths only)
-- **Suggested skills** to invoke next (names only)
-- If the user passed a focus argument, tailor the next-session section to it
+1. If the user passed an invoke arg → treat it as next-session aim.
+2. Else infer aim from the conversation.
+3. If ≥2 plausible next aims and no arg → **ask once** before write (one beat).
+   If aim is clear (arg or single thread) → do not ask.
 
-**Done when:** draft covers every bullet above (or N/A noted).
+**Done when:** one aim is selected (or user answered the ask).
 
-### 3. Write + report
+### 3. Match kind
 
-Write the file to the path from step 1. Tell the user the absolute path and
-whether it was **throwaway** (temp) or **kept** (`.scratch/handoffs/`).
+Using [kind-legend.md](references/kind-legend.md): attach at most one closed
+kind. No match → base only (title/slug filename, no invented kind).
 
-**Done when:** file exists at that path and the path was reported.
+**Done when:** kind is a legend slug or none.
+
+### 4. Draft from base + overlay
+
+Fill [handoff-base.md](references/handoff-base.md). Omit empty sections (note
+N/A only when useful). If a kind matched, apply `references/kinds/{kind}.md`
+deltas. In the handoff **body** and glance, label the kind as **Display (slug)**
+from the legend (e.g. `code-review (cd-rvw)`) — never slug-only. Filenames still
+use the slug prefix. Suggested skills: **next workflow first**; housekeeping last.
+
+Repo-state claims must include a **re-verify** cue (`git status` / equivalent).
+
+If the write is **blocked** (e.g. plan mode): say so, name the path that will be
+used, and write automatically on the next unrestricted turn **without** waiting
+for a second `/handoff`.
+
+**Done when:** draft covers base (and kind deltas when applicable).
+
+### 5. Write + glance
+
+Write the file. Then report **only** this at-a-glance (≤ ~5 lines):
+
+1. **Path** (absolute) + `temp` | `keep`
+2. **Intent** (one line) + **kind** as Display (slug) or `none`
+3. **Next action** (skill/command)
+4. **Check:** 2–4 bullets the user should verify
+5. **Correct?** Reprompt to rewrite if wrong → new timestamped file
+
+**Done when:** file exists at that path and the glance was reported.

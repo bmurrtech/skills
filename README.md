@@ -44,21 +44,21 @@ That reinstalls every skill in this repo (not every skill on your machine). Scop
 Default cycle after install:
 
 ```text
-setup-bmurrtech-skills [if needed]
+/setup-bmurrtech-skills [if needed]
         |
         v
-     grill-me
+     /grill-me
         |
-        +-- [decision?] --> to-adr
-        |
-        v
-      to-prd
+        +-- [decision?] --> /to-adr
         |
         v
-     implement  (+ tdd)
+      /to-prd
         |
         v
-      handoff  -->  code-review   [fresh agent; recommended]
+     /implement  (+ /tdd)
+        |
+        v
+      /handoff  -->  /code-review   [fresh agent; recommended]
 ```
 
 Flows, branches, and every skill: **[docs/how-to-bmurrtech-skills.md](docs/how-to-bmurrtech-skills.md)**.
@@ -110,7 +110,7 @@ Tree and whys: **[docs/skill-scaffold.md](docs/skill-scaffold.md)** · [knowledg
 | Skill | What it does | Example prompt |
 |-------|----------------|----------------|
 | [`tdd`](skills/tdd/) | Red-green loops at seams you agree on first | `TDD the invoice total calculator at this seam` |
-| [`implement`](skills/implement/) | Turns a spec into working code, with TDD and a review pass | `Implement the PRD; prefer tdd at the seams we listed` |
+| [`implement`](skills/implement/) | Spec → TDD → checks → housekeeping; exits via fresh-context review (never owns Git) | `Implement the PRD; prefer tdd at the seams we listed` |
 | [`code-review`](skills/code-review/) | Standards and Spec review with a ship call | `Code-review the diff since main` |
 
 ### Git lifecycle
@@ -127,7 +127,7 @@ Defaults and overrides: **[how-to](docs/how-to-bmurrtech-skills.md#git-lifecycle
 
 | Skill | What it does | Example prompt |
 |-------|----------------|----------------|
-| [`handoff`](skills/handoff/) | Packs the session for a fresh agent (temp file, or keep under `.scratch/handoffs/`) | `Handoff this session; keep it under .scratch` |
+| [`handoff`](skills/handoff/) | Hybrid portable brief for a fresh agent ([ADR 0012](docs/adr/0012-ADR-handoff-hybrid-kinds.md)); temp or keep | `Handoff this for implement; keep under .scratch` |
 | [`idea`](skills/idea/) | Parks a brain dump under `.scratch/ideas/` without promoting it | `Capture this idea; don't work on it now` |
 | [`roadmap`](skills/roadmap/) | Moves durable ideas into [docs/ROADMAP.md](docs/ROADMAP.md) | `Promote that scratch idea onto the roadmap` |
 | [`wait-what`](skills/wait-what/) | Re-explains when the last message did not land | `Wait-what; re-pitch that last explanation` |

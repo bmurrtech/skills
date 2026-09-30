@@ -17,6 +17,7 @@ Repo knowledge for agents. Start at [CONTEXT.md](../CONTEXT.md) for the glossary
 - [ADR](adr.md) — decisions under `docs/adr/`
 - [ADR catalog](adr-catalog.md) — test map for to-adr at-a-glance builder
 - [PRD](prd.md) — local OKF PRDs under `docs/prd/`
+- [Implement SoC](implement-soc.md) — test map for implement review-exit + Git ban
 - [Skill scaffold](skill-scaffold.md) — why setup provisions consumer process files
 - [Roadmap](roadmap.md) — durable idea ledger; capture → promote → publish
 - [Roadmap promote](roadmap-promote.md) — test map for roadmap ensure/append/mark scripts

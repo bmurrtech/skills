@@ -21,7 +21,7 @@
     },
     {
       "title": "Ship",
-      "description": "Build with TDD, implement from a spec, and review before merge.",
+      "description": "Build with TDD, implement from a spec, then fresh-context review before Git publish.",
       "skills": ["tdd", "implement", "code-review"]
     },
     {

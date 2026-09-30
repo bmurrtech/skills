@@ -41,7 +41,7 @@ Spine from install through ship. Three shape entries; take one.
 | npx skills@latest add           |
 |   bmurrtech/skills              |
 |                                 |
-| setup-bmurrtech-skills [opt]    |
+| /setup-bmurrtech-skills [opt]   |
 |   .scratch/ (+ diagrams,          |
 |   adr-optics), AGENTS, CLAUDE,    |
 |   CONTEXT, knowledge/, docs/adr   |
@@ -53,10 +53,10 @@ Spine from install through ship. Three shape entries; take one.
 | shape: one entry                                       |
 |                                                        |
 | unclear design / open frontier ----------------------+ |
-|   grill-me                                           | |
+|   /grill-me                                          | |
 |   |                                                  | |
-|   + - - [lost?] - - > wait-what                      | |
-|   + - - [session muddy] - - > handoff                | |
+|   + - - [lost?] - - > /wait-what                     | |
+|   + - - [session muddy] - - > /handoff               | |
 |                                                      | |
 | written target exists --------------------------------+ |
 |   PRD / tickets / paste / handoff doc                | |
@@ -69,32 +69,36 @@ Spine from install through ship. Three shape entries; take one.
                  |
                  | [need durable decision?]
                  |      |
-                 |      +--> to-adr  (docs/adr/)
+                 |      +--> /to-adr  (docs/adr/)
                  | [need local product spec?]
                  |      |
-                 |      +--> to-prd  (docs/prd/, gitignored)
-                 |           cite ADRs; ascii for structure
+                 |      +--> /to-prd  (docs/prd/, gitignored)
+                 |           cite ADRs; /ascii for structure
                  | [not this sprint / brain dump?]
                  |      |
-                 |      +--> idea  (.scratch/ideas/)
-                 |           promote later via roadmap → docs/ROADMAP.md
+                 |      +--> /idea  (.scratch/ideas/)
+                 |           promote later via /roadmap → docs/ROADMAP.md
                  | [session switch / fresh agent?]
                  |      |
-                 |      +--> handoff  (OS temp; keep → .scratch/handoffs/)
-                 |           often before code-review (fresh model)
+                 |      +--> /handoff  (hybrid brief; OS temp; keep → .scratch/handoffs/)
+                 |           often before /code-review (fresh model)
                  v
 +=================================+
 | ship                            |
-| implement                       |
-|   | prefer tdd at agreed seams  |
+| /implement                      |
+|   | prefer /tdd at agreed seams |
 |   | target-repo checks          |
 |   v                             |
-| handoff [rec.] → code-review    |
-|   | Standards || Spec           |
-|   | severity + ship call        |
-|   v                             |
-| upkeep then context [if present]|
+| /upkeep → /context [if present] |
 |   AGENTS / CHANGELOG / OKF      |
+|   v                             |
+| /code-review as subagent  OR    |
+| /handoff → /code-review → stop  |
+|   v                             |
+| /commit (local | push+PR |      |
+|          canonical — intent)    |
+|   +--> /merge   [integrating]   |
+|   +--> /release [cutting]       |
 +=================================+
 ```
 
@@ -107,23 +111,35 @@ intent with **`roadmap`**; do not treat scratch capture as a tracker ticket.
 
 ```text
 +------------------+
-| grill-me / edit  |
-| to-prd / to-adr  |
+| /grill-me / edit |
+| /to-prd / /to-adr|
 +--------+---------+
          |
          v
 +------------------+
-| implement        |
+| /implement       |
+| (+ /tdd; checks) |
 +--------+---------+
          |
          v
 +------------------+
-| code-review      |
+| /upkeep →        |
+| /context         |
 +--------+---------+
          |
          v
 +------------------+
-| upkeep → context |
+| /code-review as  |
+| subagent  OR     |
+| /handoff →       |
+| /code-review     |
++--------+---------+
+         |
+         v
++------------------+
+| /commit →        |
+| [/merge] →       |
+| [/release]       |
 +------------------+
 ```
 
@@ -131,7 +147,7 @@ intent with **`roadmap`**; do not treat scratch capture as a tracker ticket.
 
 ```text
 +-----------+
-| wait-what |
+| /wait-what|
 +-----+-----+
       |
       | re-pitch in STE
@@ -154,7 +170,7 @@ intent with **`roadmap`**; do not treat scratch capture as a tracker ticket.
      |                 |
      v                 v
 +---------+      +-----------+
-| handoff |      | idea      |
+| /handoff|      | /idea     |
 +----+----+      +-----+-----+
      |                 |
      | continue work   | not this sprint
@@ -164,7 +180,7 @@ intent with **`roadmap`**; do not treat scratch capture as a tracker ticket.
 | OS temp (default)|  | .scratch/ideas/  |
 | or keep →        |  |                  |
 | .scratch/        |  | explicit promote  |
-|   handoffs/      |  | → roadmap        |
+|   handoffs/      |  | → /roadmap       |
 +--------+---------+  | → docs/ROADMAP.md|
          |            +--------+---------+
          v                     |
@@ -177,8 +193,8 @@ intent with **`roadmap`**; do not treat scratch capture as a tracker ticket.
                         +--------------+
 ```
 
-- **`handoff`** — compact *active* thread for another agent (review bias break,
-  muddy grill → ADR/PRD, session end).
+- **`handoff`** — hybrid portable brief for another agent (review bias break,
+  muddy grill → ADR/PRD fork, session end). See [ADR 0012](adr/0012-ADR-handoff-hybrid-kinds.md).
 - **`idea`** — local brain dump; never promotes or opens trackers by itself.
 - **`roadmap`** — explicit promote into [ROADMAP.md](ROADMAP.md); publish is a
   separate explicit step.
@@ -196,7 +212,7 @@ intent with **`roadmap`**; do not treat scratch capture as a tracker ticket.
 | Promote durable idea to public ledger | **`roadmap`** → [ROADMAP.md](ROADMAP.md) |
 | Publish idea to GitHub / Fizzy | **`roadmap`** publish (explicit; not from capture alone) |
 | Structure clearer as a diagram | **`ascii`** (terminal) or **`visual-explainer`** (HTML under `.scratch/diagrams/`) |
-| Build from a clear acceptance target | **`implement`** (pulls **`tdd`**, then **`code-review`**) |
+| Build from a clear acceptance target | **`implement`** (prefer **`tdd`**; then subagent **`code-review`** or **`handoff` → `code-review`**; Git via **`commit`**) |
 | Review only (branch / PR / local diff) | **`code-review`** (prefer after **`handoff`** to a fresh agent) |
 | Red-green at agreed seams | **`tdd`** |
 | Local commit / checkpoint (default: no push) | **`commit`** |
@@ -261,7 +277,7 @@ Details live here (README keeps a short index only).
 | Skill | Role |
 |-------|------|
 | **`tdd`** | Red-green at agreed seams; OKF test-maps + AGENTS Test index when conventions exist. |
-| **`implement`** | Spec/tickets → prefer TDD → target-repo checks → **`code-review`**; soft-gates **`upkeep`** / **`context`**. |
+| **`implement`** | Spec/tickets → prefer TDD → target-repo checks → soft **`upkeep`** / **`context`** → **`code-review`** as subagent or **`handoff` → `code-review`**. Never stage/commit/push — **`commit`** owns Git. |
 | **`code-review`** | Standards ‖ Spec; severity; APPROVE / REQUEST CHANGES / COMMENT. Prefer a **`handoff`** to a fresh agent first. |
 
 ### Git lifecycle
@@ -302,7 +318,7 @@ More examples:
 
 | Skill | Role |
 |-------|------|
-| **`handoff`** | Compact *active* work for a fresh agent. Default: OS temp. **keep** → `.scratch/handoffs/`. |
+| **`handoff`** | Hybrid portable brief for a fresh agent ([ADR 0012](adr/0012-ADR-handoff-hybrid-kinds.md)). Default: OS temp. **keep** → `.scratch/handoffs/`. Base + kind overlays; kinds labeled in the file as full name `(slug)` (e.g. code-review (`cd-rvw`)); post-write glance. |
 | **`idea`** | Preserve-first brain dump under `.scratch/ideas/`. No promote, no trackers, no implement. |
 | **`roadmap`** | Ensure/promote/status into public [ROADMAP.md](ROADMAP.md); GitHub/Fizzy publish only on separate explicit intent. Templates: `skills/roadmap/references/`. |
 | **`wait-what`** | STE re-pitch when an explanation did not land. |
@@ -319,7 +335,7 @@ When changing skills in **bmurrtech/skills** itself:
 2. `python3 scripts/init_skill.py <name>` when scaffolding a new skill folder
 3. `python3 scripts/quick_validate.py skills/<name>`
 4. Session tests via AGENTS Test index → OKF test-maps (`**tdd**`)
-5. **`code-review`** → **`upkeep`** → **`context`**
+5. After implement: **`upkeep`** → **`context`**, then **`code-review`** as subagent or **`handoff` → `code-review`**; publish only via **`commit`**
 6. Package smoke: `python3 scripts/package_skills.py --version <semver> --out dist/`
 
 Consumer repos without `CONTEXT.md` / `AGENTS.md`: portable skills (**`implement`**,

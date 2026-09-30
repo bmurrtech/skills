@@ -20,6 +20,7 @@ Skills meant to improve sprints in **any** repo that installs them — not only 
 - Validation = target repo evidence (`AGENTS.md`, package scripts, CI).
 - Skill validators (`quick_validate.py`) are optional and only when a `skills/` tree changed **and** a validator exists.
 - `upkeep` / `context` run when installed **and** artifacts exist; otherwise one-line skip.
+- **`implement`**: review exit = subagent `code-review` or `handoff` for code-review (`cd-rvw`); never stage/commit/push — Git via `commit` / `merge` / `release`.
 - **`tdd`**: session-scoped runs via AGENTS Test index → OKF test-maps when those conventions exist.
 
 ## Contrast

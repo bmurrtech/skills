@@ -7,6 +7,26 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.2.2-rc1] - 2026-09-30
+
+Operator-facing ship: clearer **handoff** cold-starts and an **implement** path that pauses for fresh review instead of owning Git.
+
+### Added
+
+- **`handoff` hybrid briefs** — base template + closed kind overlays (implement, code-review, ADR, PRD, idea, roadmap, visual-explainer). After write: short in-chat **at-a-glance** (path, temp|keep, next action, check bullets). Kind labels read as **Display (slug)** e.g. code-review (`cd-rvw`). Decision: [ADR 0012](docs/adr/0012-ADR-handoff-hybrid-kinds.md).
+- **Ship path clarity** — how-to + README cycle diagrams use `/skill` names; full git tail after review lives in the how-to (commit → merge → release).
+- **Implement SoC content contract** — `tests.test_implement_soc` (+ OKF test map) gates review-exit + hard Git-ban wording; wired into AGENTS bulk + CI/release unittests.
+
+### Changed
+
+- **`implement`**: after checks + soft housekeeping, exits via **fresh-context review** (subagent **`code-review`**, or **`handoff`** → fresh **`code-review`**). Never stages/commits/pushes — publish with **`commit`** when you intend to. Soft-suggests a **new** grill session if design cracks mid-build.
+- **`handoff`**: portable file is the brief (not “see this chat”); aim ask only when ambiguous; filenames `{kind}-{slug}-{ts}`; temp by default, **keep** → `.scratch/handoffs/`.
+- Catalog / glossary: `skills.sh.json` Ship description + Universal sprint skill wording match the new review/Git SoC.
+
+### Fixed
+
+- **`impl` kind** After green / Suggested skills aligned with full Git ban + subagent review exit (no same-session CR implication).
+
 ## [0.2.1-rc1] - 2026-09-29
 
 ### Added

@@ -42,7 +42,7 @@ Release packaging: `scripts/package_skills.py` (see [ADR 0005](docs/adr/0005-ADR
 
 ```bash
 python3 scripts/quick_validate.py skills/<name>
-python3 -m unittest tests.test_package_skills tests.test_docx_ensure tests.test_adr_catalog tests.test_roadmap_promote -v
+python3 -m unittest tests.test_package_skills tests.test_docx_ensure tests.test_adr_catalog tests.test_roadmap_promote tests.test_implement_soc -v
 ```
 
 - Validate every new or edited skill locally with `scripts/quick_validate.py` (CI also validates all `skills/*/SKILL.md` on PR/`main`).
@@ -56,6 +56,7 @@ One-liners → `knowledge/` test-maps for session-scoped runs (see **`tdd`**).
 - [Docx ensure](knowledge/docx-ensure.md) — `python3 -m unittest tests.test_docx_ensure -v`
 - [ADR catalog](knowledge/adr-catalog.md) — `python3 -m unittest tests.test_adr_catalog -v`
 - [Roadmap promote](knowledge/roadmap-promote.md) — `python3 -m unittest tests.test_roadmap_promote -v`
+- [Implement SoC](knowledge/implement-soc.md) — `python3 -m unittest tests.test_implement_soc -v`
 
 ## Code style
 

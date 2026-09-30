@@ -3,7 +3,7 @@
 | NNNN | Title | Status | Path | Related |
 |------|-------|--------|------|---------|
 | 0001 | Skills live under skills/ only | Accepted | [0001-ADR-skills-home.md](0001-ADR-skills-home.md) | related from [0009](0009-ADR-local-maintainer-skills-host-path.md) |
-| 0002 | Glossary and OKF split from AGENTS.md | Accepted | [0002-ADR-glossary-okf.md](0002-ADR-glossary-okf.md) | preserved by [0005](0005-ADR-skills-release-artifact.md) |
+| 0002 | Glossary and OKF split from AGENTS.md | Accepted | [0002-ADR-glossary-okf.md](0002-ADR-glossary-okf.md) | preserved by [0005](0005-ADR-skills-release-artifact.md); related from [0012](0012-ADR-handoff-hybrid-kinds.md) |
 | 0003 | ADRs under docs/adr with MADR headings | Superseded | [0003-ADR-docs-adr-madr.md](0003-ADR-docs-adr-madr.md) | superseded by [0010](0010-ADR-to-adr-mechanics-shipped.md) |
 | 0004 | Local OKF PRDs under docs/prd (gitignored) | Superseded | [0004-ADR-local-okf-prds.md](0004-ADR-local-okf-prds.md) | superseded by [0007](0007-ADR-scaffold-omit-about-prd.md) |
 | 0005 | Skills release artifact excludes library OKF | Accepted | [0005-ADR-skills-release-artifact.md](0005-ADR-skills-release-artifact.md) | relates [0002](0002-ADR-glossary-okf.md); related from [0006](0006-ADR-npx-skills-install-only.md), [0009](0009-ADR-local-maintainer-skills-host-path.md), [0011](0011-ADR-skill-scanner-posture-prereqs.md) |
@@ -13,3 +13,4 @@
 | 0009 | Local maintainer skills under ignored .agents/skills/ | Accepted | [0009-ADR-local-maintainer-skills-host-path.md](0009-ADR-local-maintainer-skills-host-path.md) | supersedes [0008](0008-ADR-maintainer-skill-scaffold-local.md); relates [0001](0001-ADR-skills-home.md), [0005](0005-ADR-skills-release-artifact.md), [0006](0006-ADR-npx-skills-install-only.md) |
 | 0010 | ADR template SoT lives in shipped to-adr mechanics | Accepted | [0010-ADR-to-adr-mechanics-shipped.md](0010-ADR-to-adr-mechanics-shipped.md) | supersedes [0003](0003-ADR-docs-adr-madr.md); relates [0005](0005-ADR-skills-release-artifact.md); related from [0011](0011-ADR-skill-scanner-posture-prereqs.md) |
 | 0011 | Published skills use prerequisites and local Spec | Accepted | [0011-ADR-skill-scanner-posture-prereqs.md](0011-ADR-skill-scanner-posture-prereqs.md) | relates [0005](0005-ADR-skills-release-artifact.md), [0006](0006-ADR-npx-skills-install-only.md), [0010](0010-ADR-to-adr-mechanics-shipped.md) |
+| 0012 | Handoff is a hybrid portable brief with base + kind overlays | Accepted | [0012-ADR-handoff-hybrid-kinds.md](0012-ADR-handoff-hybrid-kinds.md) | relates [0002](0002-ADR-glossary-okf.md) |

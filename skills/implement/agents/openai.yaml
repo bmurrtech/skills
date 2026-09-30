@@ -1,5 +1,5 @@
 interface:
   display_name: "Implement"
-  short_description: "Ship work from a spec; repo checks + review"
+  short_description: "Ship from a spec; checks + housekeeping; review exit (no Git)"
 policy:
   allow_implicit_invocation: false
