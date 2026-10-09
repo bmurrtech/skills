@@ -12,10 +12,11 @@
 - `scripts/quick_validate.py` / `scripts/init_skill.py` — skill frontmatter validate + scaffold CLIs (library CI/ops; not product skills)
 - `.github/workflows/ci.yml` — unittest (package/docx/adr/roadmap) + all-skills validate + package smoke
 - `.github/workflows/release.yml` — on `v*` tags: same unittests + package + GitHub Release assets
-- `docs/adr/` — tracked ADRs
+- `docs/adr/` — tracked ADRs + slim `catalog.json` (rebuildable; glance HTML under `.scratch/adr-optics/`)
 - `docs/how-to-bmurrtech-skills.md` — consumer how-to (flows + branches + PRDs A/B); README links here
 - `docs/how-to-adr.md` — ADR authoring + at-a-glance prompts
 - `docs/how-to-visual-explainer.md` — visual-explainer modes + prompts
+- `docs/how-to-discovery.md` — discovery skill operator how-to
 - `docs/skill-scaffold.md` — folders/files setup creates (whys → `knowledge/skill-scaffold.md`)
 - `docs/ROADMAP.md` — durable unordered idea ledger (**`roadmap`**; capture → **`idea`**)
 - `CHANGELOG.md` — Keep a Changelog (Unreleased + release-cut owned by **upkeep**)
@@ -42,7 +43,7 @@ Release packaging: `scripts/package_skills.py` (see [ADR 0005](docs/adr/0005-ADR
 
 ```bash
 python3 scripts/quick_validate.py skills/<name>
-python3 -m unittest tests.test_package_skills tests.test_docx_ensure tests.test_adr_catalog tests.test_roadmap_promote tests.test_implement_soc -v
+python3 -m unittest tests.test_package_skills tests.test_docx_ensure tests.test_adr_catalog tests.test_roadmap_promote tests.test_implement_soc tests.test_writing_for_humans_linter tests.test_discovery_priority_score -v
 ```
 
 - Validate every new or edited skill locally with `scripts/quick_validate.py` (CI also validates all `skills/*/SKILL.md` on PR/`main`).
@@ -57,12 +58,15 @@ One-liners → `knowledge/` test-maps for session-scoped runs (see **`tdd`**).
 - [ADR catalog](knowledge/adr-catalog.md) — `python3 -m unittest tests.test_adr_catalog -v`
 - [Roadmap promote](knowledge/roadmap-promote.md) — `python3 -m unittest tests.test_roadmap_promote -v`
 - [Implement SoC](knowledge/implement-soc.md) — `python3 -m unittest tests.test_implement_soc -v`
+- [Writing for humans linter](knowledge/writing-for-humans-linter.md) — `python3 -m unittest tests.test_writing_for_humans_linter -v`
+- [Discovery priority score](knowledge/discovery-priority-score.md) — `python3 -m unittest tests.test_discovery_priority_score -v`
 
 ## Code style
 
 - Lean `SKILL.md`; disclose branch-only detail under `references/`.
 - Do not duplicate glossary ↔ AGENTS content.
 - Align `policy.allow_implicit_invocation` with whether the skill may model-trigger.
+- Skill `scripts/`: LLM for judgment; script only when exactness, repetition, or compression beats tool cost — [Skill scripts vs LLM](knowledge/skill-scripts.md).
 
 ## Git & PR workflow
 
@@ -73,6 +77,7 @@ One-liners → `knowledge/` test-maps for session-scoped runs (see **`tdd`**).
 ## Boundaries
 
 - Tracked/published skills only under `skills/` (never dual-track SoT into agent dirs). Library-local / maintainer skills may live under ignored `.agents/skills/` so hosts (Cursor) can load them — not tracked, not shipped, not catalog SoT ([ADR 0009](docs/adr/0009-ADR-local-maintainer-skills-host-path.md)).
+- Skill-named paths at **repo root** (`ascii/`, `release/`, …) are install noise (often symlinks to stale agent copies) — **delete**; never edit or stage them. SoT is `skills/` only. Reinstall with `npx skills` into agent homes (`~/.agents/skills/`, …) — not this library’s root.
 - After `implement` or `code-review` **in this library**, run **upkeep** then **context** (universal skills soft-skip when those artifacts are absent in consumer repos).
 - Accepted ADRs are immutable — supersede via **to-adr**.
 - Handoffs: default OS temp; **keep** → `.scratch/handoffs/` ([CONTEXT.md](CONTEXT.md) **.scratch/**).
@@ -96,6 +101,7 @@ One-liners → `knowledge/` test-maps for session-scoped runs (see **`tdd`**).
 - [docs/how-to-bmurrtech-skills.md](docs/how-to-bmurrtech-skills.md)
 - [docs/how-to-docx-cli.md](docs/how-to-docx-cli.md) — operator install for pinned docx-cli
 - [docs/how-to-adr.md](docs/how-to-adr.md)
+- [docs/how-to-discovery.md](docs/how-to-discovery.md)
 - [docs/how-to-visual-explainer.md](docs/how-to-visual-explainer.md)
 - [docs/skill-scaffold.md](docs/skill-scaffold.md)
 - [docs/ROADMAP.md](docs/ROADMAP.md)

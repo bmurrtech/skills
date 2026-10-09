@@ -9,6 +9,8 @@ understanding and routes.
 Present exactly this choice (adapt slash style to the host if needed):
 
 ```text
+**All set.** Frontier empty — grilled decisions are locked.
+
 **Next step?** (route A/B/C — not setup Commit PRDs? A/B)
 
 **A)** `/to-prd` — write a PRD under docs/prd/ from this grill

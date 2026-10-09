@@ -1,0 +1,5 @@
+interface:
+  display_name: "Discovery"
+  short_description: "Meetings to ranked use cases for builders"
+policy:
+  allow_implicit_invocation: false

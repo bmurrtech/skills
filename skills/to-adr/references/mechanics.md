@@ -100,6 +100,31 @@ these — does not duplicate them. Omit the section if nothing normative remains
   tracking.
 - **Why not chosen** on rejected options when Pros/Cons alone leave the reject
   reason unclear.
+- **Human review (autonomous judgment)** under **Assumptions** when the authoring
+  agent chose an option, filled a gap, or treated something as decided **without
+  a clear user directive** (unspoken, ill-defined, or missing prompt). Log the
+  cue; do not hide the guess inside Decision Outcome prose alone.
+
+  Use when either is true:
+
+  1. **Autonomy** — the LLM thought and decided without an explicit user
+     instruction for that call (best-guess / “reasonable default”).
+  2. **Judgment source** — what grounded the call (cite the specific line or
+     path when possible): `CONTEXT.md`, `AGENTS.md`, workspace/codebase file,
+     web search, another ADR/doc, or **model-only logic** (no external cue).
+
+  Shape (bullets under Assumptions; keep short):
+
+  ```markdown
+  - **Human review:** autonomous judgment — {what was decided without user direction}
+    - Source: {CONTEXT.md §… | AGENTS.md … | path:line | web:… | model-only}
+    - Cue: {one-line best-guess / contextual reasoning used}
+  ```
+
+  Omit when the user named the option or accepted the recommendation in-thread.
+  Never invent a user directive after the fact. Do not overwrite author
+  **Review Needed** / lineage-review text elsewhere — this cue is only for
+  agent-assumed gaps.
 
 ## Implementation Notes anti-bloat
 

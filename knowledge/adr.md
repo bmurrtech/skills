@@ -13,7 +13,8 @@ An **ADR** records one significant decision: context, options, and outcome.
 
 - Directory: [`docs/adr/`](../docs/adr/)
 - Filename: `NNNN-ADR-<slug>.md` (four-digit sequence, no project-key prefix)
-- Catalog: [`docs/adr/index.md`](../docs/adr/index.md)
+- Index: [`docs/adr/index.md`](../docs/adr/index.md)
+- Decision catalog (slim, tracked): [`docs/adr/catalog.json`](../docs/adr/catalog.json)
 
 ## Shape
 
@@ -22,8 +23,8 @@ see [skills-release-artifact](skills-release-artifact.md)):
 
 - Process + warrant + classify: [`skills/to-adr/SKILL.md`](../skills/to-adr/SKILL.md)
 - Headings, placement, anti-bloat: [`skills/to-adr/references/mechanics.md`](../skills/to-adr/references/mechanics.md)
-- Optional at-a-glance HTML: `skills/to-adr/scripts/build_catalog.py` → `.scratch/adr-optics/`
-  (catalog row shape → [adr-catalog.md](adr-catalog.md))
+- Optional at-a-glance HTML: `skills/to-adr/scripts/build_catalog.py` → slim
+  `docs/adr/catalog.json` + `.scratch/adr-optics/` glance (seam → [adr-catalog.md](adr-catalog.md))
 
 Do **not** treat this OKF page as the only copy of the template — consumers
 without `knowledge/` still author via the skill.

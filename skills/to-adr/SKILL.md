@@ -84,7 +84,8 @@ Prefer cite under **References** over paste.
 
 **Done when:** required headings present; decision outcome is assertive; Status
 links match the class from step 2; Implementation Notes (if any) are
-outcome-entailed only.
+outcome-entailed only; any autonomous/ill-defined judgment is flagged under
+Assumptions per mechanics **Human review (autonomous judgment)**.
 
 ### 5. Update index
 
@@ -107,9 +108,9 @@ After create/supersede (or when the user asks for the decision log / catalog):
 | | |
 |--|--|
 | **Script** | `scripts/build_catalog.py` under this skill directory (library path: `skills/to-adr/scripts/build_catalog.py`; harness installs: same relative path on the installed skill) |
-| **Reads** | Markdown ADRs under `--home` (default intent: `docs/adr/`); template `scripts/visualizer_template.html` |
-| **Writes** | Optional refresh of `docs/adr/index.md`; with `--visualize`: `.scratch/adr-optics/adr-catalog.json` + `adr-at-a-glance.html` |
-| **Side effects** | `--open` may launch the default browser on a `file://` URI; no network font/CDN loads (system fonts only) |
+| **Reads** | Markdown ADRs under `--home` (default: `docs/adr/`); template `scripts/visualizer_template.html` |
+| **Writes** | Always: slim tracked `docs/adr/catalog.json` (`schema_version` 2: decisions + `lineage_edges` + `issues`). Optional `--write-index`: refresh `docs/adr/index.md` (incl. lineage-review notes). With `--visualize`: fat `.scratch/adr-optics/adr-catalog.json` + `adr-at-a-glance.html` (gitignored) |
+| **Side effects** | `--open` may launch the default browser on a `file://` URI; no network font/CDN loads (system fonts only). Exit **non-zero** only for `invalid_lineage` (self-target / cycle) after still writing catalog artifacts |
 
 ```bash
 python3 skills/to-adr/scripts/build_catalog.py --home docs/adr --visualize --open
@@ -121,7 +122,11 @@ this skill’s `scripts/build_catalog.py` instead.
 `--open` launches the default browser (`file://`). If the harness cannot open a
 browser, report the absolute path and the `file://` URI from the script JSON.
 
-Markdown under `docs/adr/` remains SoT; HTML is a generated view (not tracked).
+Markdown under `docs/adr/` remains SoT. Tracked slim `catalog.json` is a
+rebuildable decision-catalog cache for git history; scratch HTML/JSON are local
+glance only. Supersession is the only lineage edge (Previous walks predecessors;
+Next is a return stack — not “the successor”).
 
-**Done when:** script exits 0; browser opened or `file://` path reported; soft-skip
+**Done when:** script exits 0 (or non-zero only for invalid lineage, with
+catalog still written); browser opened or `file://` path reported; soft-skip
 only if Python unavailable (still leave Markdown + index correct).

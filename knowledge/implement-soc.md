@@ -9,7 +9,7 @@ tags: [tests, implement, soc, review, git]
 
 ## Seam
 
-`skills/implement/SKILL.md` public instruction contract: hard Git ban (never stage/commit/push/PR/force-align); review exit via subagent or code-review (`cd-rvw`) handoff with affirmative never same-agent inline; housekeeping before review; soft new-session grill re-open; points operators at `commit`. CI/AGENTS bulk unittest lists include `tests.test_implement_soc`.
+`skills/implement/SKILL.md` public instruction contract: hard Git ban (never stage/commit/push/PR/force-align); review exit via subagent or code-review (`cd-rvw`) handoff with affirmative never same-agent inline; apply-on-write agent bars when editing skills (before validate); housekeeping before review; soft new-session grill re-open; points operators at `commit`. CI/AGENTS bulk unittest lists include `tests.test_implement_soc`.
 
 ## Run
 

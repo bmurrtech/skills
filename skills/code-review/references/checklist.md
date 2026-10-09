@@ -28,5 +28,10 @@ Read on the **Standards** axis when the diff touches code, config, or scripts. S
 
 ## Tests
 
-- Critical new paths have a regression seam (or an explicit “no seam” note)
-- Assertions check behavior, not private structure
+Align with **`tdd`** when that skill is loaded (see SKILL.md TDD gate). Always apply:
+
+- Critical new/changed behavior has a regression seam (or an explicit “no seam” note)
+- Assertions check **behavior** through public interfaces — not private structure
+- Expected values come from an independent source of truth (literals, worked examples, spec) — not a tautology that rebuilds the implementation
+- No implementation-coupled mocks of internals as the only proof
+- Session-scoped runs preferred (OKF test-maps / AGENTS Test index when present) — flag suite-stuffing or narrating the whole `tests/` tree as the review plan

@@ -345,6 +345,77 @@
     border-radius: 0 10px 10px 0;
     color: var(--text-dim);
   }
+
+  .lineage {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 8px 10px 14px;
+  }
+
+  .lineage .lane-label {
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    margin-top: 4px;
+  }
+
+  .lineage-card {
+    display: block;
+    width: 100%;
+    text-align: left;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    background: var(--surface);
+    padding: 10px 12px;
+    cursor: pointer;
+    color: inherit;
+    font: inherit;
+  }
+
+  .lineage-card:hover { border-color: var(--border-bright); }
+  .lineage-card.current {
+    border-color: var(--accent);
+    background: var(--accent-dim);
+    cursor: default;
+  }
+  .lineage-card .edge-label {
+    display: block;
+    font-size: 11px;
+    color: var(--text-dim);
+    margin-top: 4px;
+  }
+
+  .lineage-review {
+    margin: 12px 0 18px;
+    padding: 12px 14px;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    background: var(--surface2);
+    font-size: 13px;
+  }
+
+  .lineage-review li { margin: 0.2rem 0; }
+
+  .nav button {
+    border: 1px solid var(--border);
+    background: var(--surface);
+    color: var(--text);
+    border-radius: 8px;
+    padding: 8px 12px;
+    font: inherit;
+    cursor: pointer;
+  }
+  .nav button:hover { border-color: var(--border-bright); }
+  .nav button:disabled { opacity: 0.4; cursor: default; }
+
+  .pred-chooser {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-top: 8px;
+  }
 </style>
 </head>
 <body>
@@ -357,11 +428,11 @@
     <div class="toolbar">
       <label class="field">Search<input id="search" type="search" placeholder="title, rationale, path…"></label>
       <div id="filters">
-        <div class="chips" role="group" aria-label="Decision status">
+        <div class="chips" role="group" aria-label="OKF status">
           <button type="button" class="chip on" data-status="">All</button>
-          <button type="button" class="chip" data-status="draft" title="Proposed / draft">Proposed</button>
-          <button type="button" class="chip" data-status="stable">Accepted</button>
-          <button type="button" class="chip" data-status="deprecated">Superseded</button>
+          <button type="button" class="chip" data-status="draft" title="Proposed / draft">draft</button>
+          <button type="button" class="chip" data-status="stable" title="Accepted / stable">stable</button>
+          <button type="button" class="chip" data-status="deprecated" title="Deprecated / superseded">deprecated</button>
         </div>
         <label class="field">Month<select id="month-filter"><option value="">All</option></select></label>
         <label class="field">NNNN<input id="number-filter" inputmode="numeric" placeholder="0002" size="6"></label>
@@ -372,8 +443,8 @@
     <aside class="rail">
       <div id="timeline"></div>
       <details class="connections" open>
-        <summary>Connections</summary>
-        <svg id="graph" role="img" aria-label="Decision relationship graph"></svg>
+        <summary>Lineage</summary>
+        <div id="lineage" class="lineage" aria-label="Decision lineage"></div>
       </details>
     </aside>
     <main class="document-wrap"><article id="document"></article></main>
@@ -381,13 +452,21 @@
 <script>
 const catalog = __CATALOG_JSON__;
 const decisions = catalog.decisions || [];
+const edges = catalog.lineage_edges || [];
+const issues = catalog.issues || [];
+const bySlug = Object.fromEntries(decisions.map(d => [d.slug, d]));
 const local = p => String(p || "").replace(/^\//, "");
 const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({
   "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"
 }[c]));
 
+/** Return stack for Next — not “the successor.” */
+let returnStack = [];
+let suppressHashClear = false;
+let selectedSlug = null;
+
 document.querySelector("#meta").textContent =
-  `${decisions.length} decisions · generated ${catalog.generated?.at || ""}`;
+  `${decisions.length} decisions · schema ${catalog.schema_version || "?"} · generated ${catalog.generated?.at || ""}`;
 
 const months = [...new Set(decisions.map(d => d.month).filter(Boolean))];
 const monthSelect = document.querySelector("#month-filter");
@@ -402,6 +481,34 @@ function slugFromHash() {
   return decodeURIComponent((location.hash || "").replace(/^#\/?/, "").replace(/\.md$/i, ""));
 }
 
+function successorLabel(successor) {
+  const raw = (successor.status_raw || "").toLowerCase();
+  if (raw === "proposed" || raw === "draft" || successor.status === "draft") return "Proposed successor";
+  if (successor.status === "stable") return "Successor";
+  return "Provisional successor";
+}
+
+function lineageSlugs(d) {
+  const lin = d.lineage || {};
+  return new Set([...(lin.predecessors || []), ...(lin.successors || []), d.slug]);
+}
+
+function referenceLinks(d) {
+  const skip = lineageSlugs(d);
+  const skipPaths = new Set(
+    [...skip].flatMap(slug => {
+      const hit = bySlug[slug];
+      return hit ? [hit.path, "/" + (hit.slug + ".md"), hit.slug + ".md"] : [slug + ".md", "/" + slug + ".md"];
+    })
+  );
+  return (d.related || []).filter(path => {
+    const stem = String(path).replace(/^\//, "").replace(/\.md$/i, "");
+    if (skip.has(stem)) return false;
+    if (skipPaths.has(path) || skipPaths.has(local(path))) return false;
+    return true;
+  });
+}
+
 function md(src, skipTitle) {
   let text = String(src ?? "").replace(/\r\n/g, "\n").replace(/<!--[\s\S]*?-->/g, "");
   if (skipTitle) text = text.replace(/^#[^#\n].*\n+/, "");
@@ -409,12 +516,18 @@ function md(src, skipTitle) {
   const out = [];
   let list = null;
   const close = () => { if (list) { out.push("</ul>"); list = null; } };
+  const safeHref = href => {
+    const raw = String(href || "").trim();
+    if (/^(https?:|mailto:|#|\/|\.\/|\.\.\/)/i.test(raw)) return esc(raw);
+    if (/^[^:]+\.md(?:#.*)?$/i.test(raw)) return esc(raw);
+    return "#";
+  };
   const inline = s => esc(s)
     .replace(/`([^`]+)`/g, "<code>$1</code>")
     .replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>")
     .replace(/(^|[^*])\*([^*]+)\*/g, "$1<em>$2</em>")
     .replace(/\[([^\]]+)\]\(([^)]+)\)/g, (_, label, href) =>
-      `<a href="${esc(href)}">${label}</a>`);
+      `<a href="${safeHref(href)}">${label}</a>`);
   for (const line of lines) {
     const heading = line.match(/^(#{1,3})\s+(.+)$/);
     if (heading) {
@@ -449,6 +562,39 @@ function filtered() {
   });
 }
 
+function cardHtml(d, { current = false, edgeLabel = "" } = {}) {
+  return `<button type="button" class="lineage-card${current ? " current" : ""}" data-slug="${esc(d.slug)}"${current ? " disabled" : ""}>` +
+    `<strong>${esc(d.number ? d.number + " · " : "")}${esc(d.title)}</strong>` +
+    `<span class="pill ${esc(d.status)}" style="margin-left:8px">${esc(d.status_raw || d.status)}</span>` +
+    (edgeLabel ? `<span class="edge-label">${esc(edgeLabel)}</span>` : "") +
+    `</button>`;
+}
+
+function renderLineage(d) {
+  const pane = document.querySelector("#lineage");
+  if (!d) {
+    pane.innerHTML = `<p class="empty">Select a decision.</p>`;
+    return;
+  }
+  const lin = d.lineage || {};
+  const preds = (lin.predecessors || []).map(s => bySlug[s]).filter(Boolean);
+  const succs = (lin.successors || []).map(s => bySlug[s]).filter(Boolean);
+  let html = "";
+  html += `<div class="lane-label">Predecessors</div>`;
+  html += preds.length
+    ? preds.map(p => cardHtml(p, { edgeLabel: "Predecessor" })).join("")
+    : `<p class="empty">None</p>`;
+  html += `<div class="lane-label">Current · depth ${esc(lin.depth ?? 0)} · origin ${(lin.roots || []).map(esc).join(", ") || "—"}</div>`;
+  html += cardHtml(d, { current: true });
+  html += `<div class="lane-label">${succs.length > 1 ? "Several later decisions" : "Successors"}</div>`;
+  html += succs.length
+    ? succs.map(s => cardHtml(s, { edgeLabel: successorLabel(s) })).join("")
+    : `<p class="empty">None</p>`;
+  pane.innerHTML = html;
+  pane.querySelectorAll(".lineage-card:not(.current)").forEach(el =>
+    el.addEventListener("click", () => openDecision(el.dataset.slug, { clearStack: true, writeHash: true })));
+}
+
 function renderTimeline(rows, selected) {
   const timeline = document.querySelector("#timeline");
   if (!rows.length) {
@@ -467,7 +613,7 @@ function renderTimeline(rows, selected) {
   });
   timeline.innerHTML = html;
   timeline.querySelectorAll(".decision").forEach(el =>
-    el.addEventListener("click", () => select(el.dataset.slug, true)));
+    el.addEventListener("click", () => openDecision(el.dataset.slug, { clearStack: true, writeHash: true })));
 }
 
 function renderDocument(d) {
@@ -476,9 +622,8 @@ function renderDocument(d) {
     pane.innerHTML = `<p class="empty">Select a decision from the timeline.</p>`;
     return;
   }
-  const idx = decisions.findIndex(item => item.slug === d.slug);
-  const prev = idx > 0 ? decisions[idx - 1] : null;
-  const next = idx >= 0 && idx < decisions.length - 1 ? decisions[idx + 1] : null;
+  const lin = d.lineage || {};
+  const preds = (lin.predecessors || []).map(s => bySlug[s]).filter(Boolean);
   const history = (d.history || []).map(h =>
     `<li><code>${esc(h.hash)}</code> ${esc((h.date || "").slice(0, 10))} · ${esc(h.author)} — ${esc(h.subject)}</li>`
   ).join("") || `<li class="empty">No git history in this catalog rebuild.</li>`;
@@ -486,92 +631,95 @@ function renderDocument(d) {
   const synopsis = d.synopsis
     ? `<p class="synopsis">${esc(d.synopsis)}</p>`
     : "";
+  const myIssues = issues.filter(issue => (issue.decisions || []).includes(d.slug));
+  const review = myIssues.length
+    ? `<div class="lineage-review animate" style="--i:3"><div class="eyebrow">Lineage review</div><ul>${
+        myIssues.map(i => `<li><code>${esc(i.code)}</code> ${esc(i.message)}</li>`).join("")
+      }</ul></div>`
+    : "";
+  const refs = referenceLinks(d);
+  const refBlock = refs.length
+    ? `<div class="history animate" style="--i:4"><div class="eyebrow">References</div><ul>${
+        refs.map(r => `<li><a href="${esc(local(r))}">${esc(local(r))}</a></li>`).join("")
+      }</ul></div>`
+    : "";
+
+  let prevControl = `<span></span>`;
+  if (preds.length === 1) {
+    prevControl = `<button type="button" id="nav-prev">← Previous · ${esc(preds[0].number || "")} ${esc(preds[0].title)}</button>`;
+  } else if (preds.length > 1) {
+    prevControl = `<div><button type="button" id="nav-prev-menu">← Previous…</button>` +
+      `<div class="pred-chooser" id="pred-chooser" hidden>${
+        preds.map(p => `<button type="button" data-pred="${esc(p.slug)}">${esc(p.number || "")} ${esc(p.title)}</button>`).join("")
+      }</div></div>`;
+  }
+
+  const nextEnabled = returnStack.length > 0;
+  const nextControl = `<button type="button" id="nav-next"${nextEnabled ? "" : " disabled"}>Next →</button>`;
+
   pane.innerHTML =
     `<div class="eyebrow animate" style="--i:0">${esc(d.slug)}</div>` +
     `<h1 class="animate" style="--i:1">${esc(d.title)}</h1>` +
     `<div class="meta-row animate" style="--i:2">` +
       `<span class="pill ${esc(d.status)}">${esc(d.status_raw || d.status)}</span>` +
       `<span class="meta">${esc(d.date || "undated")}</span>` +
-      (last ? `<span class="meta">last edited ${esc((last.date || "").slice(0, 10))} · ${esc(last.hash)}</span>` : "") +
+      (last ? `<span class="meta">git ${esc((last.date || "").slice(0, 10))} · ${esc(last.hash)}</span>` : "") +
       `<a href="${esc(local(d.path))}">Open .md</a>` +
     `</div>` +
     synopsis +
-    `<div class="history animate" style="--i:3"><div class="eyebrow">Version history</div><ul>${history}</ul></div>` +
-    `<div class="animate" style="--i:4">${md(d.markdown || "", true)}</div>` +
-    `<div class="nav animate" style="--i:5">` +
-      (prev ? `<a href="#${esc(prev.slug)}">← ${esc(prev.number || "")} ${esc(prev.title)}</a>` : `<span></span>`) +
-      (next ? `<a href="#${esc(next.slug)}">${esc(next.number || "")} ${esc(next.title)} →</a>` : `<span></span>`) +
-    `</div>`;
-}
+    review +
+    refBlock +
+    `<div class="history animate" style="--i:5"><div class="eyebrow">Git history (not lineage)</div><ul>${history}</ul></div>` +
+    `<div class="animate" style="--i:6">${md(d.markdown || "", true)}</div>` +
+    `<div class="nav animate" style="--i:7">${prevControl}${nextControl}</div>`;
 
-function renderGraph() {
-  const external = [...new Set(
-    decisions.flatMap(d => d.related || []).filter(path => !decisions.some(d => d.path === path))
-  )];
-  const nodes = [
-    ...decisions.map(d => ({ path: d.path, slug: d.slug, label: d.number || d.title.slice(0, 18), external: false })),
-    ...external.map(path => ({ path, slug: "", label: path.split("/").pop(), external: true })),
-  ];
-  const svg = document.querySelector("#graph");
-  const ns = "http://www.w3.org/2000/svg";
-  const w = 420;
-  const h = Math.max(220, nodes.length * 52);
-  svg.setAttribute("viewBox", `0 0 ${w} ${h}`);
-  svg.innerHTML = "";
-  const position = (node, i) => ({ x: node.external ? 280 : 70, y: 28 + i * 52 });
-  const byPath = new Map(nodes.map((node, i) => [node.path, { node, i, pos: position(node, i) }]));
-  decisions.forEach(d => (d.related || []).forEach(target => {
-    const source = byPath.get(d.path);
-    const hit = byPath.get(target);
-    if (!hit) return;
-    const line = document.createElementNS(ns, "line");
-    line.setAttribute("class", "edge");
-    line.setAttribute("x1", source.pos.x);
-    line.setAttribute("y1", source.pos.y);
-    line.setAttribute("x2", hit.pos.x);
-    line.setAttribute("y2", hit.pos.y);
-    svg.append(line);
-  }));
-  nodes.forEach((node, i) => {
-    const pos = position(node, i);
-    const a = document.createElementNS(ns, "a");
-    a.setAttribute("href", node.slug ? `#${node.slug}` : local(node.path));
-    const circle = document.createElementNS(ns, "circle");
-    circle.setAttribute("class", node.external ? "node node-ext" : "node");
-    circle.setAttribute("cx", pos.x);
-    circle.setAttribute("cy", pos.y);
-    circle.setAttribute("r", 8);
-    const text = document.createElementNS(ns, "text");
-    text.setAttribute("class", "node-label");
-    text.setAttribute("x", pos.x + 14);
-    text.setAttribute("y", pos.y + 4);
-    text.textContent = node.label;
-    a.append(circle, text);
-    svg.append(a);
-  });
-  if (!nodes.length) {
-    const text = document.createElementNS(ns, "text");
-    text.setAttribute("class", "node-label");
-    text.setAttribute("x", 20);
-    text.setAttribute("y", 40);
-    text.textContent = "No decisions yet.";
-    svg.append(text);
+  const prevBtn = document.getElementById("nav-prev");
+  if (prevBtn) prevBtn.addEventListener("click", () => goPrevious(preds[0].slug));
+  const prevMenu = document.getElementById("nav-prev-menu");
+  if (prevMenu) {
+    prevMenu.addEventListener("click", () => {
+      const chooser = document.getElementById("pred-chooser");
+      if (chooser) chooser.hidden = !chooser.hidden;
+    });
+    document.querySelectorAll("#pred-chooser [data-pred]").forEach(btn =>
+      btn.addEventListener("click", () => goPrevious(btn.dataset.pred)));
   }
+  const nextBtn = document.getElementById("nav-next");
+  if (nextBtn) nextBtn.addEventListener("click", goNext);
 }
 
-function select(slug, writeHash) {
+function goPrevious(predSlug) {
+  if (selectedSlug) returnStack.push(selectedSlug);
+  openDecision(predSlug, { clearStack: false, writeHash: true });
+}
+
+function goNext() {
+  const slug = returnStack.pop();
+  if (!slug) return;
+  openDecision(slug, { clearStack: false, writeHash: true });
+}
+
+function openDecision(slug, { clearStack = false, writeHash = false } = {}) {
+  if (clearStack) returnStack = [];
   const rows = filtered();
-  const requested = rows.find(d => d.slug === slug);
+  const requested = decisions.find(d => d.slug === slug) || rows.find(d => d.slug === slug);
   const hit = requested || rows[0] || null;
-  if (hit && (writeHash || !requested)) {
+  selectedSlug = hit ? hit.slug : null;
+  if (hit && writeHash) {
     const next = "#" + hit.slug;
-    if (location.hash !== next) location.hash = next;
+    if (location.hash !== next) {
+      suppressHashClear = true;
+      location.hash = next;
+    }
   }
   renderTimeline(rows, hit);
+  renderLineage(hit);
   renderDocument(hit);
 }
 
-function refresh() { select(slugFromHash(), false); }
+function refresh() {
+  openDecision(slugFromHash() || selectedSlug, { clearStack: false, writeHash: false });
+}
 
 ["search", "month-filter", "number-filter"].forEach(id => {
   document.getElementById(id).addEventListener("input", refresh);
@@ -581,9 +729,16 @@ document.querySelectorAll(".chip").forEach(btn => btn.addEventListener("click", 
   document.querySelectorAll(".chip").forEach(el => el.classList.toggle("on", el === btn));
   refresh();
 }));
-window.addEventListener("hashchange", () => select(slugFromHash(), false));
-renderGraph();
-refresh();
+window.addEventListener("hashchange", () => {
+  if (suppressHashClear) {
+    suppressHashClear = false;
+    openDecision(slugFromHash(), { clearStack: false, writeHash: false });
+    return;
+  }
+  openDecision(slugFromHash(), { clearStack: true, writeHash: false });
+});
+openDecision(slugFromHash(), { clearStack: true, writeHash: false });
 </script>
 </body>
 </html>
+

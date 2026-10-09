@@ -11,9 +11,9 @@ disable-model-invocation: true
 # implement
 
 Ship the requested change in the **current** (consumer) repo. Prefer **`tdd`** at
-pre-agreed seams when code applies. Own build + soft housekeeping only — review
-is a **fresh-context exit**; Git publish belongs to **`commit`** / **`merge`** /
-**`release`**.
+pre-agreed seams when code applies. Own build + soft housekeeping (+ apply-on-write
+agent bars when editing skills) — review is a **fresh-context exit**; Git publish
+belongs to **`commit`** / **`merge`** / **`release`**.
 
 ## Workflow
 
@@ -47,7 +47,21 @@ green, vertical slices).
 **Done when:** agreed checks pass for the slice set (or TDD skipped because no
 code seam applies).
 
-### 3. Validate (target repo)
+### 3. Agent artifacts (if applicable)
+
+When this change set **writes or edits** Agent Skills / agent instructions /
+skill scripts (`skills/**`, `**/SKILL.md`, `**/agents/**`,
+`**/skills/**/scripts/**`, `.agents/skills/**`, or clear host skill homes):
+
+- If **`writing-for-agents`** is installed → apply it on those edits
+- Judge new/changed skill scripts with [Skill scripts vs LLM](../../knowledge/skill-scripts.md) when that OKF (or equivalent) exists — LLM for judgment; script only for exactness / repetition / compression
+
+Soft-skip when those skills/docs are absent. Skip this whole step for ordinary
+app/lib work (no agent-artifact paths).
+
+**Done when:** agent-writing bar applied or soft-skipped; non-skill work unchanged.
+
+### 4. Validate (target repo)
 
 Run **this repo’s** real checks from evidence — `AGENTS.md`, package scripts, CI
 config — typecheck / unit / lint as applicable.
@@ -58,7 +72,7 @@ primary success path for ordinary app/lib work.
 
 **Done when:** relevant target-repo checks exit 0 (or none apply, noted).
 
-### 4. Housekeeping (if applicable)
+### 5. Housekeeping (if applicable)
 
 If **`upkeep`** / **`context`** are installed **and** the target artifacts exist
 (`AGENTS.md`, `CONTEXT.md` / `knowledge/`, or the user follows those
@@ -72,7 +86,7 @@ note for later).
 
 **Done when:** housekeeping applied or explicitly skipped.
 
-### 5. Review exit (context boundary)
+### 6. Review exit (context boundary)
 
 Prefer a real context boundary — never same-agent inline **`code-review`**.
 
@@ -87,7 +101,7 @@ scope in the **code-review (`cd-rvw`)** kind block.
 **Done when:** subagent review reported, or code-review (`cd-rvw`) handoff written
 and session stopped for review.
 
-### 6. Git ban (hard)
+### 7. Git ban (hard)
 
 Never stage, never commit, never push, never open/update a PR, never
 force-align branches — even if the prompt says “and push to main.”

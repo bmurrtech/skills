@@ -1,6 +1,6 @@
 ---
 title: ADR catalog
-description: Seam map for to-adr build_catalog parse + at-a-glance visualizer.
+description: Seam map for to-adr build_catalog parse, lineage, dual-write catalog, at-a-glance visualizer.
 type: test-map
 tags: [tests, adr, to-adr]
 ---
@@ -9,14 +9,24 @@ tags: [tests, adr, to-adr]
 
 ## Seam
 
-`skills/to-adr/scripts/build_catalog.py` public contract: parse ADR Status/synopsis,
-build catalog without requiring index rewrite, write visualizer HTML + JSON under
-`.scratch/adr-optics/` by default (escapes `<` in embedded JSON; `--open` launches browser).
+`skills/to-adr/scripts/build_catalog.py` public contract:
 
-Catalog rows intentionally include full ADR `markdown` and recent git `history`
-so the offline at-a-glance HTML can show bodies without re-reading `docs/adr/`.
-Do not slim the JSON for “list view” unless the visualizer is split into a
-list-only payload plus on-demand body fetch.
+- Parse ADR Status (title, author status → OKF status, date, supersedes /
+  superseded-by links, related links) without requiring the rest of the template.
+- Build supersession **decision lineage** (`lineage_edges`, per-record `lineage`,
+  `issues`). Public `supersedes` / `superseded_by` come from the same graph
+  (predecessors / successors). Edges have no strength field. Exit non-zero only
+  for `invalid_lineage` after writing artifacts.
+- Always write slim tracked `docs/adr/catalog.json` (`schema_version` 2; no
+  wall-clock `generated.at` — fat/scratch only).
+- Opt-in `--write-index` rewrites `docs/adr/index.md` (Related + lineage review).
+- `--visualize` writes fat JSON + HTML under `.scratch/adr-optics/` by default
+  (escapes `<` in embedded JSON; `--open` launches browser). Fat rows keep full
+  `markdown` + git `history` for the offline pane.
+
+Do not slim the scratch JSON for “list view” unless the visualizer is split into
+a list-only payload plus on-demand body fetch. Home `catalog.json` stays slim
+(no `markdown` / `history` / `search_text`).
 
 ## Run
 

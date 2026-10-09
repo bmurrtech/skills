@@ -12,11 +12,13 @@
       "description": "Grill designs, write PRDs and ADRs, and diagram the result.",
       "skills": [
         "grill-me",
+        "discovery",
         "to-prd",
         "to-adr",
         "ascii",
         "visual-explainer",
-        "writing-for-agents"
+        "writing-for-agents",
+        "writing-for-humans"
       ]
     },
     {

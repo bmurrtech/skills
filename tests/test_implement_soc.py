@@ -53,10 +53,8 @@ class ImplementSocContractTests(unittest.TestCase):
         self.assertRegex(self.lower, r"upkeep")
         self.assertRegex(self.lower, r"context")
         # Housekeeping section should appear before review exit in the body.
-        upkeep_pos = self.lower.find("upkeep")
-        review_pos = self.lower.find("review exit")
-        if review_pos < 0:
-            review_pos = self.lower.find("### 5")
+        upkeep_pos = self.lower.find("### 5. housekeeping")
+        review_pos = self.lower.find("### 6. review exit")
         self.assertGreater(upkeep_pos, 0)
         self.assertGreater(review_pos, upkeep_pos)
 

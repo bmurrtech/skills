@@ -1,0 +1,548 @@
+{
+  "schema_version": 2,
+  "generated": {
+    "by": "bmurrtech/skills/to-adr"
+  },
+  "decisions": [
+    {
+      "path": "/0001-ADR-skills-home.md",
+      "slug": "0001-ADR-skills-home",
+      "type": "ADR",
+      "number": "0001",
+      "title": "Skills live under skills/ only",
+      "status": "stable",
+      "status_raw": "accepted",
+      "date": "2026-09-25",
+      "month": "2026-09",
+      "related": [],
+      "related_kinds": [],
+      "supersedes": [],
+      "superseded_by": [],
+      "related_adrs": [],
+      "related_prds": [],
+      "synopsis": "Agent hosts discover skills from several local directories. This repository needs one tracked source of truth so installs and edits stay coherent.",
+      "lineage": {
+        "predecessors": [],
+        "successors": [],
+        "roots": [
+          "0001-ADR-skills-home"
+        ],
+        "ancestors": [],
+        "descendants": [],
+        "depth": 0
+      }
+    },
+    {
+      "path": "/0002-ADR-glossary-okf.md",
+      "slug": "0002-ADR-glossary-okf",
+      "type": "ADR",
+      "number": "0002",
+      "title": "Glossary and OKF split from AGENTS.md",
+      "status": "stable",
+      "status_raw": "accepted",
+      "date": "2026-09-25",
+      "month": "2026-09",
+      "related": [
+        "/0012-ADR-handoff-hybrid-kinds.md"
+      ],
+      "related_kinds": [
+        "adr"
+      ],
+      "supersedes": [],
+      "superseded_by": [],
+      "related_adrs": [
+        "/0012-ADR-handoff-hybrid-kinds.md"
+      ],
+      "related_prds": [],
+      "synopsis": "Agents need both a domain glossary and an operating manual. Mixing them causes duplication and stale instructions.",
+      "lineage": {
+        "predecessors": [],
+        "successors": [],
+        "roots": [
+          "0002-ADR-glossary-okf"
+        ],
+        "ancestors": [],
+        "descendants": [],
+        "depth": 0
+      }
+    },
+    {
+      "path": "/0003-ADR-docs-adr-madr.md",
+      "slug": "0003-ADR-docs-adr-madr",
+      "type": "ADR",
+      "number": "0003",
+      "title": "ADRs under docs/adr with MADR headings",
+      "status": "deprecated",
+      "status_raw": "superseded",
+      "date": "2026-09-25",
+      "month": "2026-09",
+      "related": [
+        "/0010-ADR-to-adr-mechanics-shipped.md"
+      ],
+      "related_kinds": [
+        "adr"
+      ],
+      "supersedes": [],
+      "superseded_by": [
+        "0010-ADR-to-adr-mechanics-shipped"
+      ],
+      "related_adrs": [],
+      "related_prds": [],
+      "synopsis": "Significant decisions need a tracked, reviewable home that agents and humans can cite from the glossary and `AGENTS.md`.",
+      "lineage": {
+        "predecessors": [],
+        "successors": [
+          "0010-ADR-to-adr-mechanics-shipped"
+        ],
+        "roots": [
+          "0003-ADR-docs-adr-madr"
+        ],
+        "ancestors": [],
+        "descendants": [
+          "0010-ADR-to-adr-mechanics-shipped"
+        ],
+        "depth": 0
+      }
+    },
+    {
+      "path": "/0004-ADR-local-okf-prds.md",
+      "slug": "0004-ADR-local-okf-prds",
+      "type": "ADR",
+      "number": "0004",
+      "title": "Local OKF PRDs under docs/prd (gitignored)",
+      "status": "deprecated",
+      "status_raw": "superseded",
+      "date": "2026-09-25",
+      "month": "2026-09",
+      "related": [
+        "/0007-ADR-scaffold-omit-about-prd.md"
+      ],
+      "related_kinds": [
+        "adr"
+      ],
+      "supersedes": [],
+      "superseded_by": [
+        "0007-ADR-scaffold-omit-about-prd"
+      ],
+      "related_adrs": [],
+      "related_prds": [],
+      "synopsis": "PRDs are useful for day-to-day MVP planning but may contain local product detail that should not ship with the public skills library.",
+      "lineage": {
+        "predecessors": [],
+        "successors": [
+          "0007-ADR-scaffold-omit-about-prd"
+        ],
+        "roots": [
+          "0004-ADR-local-okf-prds"
+        ],
+        "ancestors": [],
+        "descendants": [
+          "0007-ADR-scaffold-omit-about-prd",
+          "0013-ADR-prd-tracking-choice"
+        ],
+        "depth": 0
+      }
+    },
+    {
+      "path": "/0005-ADR-skills-release-artifact.md",
+      "slug": "0005-ADR-skills-release-artifact",
+      "type": "ADR",
+      "number": "0005",
+      "title": "Skills release artifact excludes library OKF",
+      "status": "stable",
+      "status_raw": "accepted",
+      "date": "2026-09-25",
+      "month": "2026-09",
+      "related": [
+        "/0011-ADR-skill-scanner-posture-prereqs.md"
+      ],
+      "related_kinds": [
+        "adr"
+      ],
+      "supersedes": [],
+      "superseded_by": [],
+      "related_adrs": [
+        "/0011-ADR-skill-scanner-posture-prereqs.md"
+      ],
+      "related_prds": [],
+      "synopsis": "Installers need a lightweight skills package. Shipping the library’s `knowledge/` / `CONTEXT.md` / ops docs into consumer repos risks colliding with consumer OKF (or other `knowledge/` conventions) and bloats drop-in installs. Should library meta be gitignored, or filtered only at package time?",
+      "lineage": {
+        "predecessors": [],
+        "successors": [],
+        "roots": [
+          "0005-ADR-skills-release-artifact"
+        ],
+        "ancestors": [],
+        "descendants": [],
+        "depth": 0
+      }
+    },
+    {
+      "path": "/0006-ADR-npx-skills-install-only.md",
+      "slug": "0006-ADR-npx-skills-install-only",
+      "type": "ADR",
+      "number": "0006",
+      "title": "Install via npx skills only (defer curl gateway)",
+      "status": "stable",
+      "status_raw": "accepted",
+      "date": "2026-09-26",
+      "month": "2026-09",
+      "related": [
+        "/0005-ADR-skills-release-artifact.md",
+        "/0011-ADR-skill-scanner-posture-prereqs.md"
+      ],
+      "related_kinds": [
+        "adr"
+      ],
+      "supersedes": [],
+      "superseded_by": [],
+      "related_adrs": [
+        "/0005-ADR-skills-release-artifact.md",
+        "/0011-ADR-skill-scanner-posture-prereqs.md"
+      ],
+      "related_prds": [],
+      "synopsis": "Consumers need a supported way to install this skills library. README advertised both `npx skills add bmurrtech/skills` and `curl | sh` via `get.mycmd.site`. The curl path needs a Cloudflare Worker, registry/catalog, bootstrap installer, and ongoing channel updates — while the audience already has Node and a native skills CLI. Should we implement the curl alternative now?",
+      "lineage": {
+        "predecessors": [],
+        "successors": [],
+        "roots": [
+          "0006-ADR-npx-skills-install-only"
+        ],
+        "ancestors": [],
+        "descendants": [],
+        "depth": 0
+      }
+    },
+    {
+      "path": "/0007-ADR-scaffold-omit-about-prd.md",
+      "slug": "0007-ADR-scaffold-omit-about-prd",
+      "type": "ADR",
+      "number": "0007",
+      "title": "Setup omits about-prd; library docs explain local PRDs",
+      "status": "deprecated",
+      "status_raw": "superseded",
+      "date": "2026-09-26",
+      "month": "2026-09",
+      "related": [
+        "/0004-ADR-local-okf-prds.md",
+        "/0013-ADR-prd-tracking-choice.md",
+        "/0002-ADR-glossary-okf.md"
+      ],
+      "related_kinds": [
+        "adr"
+      ],
+      "supersedes": [
+        "0004-ADR-local-okf-prds"
+      ],
+      "superseded_by": [
+        "0013-ADR-prd-tracking-choice"
+      ],
+      "related_adrs": [
+        "/0002-ADR-glossary-okf.md"
+      ],
+      "related_prds": [],
+      "synopsis": "ADR 0004 required `setup-bmurrtech-skills` to create a tracked `docs/about-prd.md` in every consumer so local PRDs were explained. That explainer is library-product documentation, not process surface the agent needs every run. Should consumers still receive `about-prd.md` at scaffold time?",
+      "lineage": {
+        "predecessors": [
+          "0004-ADR-local-okf-prds"
+        ],
+        "successors": [
+          "0013-ADR-prd-tracking-choice"
+        ],
+        "roots": [
+          "0004-ADR-local-okf-prds"
+        ],
+        "ancestors": [
+          "0004-ADR-local-okf-prds"
+        ],
+        "descendants": [
+          "0013-ADR-prd-tracking-choice"
+        ],
+        "depth": 1
+      }
+    },
+    {
+      "path": "/0008-ADR-maintainer-skill-scaffold-local.md",
+      "slug": "0008-ADR-maintainer-skill-scaffold-local",
+      "type": "ADR",
+      "number": "0008",
+      "title": "Maintainer skill scaffolding is local-only",
+      "status": "deprecated",
+      "status_raw": "superseded",
+      "date": "2026-09-26",
+      "month": "2026-09",
+      "related": [
+        "/0009-ADR-local-maintainer-skills-host-path.md",
+        "/0001-ADR-skills-home.md",
+        "/0005-ADR-skills-release-artifact.md",
+        "/0006-ADR-npx-skills-install-only.md"
+      ],
+      "related_kinds": [
+        "adr"
+      ],
+      "supersedes": [],
+      "superseded_by": [
+        "0009-ADR-local-maintainer-skills-host-path"
+      ],
+      "related_adrs": [
+        "/0001-ADR-skills-home.md",
+        "/0005-ADR-skills-release-artifact.md",
+        "/0006-ADR-npx-skills-install-only.md"
+      ],
+      "related_prds": [],
+      "synopsis": "ADR 0001 tracks published skills under `skills/` only. A scaffolder skill lived there too, so it shipped in the release artifact and appeared in consumer catalogs — even though it is library-maintainer tooling, not a portable product skill. Hosts already provide create-skill tooling; shipping a redundant creator confuses the universal vs library-specific boundary.",
+      "lineage": {
+        "predecessors": [],
+        "successors": [
+          "0009-ADR-local-maintainer-skills-host-path"
+        ],
+        "roots": [
+          "0008-ADR-maintainer-skill-scaffold-local"
+        ],
+        "ancestors": [],
+        "descendants": [
+          "0009-ADR-local-maintainer-skills-host-path"
+        ],
+        "depth": 0
+      }
+    },
+    {
+      "path": "/0009-ADR-local-maintainer-skills-host-path.md",
+      "slug": "0009-ADR-local-maintainer-skills-host-path",
+      "type": "ADR",
+      "number": "0009",
+      "title": "Local maintainer skills under ignored .agents/skills/",
+      "status": "stable",
+      "status_raw": "accepted",
+      "date": "2026-09-26",
+      "month": "2026-09",
+      "related": [
+        "/0008-ADR-maintainer-skill-scaffold-local.md",
+        "/0001-ADR-skills-home.md",
+        "/0005-ADR-skills-release-artifact.md",
+        "/0006-ADR-npx-skills-install-only.md"
+      ],
+      "related_kinds": [
+        "adr"
+      ],
+      "supersedes": [
+        "0008-ADR-maintainer-skill-scaffold-local"
+      ],
+      "superseded_by": [],
+      "related_adrs": [
+        "/0001-ADR-skills-home.md",
+        "/0005-ADR-skills-release-artifact.md",
+        "/0006-ADR-npx-skills-install-only.md"
+      ],
+      "related_prds": [],
+      "synopsis": "ADR 0008 kept maintainer-only skills untracked and out of the product catalog by placing them under `.agents/maintainer/`, outside host discovery. Cursor (and similar hosts) only load skills from discovery roots such as `.agents/skills/`, so those tools became unusable in the IDE while still needed by library maintainers.",
+      "lineage": {
+        "predecessors": [
+          "0008-ADR-maintainer-skill-scaffold-local"
+        ],
+        "successors": [],
+        "roots": [
+          "0008-ADR-maintainer-skill-scaffold-local"
+        ],
+        "ancestors": [
+          "0008-ADR-maintainer-skill-scaffold-local"
+        ],
+        "descendants": [],
+        "depth": 1
+      }
+    },
+    {
+      "path": "/0010-ADR-to-adr-mechanics-shipped.md",
+      "slug": "0010-ADR-to-adr-mechanics-shipped",
+      "type": "ADR",
+      "number": "0010",
+      "title": "ADR template SoT lives in shipped to-adr mechanics",
+      "status": "stable",
+      "status_raw": "accepted",
+      "date": "2026-09-26",
+      "month": "2026-09",
+      "related": [
+        "/0003-ADR-docs-adr-madr.md",
+        "/0005-ADR-skills-release-artifact.md",
+        "/0011-ADR-skill-scanner-posture-prereqs.md",
+        "/../../skills/to-adr/SKILL.md"
+      ],
+      "related_kinds": [
+        "adr",
+        "other"
+      ],
+      "supersedes": [
+        "0003-ADR-docs-adr-madr"
+      ],
+      "superseded_by": [],
+      "related_adrs": [
+        "/0005-ADR-skills-release-artifact.md",
+        "/0011-ADR-skill-scanner-posture-prereqs.md"
+      ],
+      "related_prds": [],
+      "synopsis": "ADR 0003 fixed ADRs under `docs/adr/` with MADR headings, but left heading/process detail easy to drift into library-only `knowledge/` — which does not ship in the skills release artifact. Consumer installs of **`to-adr`** need a self-contained authoring contract (placement vs ops/glossary, anti-bloat Implementation Notes, optional at-a-glance catalog) without depending on this repo’s OKF.",
+      "lineage": {
+        "predecessors": [
+          "0003-ADR-docs-adr-madr"
+        ],
+        "successors": [],
+        "roots": [
+          "0003-ADR-docs-adr-madr"
+        ],
+        "ancestors": [
+          "0003-ADR-docs-adr-madr"
+        ],
+        "descendants": [],
+        "depth": 1
+      }
+    },
+    {
+      "path": "/0011-ADR-skill-scanner-posture-prereqs.md",
+      "slug": "0011-ADR-skill-scanner-posture-prereqs",
+      "type": "ADR",
+      "number": "0011",
+      "title": "Published skills use prerequisites and local Spec — not agent-side installs or CDN fetches",
+      "status": "stable",
+      "status_raw": "accepted",
+      "date": "2026-09-27",
+      "month": "2026-09",
+      "related": [
+        "/0005-ADR-skills-release-artifact.md",
+        "/0006-ADR-npx-skills-install-only.md",
+        "/0010-ADR-to-adr-mechanics-shipped.md",
+        "/../accepted-risk.md",
+        "/../../README.md"
+      ],
+      "related_kinds": [
+        "adr",
+        "other"
+      ],
+      "supersedes": [],
+      "superseded_by": [],
+      "related_adrs": [
+        "/0005-ADR-skills-release-artifact.md",
+        "/0006-ADR-npx-skills-install-only.md",
+        "/0010-ADR-to-adr-mechanics-shipped.md"
+      ],
+      "related_prds": [],
+      "synopsis": "Post-ingest scanners (Snyk / Socket / Gen) flagged **MEDIUM** on shipped **`code-review`**, **`docx`**, and **`to-adr`**. Maintainers want cleaner PASS posture without gutting core review / Word / ADR function. How should published skills obtain CLIs, Spec context, and visualizer assets — agent download/install/fetch, or operator prerequisites plus local-only inputs?",
+      "lineage": {
+        "predecessors": [],
+        "successors": [],
+        "roots": [
+          "0011-ADR-skill-scanner-posture-prereqs"
+        ],
+        "ancestors": [],
+        "descendants": [],
+        "depth": 0
+      }
+    },
+    {
+      "path": "/0012-ADR-handoff-hybrid-kinds.md",
+      "slug": "0012-ADR-handoff-hybrid-kinds",
+      "type": "ADR",
+      "number": "0012",
+      "title": "Handoff is a hybrid portable brief with base + kind overlays",
+      "status": "stable",
+      "status_raw": "accepted",
+      "date": "2026-09-30",
+      "month": "2026-09",
+      "related": [
+        "/0002-ADR-glossary-okf.md",
+        "/../../CONTEXT.md",
+        "/../../skills/handoff/SKILL.md"
+      ],
+      "related_kinds": [
+        "adr",
+        "other"
+      ],
+      "supersedes": [],
+      "superseded_by": [],
+      "related_adrs": [
+        "/0002-ADR-glossary-okf.md"
+      ],
+      "related_prds": [],
+      "synopsis": "Live use showed thin path-index handoffs (Matt-style compact + temp file) failed cold starts: wrong suggested skills, “see this chat” pointers, missing acceptance/verdict, and temp paths never entered the next prompt. How should **`handoff`** balance portability (no forked specs) with enough inline substance for a fresh agent — and how should naming, kinds, and chat UX work?",
+      "lineage": {
+        "predecessors": [],
+        "successors": [],
+        "roots": [
+          "0012-ADR-handoff-hybrid-kinds"
+        ],
+        "ancestors": [],
+        "descendants": [],
+        "depth": 0
+      }
+    },
+    {
+      "path": "/0013-ADR-prd-tracking-choice.md",
+      "slug": "0013-ADR-prd-tracking-choice",
+      "type": "ADR",
+      "number": "0013",
+      "title": "Setup offers PRD track vs ignore; default ignore",
+      "status": "stable",
+      "status_raw": "accepted",
+      "date": "2026-09-30",
+      "month": "2026-09",
+      "related": [
+        "/0007-ADR-scaffold-omit-about-prd.md",
+        "/0002-ADR-glossary-okf.md",
+        "/../../skills/setup-bmurrtech-skills/references/prd-tracking.md",
+        "/../../skills/setup-bmurrtech-skills/SKILL.md",
+        "/../../knowledge/prd.md",
+        "/../about-prd.md"
+      ],
+      "related_kinds": [
+        "adr",
+        "other"
+      ],
+      "supersedes": [
+        "0007-ADR-scaffold-omit-about-prd"
+      ],
+      "superseded_by": [],
+      "related_adrs": [
+        "/0002-ADR-glossary-okf.md"
+      ],
+      "related_prds": [],
+      "synopsis": "ADR 0007 kept `docs/prd/` always gitignored and omitted `docs/about-prd.md` from scaffold. Teams and remote AI agents often need PRDs in git history for shared context. Should every consumer be forced local-only, or may setup offer a durable track-vs-ignore choice?",
+      "lineage": {
+        "predecessors": [
+          "0007-ADR-scaffold-omit-about-prd"
+        ],
+        "successors": [],
+        "roots": [
+          "0004-ADR-local-okf-prds"
+        ],
+        "ancestors": [
+          "0004-ADR-local-okf-prds",
+          "0007-ADR-scaffold-omit-about-prd"
+        ],
+        "descendants": [],
+        "depth": 2
+      }
+    }
+  ],
+  "lineage_edges": [
+    {
+      "from": "0003-ADR-docs-adr-madr",
+      "to": "0010-ADR-to-adr-mechanics-shipped",
+      "type": "supersedes"
+    },
+    {
+      "from": "0004-ADR-local-okf-prds",
+      "to": "0007-ADR-scaffold-omit-about-prd",
+      "type": "supersedes"
+    },
+    {
+      "from": "0007-ADR-scaffold-omit-about-prd",
+      "to": "0013-ADR-prd-tracking-choice",
+      "type": "supersedes"
+    },
+    {
+      "from": "0008-ADR-maintainer-skill-scaffold-local",
+      "to": "0009-ADR-local-maintainer-skills-host-path",
+      "type": "supersedes"
+    }
+  ],
+  "issues": []
+}

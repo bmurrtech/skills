@@ -39,3 +39,4 @@ missing CHANGELOG under `release_intent` hard-stops unless waived.
 
 - Skill: [`skills/upkeep`](../skills/upkeep/SKILL.md)
 - Glossary: [Release context](../CONTEXT.md), [Version gate](../CONTEXT.md)
+- When Code style or skill `scripts/` change: [Skill scripts vs LLM](skill-scripts.md)

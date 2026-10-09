@@ -1,0 +1,5 @@
+interface:
+  display_name: "Writing for Humans"
+  short_description: "Mode-route STE instructions and human prose"
+policy:
+  allow_implicit_invocation: false

@@ -11,6 +11,7 @@ Read on the **Standards** axis when the diff looks AI-generated, over-abstracted
 | Needless abstraction | Pass-through wrappers, speculative indirection, single-use layers |
 | Boundary violation | Wrong-layer imports, hidden side effects, leaky responsibilities |
 | Missing tests | Behavior changed with no seam lock |
+| Tautological tests | Assertion recomputes the same formula as the code; green without proving behavior |
 
 ## Severity hint
 
@@ -18,4 +19,4 @@ Read on the **Standards** axis when the diff looks AI-generated, over-abstracted
 - **MEDIUM** — real debt in the touched hunks; fix when cheap
 - **LOW** — style / optional tidy
 
-If the user asks to fix after review: lock behavior with the smallest regression check first, then one smell category at a time (dead → dup → naming/errors → tests).
+If the user asks to fix after review: lock behavior with the smallest regression check first, then one smell category at a time (dead → dup → naming/errors → tests). Do **not** call **`implement`** from this skill — fresh-context fix is a separate user-asked session.

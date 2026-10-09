@@ -20,12 +20,13 @@ Skills meant to improve sprints in **any** repo that installs them — not only 
 - Validation = target repo evidence (`AGENTS.md`, package scripts, CI).
 - Skill validators (`quick_validate.py`) are optional and only when a `skills/` tree changed **and** a validator exists.
 - `upkeep` / `context` run when installed **and** artifacts exist; otherwise one-line skip.
-- **`implement`**: review exit = subagent `code-review` or `handoff` for code-review (`cd-rvw`); never stage/commit/push — Git via `commit` / `merge` / `release`.
+- **`implement`**: review exit = subagent `code-review` or `handoff` for code-review (`cd-rvw`); never stage/commit/push — Git via `commit` / `merge` / `release`. When editing agent skills/instructions/scripts, apply `writing-for-agents` + skill-scripts judgment if present (soft-skip otherwise).
+- **`code-review`**: judge only — never call `implement`. Gated `tdd` load + adversarial test bar + smallest evidence-run (AGENTS Test index → OKF maps). Path-gated `references/agent-artifacts.md` for skill/agent diffs; skip that lens otherwise.
 - **`tdd`**: session-scoped runs via AGENTS Test index → OKF test-maps when those conventions exist.
 
 ## Contrast
 
-Library-specific skills (`writing-for-agents`, `setup-bmurrtech-skills`, `docx`, `to-prd`, `to-adr`, `upkeep`, `context`) may assume this repo’s layout. Do not copy those assumptions into universal sprint skills.
+Library-specific skills (`writing-for-agents`, `writing-for-humans`, `setup-bmurrtech-skills`, `docx`, `visual-explainer`, `to-prd`, `to-adr`, `upkeep`, `context`) may assume this repo’s layout. Do not copy those assumptions into universal sprint skills.
 
 ## Related
 

@@ -13,6 +13,32 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
+## [0.2.2-rc3] - 2026-10-09
+
+Operator-facing ship: **`writing-for-humans`** + **`discovery`**, skill-scripts OKF, tighter **`code-review`/`implement`/`to-adr`/`grill-me`** contracts, and linter token-productivity fixes.
+
+### Added
+
+- **`writing-for-humans`**: mode-route human writing (STE-inspired instructions / prose / mixed) with Generate·Edit·Detect jobs; owned controlled-English overlay; measure-only `writing_for_humans_linter.py` (JSON + revision budget; LLM judges).
+- OKF [Skill scripts vs LLM](knowledge/skill-scripts.md): when skill `scripts/` earn their keep vs LLM judgment (tokenomics, compression, hybrid formula pattern).
+- **`discovery`**: user-invoked business analysis for solution creators (pain → map → prioritize → requirements → recap/reassess); team OKF under `docs/discovery/<team>/`; `priority_score.py` (K/P/F/S → P-level + N); [how-to-discovery.md](docs/how-to-discovery.md).
+
+### Changed
+
+- **`code-review`**: gated `tdd` load + adversarial test bar; smallest evidence-run (OKF/AGENTS); path-gated `references/agent-artifacts.md` (`writing-for-agents` + skill-scripts score); never calls `implement`.
+- **`implement`**: apply-on-write agent bar when editing skills/agent scripts (`writing-for-agents` + skill-scripts OKF when present); still exits via fresh-context `code-review`.
+- **`to-adr`**: decision correlation (supersession lineage, OKF status map, issues); dual-write slim tracked `docs/adr/catalog.json` + fat gitignored `.scratch/adr-optics/` glance; visualizer lineage pane with Previous/Next return stack.
+- **`to-adr`**: mechanics optional cue **Human review (autonomous judgment)** — log agent-assumed gaps (autonomy + judgment source) under Assumptions.
+- **`to-adr`**: public `supersedes`/`superseded_by` from the supersession graph (mirror-only edges fill both); drop edge `effect`; slim catalog omits wall-clock `generated.at`; glance link href allowlist.
+- Docs/ops: treat skill-named **repo-root** paths as install noise (delete; SoT remains `skills/` only) — AGENTS Boundaries + CONTEXT hard rule / Skill `_Avoid_`.
+- **`grill-me`**: Round 1 first (`❓` / `➡️`); ban skip-to-advice; **rec-default** (silence/partial accept; conflict → rephrase next round); Round-1-only LGTM/Set teach cues; completion locks decisions then A/B/C (**Set**/LGTM affirm).
+- **`upkeep`** + AGENTS Code style: one-line pointer to skill-scripts OKF when skill scripts / Code style change (essay stays in knowledge).
+
+### Fixed
+
+- **`writing-for-humans`**: linter token-productivity — `agent_summary` + STOP/REVISE_ONCE; noun-cluster advisory; word-boundary phrases; URL/id strip; repo-rooted script path; exit 0 on analyze success.
+- **`discovery`**: README how-to pointer; ship-safe further-reading URLs; gated `confidence` validation.
+
 ## [0.2.2-rc2] - 2026-09-30
 
 Operator-facing ship: setup **Commit PRDs?** A/B (ADR 0013), grill post-frontier A/B/C routes, and tighter release CHANGELOG verify — plus version-gate **recommend-as-default**.

@@ -221,6 +221,8 @@ intent with **`roadmap`**; do not treat scratch capture as a tracker ticket.
 | Merge a reviewed PR | **`merge`** |
 | Cut a versioned GitHub Release | **`release`** |
 | Author or tighten a skill / agent instructions | **`writing-for-agents`** |
+| Human-facing procedures, prose, or mixed tech replies | **`writing-for-humans`** |
+| Stakeholder meeting → ranked use cases / POC requirements | **`discovery`** ([how-to](how-to-discovery.md)) |
 | Word `.docx` edit path | **`docx`** (+ ensure scripts) |
 | HTML diagrams / slides / visual reviews | **`visual-explainer`** ([how-to](how-to-visual-explainer.md)) |
 | Explanation did not land | **`wait-what`** |
@@ -272,6 +274,8 @@ Details live here (README keeps a short index only).
 | **`ascii`** | Plain-text structure diagrams in-terminal. |
 | **`visual-explainer`** | Intent-routed HTML under `.scratch/diagrams/`. [how-to-visual-explainer.md](how-to-visual-explainer.md). |
 | **`writing-for-agents`** | Levers for skills and other agent-facing instructions (pointers, hierarchy, Boundaries, pruning). |
+| **`writing-for-humans`** | Mode-route STE-inspired instructions vs prose (Generate / Edit / Detect); optional controlled overlay; measure-only linter JSON + revision budget (LLM judges). |
+| **`discovery`** | Business analysis for solution creators: pain → map → prioritize → requirements → recap/reassess; team OKF under `docs/discovery/<team>/`; scripted P-level + N. [how-to-discovery.md](how-to-discovery.md). |
 
 ### Ship
 
@@ -349,6 +353,7 @@ glossary/ops housekeeping.
 - [ROADMAP.md](ROADMAP.md) — durable idea ledger (`idea` → promote → publish)
 - [skill-scaffold.md](skill-scaffold.md) — folders/files setup creates
 - [how-to-adr.md](how-to-adr.md) — ADR authoring + at-a-glance
+- [how-to-discovery.md](how-to-discovery.md) — discovery cycles, bundle, priority formula
 - [how-to-visual-explainer.md](how-to-visual-explainer.md) — visual-explainer prompts
 - [about-license.md](about-license.md) — Apache-2.0
 - [adr/index.md](adr/index.md) — decisions

@@ -17,7 +17,7 @@ missing pieces; asks before replacing non-empty files.
 ├── .gitignore              # patched: ignore local-only paths below
 ├── .scratch/               # created on disk; gitignored
 │   ├── diagrams/           # visual-explainer HTML (+ optional .md companions)
-│   ├── adr-optics/         # to-adr at-a-glance catalog HTML
+│   ├── adr-optics/         # to-adr at-a-glance HTML + fat adr-catalog.json
 │   └── ideas/              # idea brain dumps (on demand; promote via roadmap)
 ├── AGENTS.md               # agent ops manual
 ├── CLAUDE.md               # body is exactly: AGENTS.md
@@ -42,7 +42,7 @@ setup **Commit PRDs?** ([ADR 0013](adr/0013-ADR-prd-tracking-choice.md)).
 | `.gitignore` | Appends missing ignore lines for `/pm/`, agent dirs, `.scratch/`, etc. **`/docs/prd/`** only when PRD choice is **A** (default). Prefers append over rewrite. |
 | `.scratch/` | Creates on disk (ignored). Exploratory dumps. Default handoffs stay in OS temp; **keep** → `.scratch/handoffs/` (created on demand by **`handoff`**). Ideas → `.scratch/ideas/` (created on demand by **`idea`**). |
 | `.scratch/diagrams/` | Creates on disk. **visual-explainer** HTML (+ optional `.md` companions). |
-| `.scratch/adr-optics/` | Creates on disk. **`to-adr`** at-a-glance catalog (`adr-at-a-glance.html`). |
+| `.scratch/adr-optics/` | Creates on disk. **`to-adr`** glance (`adr-at-a-glance.html` + fat JSON); slim tracked catalog is `docs/adr/catalog.json`. |
 | `AGENTS.md` | Lean ops manual stub (commands, boundaries, Test index stub). PRD bullets match setup A/B. |
 | `CLAUDE.md` | Body exactly `AGENTS.md` (optional trailing newline). |
 | `CONTEXT.md` | Root glossary stub (OKF). PRD locality matches A/B when stub/edit applies. |
@@ -67,7 +67,7 @@ setup **Commit PRDs?** ([ADR 0013](adr/0013-ADR-prd-tracking-choice.md)).
 ## Related
 
 - [how-to-bmurrtech-skills.md](how-to-bmurrtech-skills.md) — install → shape → ship
-- [how-to-adr.md](how-to-adr.md) — ADR catalog under `.scratch/adr-optics/`
+- [how-to-adr.md](how-to-adr.md) — ADR catalog + glance under `.scratch/adr-optics/`
 - [knowledge/skill-scaffold.md](../knowledge/skill-scaffold.md) — why this tree
 - [knowledge/prd.md](../knowledge/prd.md) — why PRDs stay local
 - Skill: [`setup-bmurrtech-skills`](../skills/setup-bmurrtech-skills/SKILL.md)

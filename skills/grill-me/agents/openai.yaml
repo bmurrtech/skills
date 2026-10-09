@@ -1,5 +1,5 @@
 interface:
   display_name: "Grill Me"
-  short_description: "Design interview; then A/B/C route"
+  short_description: "Frontier rounds (❓/➡️); then A/B/C"
 policy:
   allow_implicit_invocation: false

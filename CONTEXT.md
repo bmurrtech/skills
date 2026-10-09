@@ -14,7 +14,7 @@ Opinionated library of Agent Skills for agentic coding. This file is the glossar
 
 **Skill**:
 A tracked folder under `skills/<name>/` with required `SKILL.md` and `agents/openai.yaml`, plus optional `scripts/`, `references/`, and `assets/`. The only place new skills are created in this repository.
-_Avoid_: prompt pack, `.agents/skills` as SoT
+_Avoid_: prompt pack; `.agents/skills` as SoT; skill-named dirs/symlinks at repo root (install noise)
 
 **SKILL.md**:
 The skill entry document: YAML frontmatter (`name`, `description`) plus Markdown body loaded after the skill triggers.
@@ -35,7 +35,15 @@ Agent operating manual. Owned by `upkeep`. May link here; must not restate gloss
 Repo file whose entire body is exactly `AGENTS.md`.
 
 **ADR**:
-Tracked decision under `docs/adr/NNNN-ADR-<slug>.md`, indexed by `docs/adr/index.md`. Accepted = immutable; change via supersede. Authoring SoT ships in **`to-adr`** (`references/mechanics.md`); library OKF only summarizes.
+Tracked decision under `docs/adr/NNNN-ADR-<slug>.md`, indexed by `docs/adr/index.md`. Accepted = immutable; change via supersede. Authoring SoT ships in **`to-adr`** (`references/mechanics.md`); library OKF only summarizes. Rebuildable slim **decision catalog** at `docs/adr/catalog.json`; local glance under `.scratch/adr-optics/`.
+
+**Decision catalog**:
+Rebuildable JSON for one ADR home (`docs/adr/catalog.json`, `schema_version` 2). Source Markdown stays authoritative. Slim tracked cache (no full bodies); fat copy under `.scratch/adr-optics/` only for the at-a-glance HTML.
+_Avoid_: treating catalog.json as SoT; standup/discovery `catalog` senses; mixing project keys into one file
+
+**Decision lineage**:
+DAG of supersession only among ADRs in one home. Ordinary links and git history are not edges. Glance **Previous** walks a predecessor; **Next** pops a return stack (not “the successor”).
+_Avoid_: edge-strength field; encoding relate/PRD links as lineage
 
 **How-to doc**:
 Library consumer guide under `docs/how-to-<topic>.md` (e.g. `how-to-bmurrtech-skills`, `how-to-adr`, `how-to-visual-explainer`). Install/scaffold lives in the main skills how-to; topic how-tos are prompts + scope only.
@@ -43,7 +51,7 @@ _Avoid_: `how-to-use-…` naming; duplicating setup into every topic how-to; sca
 
 
 **.scratch/**:
-Gitignored local scratch pad for exploratory, pre-PRD, and other agent artifact dumps related to these skills. Includes `.scratch/diagrams/` for **visual-explainer** HTML (optional Markdown companions), `.scratch/adr-optics/` for **`to-adr`** at-a-glance catalog HTML, `.scratch/handoffs/` for **kept** (non-transitory) **`handoff`** docs, and `.scratch/ideas/` for **`idea`** brain dumps (promote only via **`roadmap`**). Default handoffs are throwaway under the OS temp dir; only an explicit keep signal lands under `.scratch/handoffs/`.
+Gitignored local scratch pad for exploratory, pre-PRD, and other agent artifact dumps related to these skills. Includes `.scratch/diagrams/` for **visual-explainer** HTML (optional Markdown companions), `.scratch/adr-optics/` for **`to-adr`** at-a-glance HTML + fat `adr-catalog.json` (tracked slim catalog stays `docs/adr/catalog.json`), `.scratch/handoffs/` for **kept** (non-transitory) **`handoff`** docs, and `.scratch/ideas/` for **`idea`** brain dumps (promote only via **`roadmap`**). Default handoffs are throwaway under the OS temp dir; only an explicit keep signal lands under `.scratch/handoffs/`.
 _Avoid_: committing scratch; using tracked `docs/` for throwaways; `/pm/diagrams` or harness skill dirs as diagram SoT; writing default handoffs into the repo; treating scratch ideas as roadmap or tracker commitments
 
 **handoff** (skill):
@@ -72,9 +80,29 @@ Design-tree interview in frontier rounds; after frontier empty, A/B/C route (**A
 **upkeep** / **context** (skills):
 Ops manual vs glossary/OKF ownership — never cross-edit.
 
+**Skill scripts vs LLM**:
+Library rule for optional `skills/<name>/scripts/`: LLM for judgment; scripts for cheap deterministic work (formula, sort, validate, compress) when total tool cost or exactness beats letting the model do it. Depth: [knowledge/skill-scripts.md](knowledge/skill-scripts.md).
+_Avoid_: smart/semantic scripts; scripting trivial arithmetic; dumping full computational traces into context
+
+**discovery** (skill):
+User-invoked business-analysis skill for solution creators: turn meetings, transcripts, or notes into ranked use cases and requirements toward a POC/MVP. Cycles: initial pain → map → prioritize → requirements → recap → reassess. Not HR/municipal-specific; not PRD/ADR/tickets (point at those skills). Depth: [knowledge/discovery.md](knowledge/discovery.md); how-to: [docs/how-to-discovery.md](docs/how-to-discovery.md).
+_Avoid_: filling stakeholder names; solution design before pain/value; stuffing raw transcripts into the committed bundle; department jargon as schema
+
+**Discovery OKF bundle**:
+One OKF v0.2 bundle per team at `docs/discovery/<team>/` (root `index.md` with `okf_version` only; concepts carry `type`; optional rebuildable `catalog.json` cache). Project is optional frontmatter, not a nested bundle. Parent `docs/discovery/index.md` lists teams only.
+_Avoid_: per-project OKF roots; `sessions/`/`use-cases/`/`decisions/` type subtrees as required layout; treating `catalog.json` as SoT
+
+**Discovery priority formula**:
+Gates first, then bands K/P/F/S (1–5); V = K+P; P-level from V×F quadrant; N = 5K+5P+6F+4S orders within a P-level. LLM assigns bands; script applies formula. No Timing/Reuse weights.
+_Avoid_: comparing N across P-levels; inventing scores to clear gates; High/Medium or Tier labels
+
 **writing-for-agents**:
 Standalone guidance for writing skills and other agent instructions so behaviour is repeatable across LLMs. Owns levers: context pointers, two loads, information hierarchy, completion criteria, leading words, negative-imperative guardrails, pruning. Soft-skips skill validators when absent. Does not own ops-manual create/maintain.
 _Avoid_: flattening levers into unnamed checklist vibes; treating this as upkeep for ops manuals; soft bans where a hard Boundaries line is required
+
+**writing-for-humans**:
+Mode-route human-facing writing by function: STE-inspired **Instructions**, slop-aware **Prose**, or **Mixed**. Jobs: Generate / Edit / Detect. Optional **controlled** overlay is this skill’s owned strict procedural English — not official ASD-STE100. Quality check uses measure-only `writing_for_humans_linter.py` (compact `agent_summary` STOP/REVISE_ONCE + `revision_budget`); LLM judges material vs cosmetic — script never rewrites.
+_Avoid_: claiming official ASD-STE100 compliance; treating word-count thresholds as hard rewrite orders; more than one lint-driven revision without a new substantive defect; STE/controlled flattening of essays/creative prose
 
 **Context pointer**:
 Always-loaded reference that names out-of-context material and encodes when to reach it (skill `description`, always-on instruction line). Wording decides reach reliability; weak wording on a must-have target is a variance bug.
@@ -96,11 +124,11 @@ Word `.docx` via pinned **docx-cli** on PATH (operator-installed; pin **0.26.0**
 _Avoid_: agent binary download; `--install` in skill scripts; auto sudo / package-manager install; npx upstream skill install; attack-demo phrases in SKILL.md
 
 **Universal sprint skill**:
-Portable skill for any consumer repo: **`implement`**, **`code-review`**, **`tdd`**, plus soft-coupled **`grill-me`** / **`wait-what`** / **`handoff`**. Validation means the *target* repo’s checks; `upkeep`/`context` run only when installed and those artifacts exist. **`implement`** owns build + soft housekeeping and exits via fresh-context review (subagent **`code-review`** or **`handoff`** for code-review); it never stages/commits/pushes — Git is **`commit`** / **`merge`** / **`release`**. **`code-review`** Spec defaults to local diff + local Spec paths (no default tracker/`gh` fetch — [ADR 0011](docs/adr/0011-ADR-skill-scanner-posture-prereqs.md)).
-_Avoid_: requiring `quick_validate.py` for ordinary app/lib work; assuming every consumer is a skills monorepo; default issue-body fetch in code-review; treating Git publish as part of **`implement`**
+Portable skill for any consumer repo: **`implement`**, **`code-review`**, **`tdd`**, plus soft-coupled **`grill-me`** / **`wait-what`** / **`handoff`**. Validation means the *target* repo’s checks; `upkeep`/`context` run only when installed and those artifacts exist. **`implement`** owns build + soft housekeeping (and apply-on-write agent bars when editing skills) and exits via fresh-context review (subagent **`code-review`** or **`handoff`** for code-review); it never stages/commits/pushes — Git is **`commit`** / **`merge`** / **`release`**. **`code-review`** judges only (never calls **`implement`**): gated **`tdd`** load + smallest evidence-run; path-gated agent-artifacts lens; Spec defaults to local diff + local Spec paths (no default tracker/`gh` fetch — [ADR 0011](docs/adr/0011-ADR-skill-scanner-posture-prereqs.md)).
+_Avoid_: requiring `quick_validate.py` for ordinary app/lib work; assuming every consumer is a skills monorepo; default issue-body fetch in code-review; treating Git publish as part of **`implement`**; nesting **`implement`** inside **`code-review`**; loading agent-artifacts / **`tdd`** on every review when the gate is false
 
 **Library-specific skill**:
-Opinionated for this library (or repos that opted into the convention): **`writing-for-agents`**, **`setup-bmurrtech-skills`**, **`docx`**, **`visual-explainer`**, **`to-prd`** / **`to-adr`** homes, **`upkeep`** / **`context`** as glossary/ops maintainers.
+Opinionated for this library (or repos that opted into the convention): **`writing-for-agents`**, **`writing-for-humans`**, **`discovery`**, **`setup-bmurrtech-skills`**, **`docx`**, **`visual-explainer`**, **`to-prd`** / **`to-adr`** homes, **`upkeep`** / **`context`** as glossary/ops maintainers.
 _Avoid_: shipping library layout rules inside universal sprint skills
 
 **Skills release artifact**:
@@ -121,7 +149,7 @@ _Avoid_: promoting Unreleased→dated outside `upkeep`; inventing version in `co
 
 ## Hard rules
 
-1. **Tracked/published skills live only in `skills/`.** Library-local skills may sit under ignored `.agents/skills/` (host-readable; not product; not OKF; not release).
+1. **Tracked/published skills live only in `skills/`.** Library-local skills may sit under ignored `.agents/skills/` (host-readable; not product; not OKF; not release). Skill-named paths at **repo root** are not SoT (install noise) — never dual-track.
 2. **No glossary/ops duplication.**
 3. **`docs/prd/` policy** — setup A/B ([ADR 0013](docs/adr/0013-ADR-prd-tracking-choice.md)); this library **A**. Ops bullets in `AGENTS.md`. ADRs stay tracked.
 4. **Release artifacts exclude library OKF/ops/docs** — filter at package time; keep `knowledge/` tracked.

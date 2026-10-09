@@ -93,9 +93,16 @@ exists.
 Cite evidence-backed CI/workflow commands (e.g. `.github/workflows/`) when
 present.
 
+When this session added or changed skill `scripts/`, or Code style needs a
+scripts policy line: ensure `AGENTS.md` **Code style** links
+[Skill scripts vs LLM](../../knowledge/skill-scripts.md) (one line + link —
+do not paste the essay). Soft-skip the link if that OKF page is absent in a
+consumer repo.
+
 **Done when:** every command cited is evidence-backed; boundaries include
 “skills only under `skills/`” and the post-`implement`/`code-review` hook to
-run `upkeep` then `context`; Test index preserved when present.
+run `upkeep` then `context`; Test index preserved when present; skill-scripts
+pointer present when this library’s OKF has that concept.
 
 ### 5. Validate
 
@@ -107,6 +114,8 @@ material.
 ## Boundaries
 
 - Do not edit `CONTEXT.md` or `knowledge/`.
+- Do not paste the full [skill-scripts](../../knowledge/skill-scripts.md)
+  essay into `AGENTS.md` — ops gets a one-line pointer; depth stays in OKF.
 - Do not invent a SemVer bump or promote Unreleased → dated without
   `release_intent` + confirmed version.
 - Do not invent CHANGELOG content to unblock a release when CHANGELOG is

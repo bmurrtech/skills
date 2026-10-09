@@ -34,18 +34,25 @@ fails instead of minting a twin.
 ## At-a-glance visualization
 
 After create/supersede (or anytime you want the decision log), ask the agent to
-refresh the catalog. Output lands under **`.scratch/adr-optics/`** (gitignored);
-Markdown under `docs/adr/` stays SoT. The skill **opens the HTML in your default
-browser** after a visualize prompt. If `.scratch/adr-optics/` is missing, the
-skill runs **`setup-bmurrtech-skills`** first.
+refresh the catalog. Markdown under `docs/adr/` stays SoT. The script always
+rewrites tracked slim **`docs/adr/catalog.json`** (decision catalog + lineage).
+Glance HTML/JSON land under **`.scratch/adr-optics/`** (gitignored). The skill
+**opens the HTML in your default browser** after a visualize prompt. If
+`.scratch/adr-optics/` is missing, the skill runs **`setup-bmurrtech-skills`**
+first.
 
 ```text
-docs/adr/*.md ──► build_catalog ──► .scratch/adr-optics/adr-at-a-glance.html
-                      │                      │
-                      │                      +── adr-catalog.json (same dir)
+docs/adr/*.md ──► build_catalog ──► docs/adr/catalog.json (tracked, slim)
+                      │
+                      +──(--visualize)──► .scratch/adr-optics/adr-at-a-glance.html
+                                           + adr-catalog.json (fat, gitignored)
                       v
                  browser opens (file://)
 ```
+
+Lineage in the glance: supersession edges only; **Previous** walks predecessors;
+**Next** returns along a stack (not “the successor”). OKF status chips filter
+`draft` / `stable` / `deprecated`; pills still show the author word.
 
 ### Prompts to refresh the view
 
@@ -62,8 +69,9 @@ Prefer natural-language refresh; the skill owns rebuild + open.
 If the agent could not auto-open: open the path it reports
 (`.scratch/adr-optics/adr-at-a-glance.html`, or a `file://` URI to that file).
 
-Companion JSON (search/debug): `.scratch/adr-optics/adr-catalog.json` — row shape
-(full `markdown` + git `history` for offline pane) → [knowledge/adr-catalog.md](../knowledge/adr-catalog.md).
+Companion JSON: tracked slim [`docs/adr/catalog.json`](adr/catalog.json); fat
+scratch `.scratch/adr-optics/adr-catalog.json` (full `markdown` + git `history`)
+→ [knowledge/adr-catalog.md](../knowledge/adr-catalog.md).
 
 ## Related
 

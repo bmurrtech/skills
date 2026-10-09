@@ -70,7 +70,7 @@ Flows, branches, and every skill: **[docs/how-to-bmurrtech-skills.md](docs/how-t
 ├── .gitignore              # patched: ignore local-only paths below
 ├── .scratch/               # created on disk; gitignored
 │   ├── diagrams/           # visual-explainer HTML (+ optional .md companions)
-│   ├── adr-optics/         # to-adr at-a-glance catalog HTML
+│   ├── adr-optics/         # to-adr glance HTML + fat JSON (slim catalog: docs/adr/catalog.json)
 │   └── ideas/              # idea brain dumps (on demand; promote via roadmap)
 ├── AGENTS.md               # agent ops manual
 ├── CLAUDE.md               # body is exactly: AGENTS.md
@@ -83,7 +83,7 @@ Flows, branches, and every skill: **[docs/how-to-bmurrtech-skills.md](docs/how-t
     └── prd/                # to-prd home; ignore (A default) or track (B)
 ```
 
-Tree and whys: **[docs/skill-scaffold.md](docs/skill-scaffold.md)** · [knowledge/skill-scaffold.md](knowledge/skill-scaffold.md). Also: [docs/how-to-visual-explainer.md](docs/how-to-visual-explainer.md) · [docs/how-to-adr.md](docs/how-to-adr.md) · [docs/ROADMAP.md](docs/ROADMAP.md). Setup asks **Commit PRDs?** ([ADR 0013](docs/adr/0013-ADR-prd-tracking-choice.md)).
+Tree and whys: **[docs/skill-scaffold.md](docs/skill-scaffold.md)** · [knowledge/skill-scaffold.md](knowledge/skill-scaffold.md). Also: [docs/how-to-visual-explainer.md](docs/how-to-visual-explainer.md) · [docs/how-to-adr.md](docs/how-to-adr.md) · [docs/how-to-discovery.md](docs/how-to-discovery.md) · [docs/ROADMAP.md](docs/ROADMAP.md). Setup asks **Commit PRDs?** ([ADR 0013](docs/adr/0013-ADR-prd-tracking-choice.md)).
 
 ## Features
 
@@ -99,11 +99,13 @@ Tree and whys: **[docs/skill-scaffold.md](docs/skill-scaffold.md)** · [knowledg
 | Skill | What it does | Example prompt |
 |-------|----------------|----------------|
 | [`grill-me`](skills/grill-me/) | Interviews until the design tree is resolved; then A/B/C (PRD / handoff→implement / Go) | `Grill me on this auth redesign before we code` |
+| [`discovery`](skills/discovery/) | Meetings/notes → ranked use cases + POC requirements; team OKF under `docs/discovery/<team>/` | ` /discovery new — notes at path/to/kickoff.md for Acme ` |
 | [`to-prd`](skills/to-prd/) | Writes a sprint PRD under `docs/prd/` (ignore or track per setup) | `Turn that grill into a PRD for the MVP` |
 | [`to-adr`](skills/to-adr/) | Records a tracked ADR under `docs/adr/` | `Write an ADR for picking Postgres over SQLite` |
 | [`ascii`](skills/ascii/) | Draws structure as plain text in the terminal | `ASCII the request path through the API gateway` |
 | [`visual-explainer`](skills/visual-explainer/) | Builds HTML diagrams under `.scratch/diagrams/` | `Visual explainer for this architecture diff` |
 | [`writing-for-agents`](skills/writing-for-agents/) | Tightens skills and other agent-facing docs | `Rewrite this SKILL.md with writing-for-agents` |
+| [`writing-for-humans`](skills/writing-for-humans/) | Mode-routes STE-inspired instructions vs prose (optional controlled overlay) | `Rewrite this runbook with writing-for-humans` |
 
 ### Ship
 
