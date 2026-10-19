@@ -26,7 +26,7 @@ Skills meant to improve sprints in **any** repo that installs them — not only 
 
 ## Contrast
 
-Library-specific skills (`writing-for-agents`, `writing-for-humans`, `setup-bmurrtech-skills`, `docx`, `visual-explainer`, `to-prd`, `to-adr`, `upkeep`, `context`) may assume this repo’s layout. Do not copy those assumptions into universal sprint skills.
+Library-specific skills (`writing-for-agents`, `writing-for-humans`, `setup-bmurrtech-skills`, `docx`, `visual-explainer`, `create-prd`, `create-adr`, `upkeep`, `context`) may assume this repo’s layout. Do not copy those assumptions into universal sprint skills.
 
 ## Related
 

@@ -1,15 +1,15 @@
 ---
-name: to-prd
+name: create-prd
 description: >
   Author OKF-shaped PRDs under docs/prd/ (ignore or track per setup): MVP journey,
-  FRs, DoD, bug appendix; cite docs/adr via to-adr; diagrams via ascii. Use when
+  FRs, DoD, bug appendix; cite docs/adr via create-adr; diagrams via ascii. Use when
   turning a grilled idea into a product requirement doc or editing an existing PRD.
 disable-model-invocation: true
 ---
 
-# to-prd
+# create-prd
 
-Author **PRDs** — MVP scope, one critical journey, behavioral FRs, DoD, living bug appendix. Durable “why” lives in **ADRs** via **`to-adr`**, not here.
+Author **PRDs** — MVP scope, one critical journey, behavioral FRs, DoD, living bug appendix. Durable “why” lives in **ADRs** via **`create-adr`**, not here.
 
 Common entry: **`grill-me`** post-grill **A** (recommended default) auto-runs this skill from settled decisions.
 
@@ -33,7 +33,7 @@ Missing scaffold / unclear PRD policy → run **`setup-bmurrtech-skills`** (re-a
 | Branch | Action |
 |--------|--------|
 | User cites an ADR | Resolve path under `docs/adr/`; cite in Summary. Missing → say so; omit bullet. |
-| Decision looks ADR-worthy (user asks, or warrant: costly to reverse · real alternatives · future “why?”) | If the grill thread is muddy, suggest **`handoff`** first. Ask once: create via **`to-adr`** now? Yes → run `to-adr`, then cite. No → todo and continue PRD. |
+| Decision looks ADR-worthy (user asks, or warrant: costly to reverse · real alternatives · future “why?”) | If the grill thread is muddy, suggest **`handoff`** first. Ask once: create via **`create-adr`** now? Yes → run `create-adr`, then cite. No → todo and continue PRD. |
 
 Skip the offer when warrant fails and the user did not ask.
 
@@ -45,4 +45,4 @@ At least one ASCII diagram tied to UJ-1 or an FR — follow **`ascii`**.
 
 **Contain:** MVP definition, UJ-1, scope in/out/non-goals, behavioral FRs, phases (order only), DoD, bug appendix, ADR path cites, diagrams.
 
-**Do not contain:** stack rationale / architecture “why” (→ `to-adr`); assumptions/constraints that belong in ADRs (cite instead).
+**Do not contain:** stack rationale / architecture “why” (→ `create-adr`); assumptions/constraints that belong in ADRs (cite instead).

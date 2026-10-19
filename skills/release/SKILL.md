@@ -67,9 +67,15 @@ Before local validate / publication gate, **re-confirm** on that SHA:
 - dated `## [<authorized-version>]` exists with the cut content
 - `## [Unreleased]` does not still hold those bullets (empty/stub OK)
 
-Hard-stop if verify fails (unless user explicitly waives). Compose release notes
-from the dated CHANGELOG section +
+Hard-stop if verify fails (unless user explicitly waives). Prefer deterministic
+notes via SoT
+[`scripts/changelog_release_notes.py`](scripts/changelog_release_notes.py)
+(repo path when dogfooding this library:
+`skills/release/scripts/changelog_release_notes.py`; CHANGELOG section +
+optional artifact blurb + Donation CTA footer) when the tag workflow owns
+`gh release create` — see
 [references/release-notes-template.md](references/release-notes-template.md).
+Do not hand-author a stub that ignores CHANGELOG.
 
 **Done when:** release commit SHA known **and** CHANGELOG verify passed on that
 commit (or explicit waive recorded). No soft “dated somehow” — missing cut =

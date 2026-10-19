@@ -1,4 +1,4 @@
-# How to use `to-adr`
+# How to use `create-adr`
 
 Record one significant decision under **`docs/adr/`**. Markdown is authoritative.
 Optional **at-a-glance** HTML catalogs the decision log for browsing.
@@ -10,12 +10,16 @@ This page is prompts + scope — not a second install guide.
 ## What ADRs cover (and do not)
 
 Create only when costly to reverse, alternatives were real, or someone will ask
-“why this way?” later. One decision per file. Accepted files are immutable —
-change course by **superseding**.
+“why this way?” later. One decision per file. **Published** Accepted files are
+immutable — change course by **superseding** via **`create-adr`**. **In-flight**
+ADRs (not yet on the remote default branch) may be **edited in place**; do not
+invent a superseding file for the same unfinished decision. Do **not** supersede
+solely because Status says Accepted — confirm the path is on the remote default
+(see **`create-adr`** Boundaries).
 
 Placement (ADR vs PRD / AGENTS / glossary), anti-bloat, and the heading template
 live in the skill — not duplicated here:
-[`skills/to-adr/references/mechanics.md`](../skills/to-adr/references/mechanics.md).
+[`skills/create-adr/references/mechanics.md`](../skills/create-adr/references/mechanics.md).
 
 OKF split: glossary owns terms (`CONTEXT.md` / `knowledge/`); ADRs own *which
 option won and why*; PRDs (`docs/prd/`, ignore or track per setup) cite ADRs; ops stay in `AGENTS.md`.
@@ -24,7 +28,8 @@ option won and why*; PRDs (`docs/prd/`, ignore or track per setup) cite ADRs; op
 
 ```text
 Record an ADR: we keep the release artifact as skills/ + LICENSE only
-Supersede ADR 0003 — template SoT moves into the shipped to-adr skill
+Refine in-flight ADR 0015 Outcome in place (not superseded)
+Supersede ADR 0003 — template SoT moves into the shipped create-adr skill
 Relate this choice to ADR 0005 without superseding it
 ```
 
@@ -75,7 +80,7 @@ scratch `.scratch/adr-optics/adr-catalog.json` (full `markdown` + git `history`)
 
 ## Related
 
-- Skill: [`skills/to-adr/`](../skills/to-adr/)
+- Skill: [`skills/create-adr/`](../skills/create-adr/)
 - Library how-to: [how-to-bmurrtech-skills.md](how-to-bmurrtech-skills.md)
 - Scaffold tree: [skill-scaffold.md](skill-scaffold.md)
 - Concept: [knowledge/adr.md](../knowledge/adr.md)

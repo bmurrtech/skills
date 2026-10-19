@@ -46,7 +46,7 @@ Separate debugging and regression knowledge from general issue tracking so futur
 - Knowledge: durable regression and debugging knowledge
 
 **Notes**
-- Existing bug tracking embedded in the PRD template (`to-prd` Bug Appendix) should be evaluated for extraction.
+- Existing bug tracking embedded in the PRD template (`create-prd` Bug Appendix) should be evaluated for extraction.
 
 ## Issue Tracking Automation (GitHub First, Fizzy Later)
 

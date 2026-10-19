@@ -57,7 +57,7 @@ Chosen option: "Gitignore `docs/prd/` and document via `docs/about-prd.md`", bec
 
 ## Assumptions
 
-- `to-prd` always targets `docs/prd/`.
+- `create-prd` always targets `docs/prd/`.
 
 ## Constraints
 
@@ -66,4 +66,4 @@ Chosen option: "Gitignore `docs/prd/` and document via `docs/about-prd.md`", bec
 ## Implementation Notes (Normative)
 
 - `setup-bmurrtech-skills` must ensure the ignore rule and `docs/about-prd.md`.
-- `to-prd` creates OKF frontmatter on each PRD.
+- `create-prd` creates OKF frontmatter on each PRD.

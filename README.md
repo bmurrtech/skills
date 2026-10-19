@@ -37,7 +37,7 @@ After a new release of this pack, refresh from **`bmurrtech/skills`**:
 npx skills@latest add bmurrtech/skills --all
 ```
 
-That reinstalls every skill in this repo (not every skill on your machine). Scope with `-g` (global) or omit for project. Named skills only: `npx skills@latest update grill-me to-prd` (`-p` / `-g` / `-y` still apply to `update`). To refresh already-installed skills without re-picking the package: `npx skills@latest update` (same `-p` / `-g` / `-y`).
+That reinstalls every skill in this repo (not every skill on your machine). Scope with `-g` (global) or omit for project. Named skills only: `npx skills@latest update grill-me create-prd` (`-p` / `-g` / `-y` still apply to `update`). To refresh already-installed skills without re-picking the package: `npx skills@latest update` (same `-p` / `-g` / `-y`).
 
 ## How to use
 
@@ -49,19 +49,45 @@ Default cycle after install:
         v
      /grill-me
         |
-        +-- [decision?] --> /to-adr
-        |
+        +-- [decision?] --> /create-adr
+        +-- [side idea?] --> /handoff → /idea  (.scratch/ideas/; not git)
+        |                      └─ [list publicly?] → /roadmap
         v
-      /to-prd
+      /create-prd
         |
         v
      /implement  (+ /tdd)
         |
         v
       /handoff  -->  /code-review   [fresh agent; recommended]
+        |
+        v
+      /commit   [green checks + clean review]
+        |
+        +--> /merge    [integrate a PR]
+        +--> /release  [cut a version]
 ```
 
 Flows, branches, and every skill: **[docs/how-to-bmurrtech-skills.md](docs/how-to-bmurrtech-skills.md)**.
+
+### Quick scenarios
+
+| Situation | Skill |
+|-----------|--------|
+| Tests pass, code-review raised no issues, nothing left to implement | **`commit`** |
+| Random idea mid-`grill-me` — park it without bloating the grill | **`handoff`** → **`idea`** (gitignored `.scratch/ideas/`) |
+| Idea worth listing as a planned feature (no priority — public ledger) | **`roadmap`** → **`commit`** |
+| Minting a skill or need help prompt-engineering agent instructions | **`writing-for-agents`** |
+| AI jargon confusing — rephrase the last explanation | **`wait-what`** |
+| README/guide instructions feel AI-sloppy — want aircraft-manual clarity | **`writing-for-humans`** |
+| Integrating a reviewed PR under GitHub gates | **`merge`** |
+| Cutting a version / tag after the build contract is green | **`release`** |
+| Need an HTML diagram/slides/diff visual (draft) | **`visual-explainer`** → `.scratch/visuals/` |
+| Same, but for the team / commit history / docs | **`visual-explainer`** → `docs/visuals/` |
+| Unsure which visual mode fits the content | **`visual-explainer`** (suggests once, then waits) |
+| Live process / architecture canvas on localhost Doop | **`doop`** (MCP + harness; notes → `.scratch/doop/`) |
+
+Full catalog with example prompts: [Features](#features) below.
 
 ## What `setup-bmurrtech-skills` adds to *your* repo
 
@@ -69,8 +95,9 @@ Flows, branches, and every skill: **[docs/how-to-bmurrtech-skills.md](docs/how-t
 .
 ├── .gitignore              # patched: ignore local-only paths below
 ├── .scratch/               # created on disk; gitignored
-│   ├── diagrams/           # visual-explainer HTML (+ optional .md companions)
-│   ├── adr-optics/         # to-adr glance HTML + fat JSON (slim catalog: docs/adr/catalog.json)
+│   ├── visuals/            # default visual-explainer HTML (+ optional .md)
+│   ├── doop/               # doop session sidecars (canvas URL/id + notes)
+│   ├── adr-optics/         # create-adr glance HTML + fat JSON (slim catalog: docs/adr/catalog.json)
 │   └── ideas/              # idea brain dumps (on demand; promote via roadmap)
 ├── AGENTS.md               # agent ops manual
 ├── CLAUDE.md               # body is exactly: AGENTS.md
@@ -80,7 +107,8 @@ Flows, branches, and every skill: **[docs/how-to-bmurrtech-skills.md](docs/how-t
 └── docs/
     ├── adr/
     │   └── index.md        # empty ADR catalog (tracked decisions home)
-    └── prd/                # to-prd home; ignore (A default) or track (B)
+    ├── visuals/            # tracked visual-explainer HTML (team/commit cues)
+    └── prd/                # create-prd home; ignore (A default) or track (B)
 ```
 
 Tree and whys: **[docs/skill-scaffold.md](docs/skill-scaffold.md)** · [knowledge/skill-scaffold.md](knowledge/skill-scaffold.md). Also: [docs/how-to-visual-explainer.md](docs/how-to-visual-explainer.md) · [docs/how-to-adr.md](docs/how-to-adr.md) · [docs/how-to-discovery.md](docs/how-to-discovery.md) · [docs/ROADMAP.md](docs/ROADMAP.md). Setup asks **Commit PRDs?** ([ADR 0013](docs/adr/0013-ADR-prd-tracking-choice.md)).
@@ -100,12 +128,13 @@ Tree and whys: **[docs/skill-scaffold.md](docs/skill-scaffold.md)** · [knowledg
 |-------|----------------|----------------|
 | [`grill-me`](skills/grill-me/) | Interviews until the design tree is resolved; then A/B/C (PRD / handoff→implement / Go) | `Grill me on this auth redesign before we code` |
 | [`discovery`](skills/discovery/) | Meetings/notes → ranked use cases + POC requirements; team OKF under `docs/discovery/<team>/` | ` /discovery new — notes at path/to/kickoff.md for Acme ` |
-| [`to-prd`](skills/to-prd/) | Writes a sprint PRD under `docs/prd/` (ignore or track per setup) | `Turn that grill into a PRD for the MVP` |
-| [`to-adr`](skills/to-adr/) | Records a tracked ADR under `docs/adr/` | `Write an ADR for picking Postgres over SQLite` |
+| [`create-prd`](skills/create-prd/) | Writes a sprint PRD under `docs/prd/` (ignore or track per setup) | `Turn that grill into a PRD for the MVP` |
+| [`create-adr`](skills/create-adr/) | Records a tracked ADR under `docs/adr/` | `Write an ADR for picking Postgres over SQLite` |
 | [`ascii`](skills/ascii/) | Draws structure as plain text in the terminal | `ASCII the request path through the API gateway` |
-| [`visual-explainer`](skills/visual-explainer/) | Builds HTML diagrams under `.scratch/diagrams/` | `Visual explainer for this architecture diff` |
+| [`visual-explainer`](skills/visual-explainer/) | HTML visuals → `.scratch/visuals/` or tracked `docs/visuals/` | `Visual explainer for this architecture diff` · `Put this diagram in docs for the team` |
+| [`doop`](skills/doop/) | Localhost Doop process/architecture canvases via MCP | `Doop the lead funnel and present-state stack` · `Add an enrichment step on the canvas` |
 | [`writing-for-agents`](skills/writing-for-agents/) | Tightens skills and other agent-facing docs | `Rewrite this SKILL.md with writing-for-agents` |
-| [`writing-for-humans`](skills/writing-for-humans/) | Mode-routes STE-inspired instructions vs prose (optional controlled overlay) | `Rewrite this runbook with writing-for-humans` |
+| [`writing-for-humans`](skills/writing-for-humans/) | Mode-routes aircraft-manual-inspired (ASD-STE100) instructions vs prose ([ASD-STE100](https://www.asd-ste100.org/STE_downloads.html)); tightens step-by-step clarity to cut AI slop when writing instructions | `Rewrite this runbook with writing-for-humans` |
 
 ### Ship
 
@@ -167,10 +196,11 @@ Future exploration lives in **[docs/ROADMAP.md](docs/ROADMAP.md)**: unordered id
 ## Acknowledgements
 
 - [Matt Pocock](https://github.com/mattpocock): grill/TDD/review discipline. This library is first-party and does not depend on those skills.
-- [MADR](https://adr.github.io/madr/): interoperable ADR spine; full authoring contract in **`to-adr`** `references/mechanics.md`.
+- [MADR](https://adr.github.io/madr/): interoperable ADR spine; full authoring contract in **`create-adr`** `references/mechanics.md`.
 - [Knowledge Catalog](https://github.com/GoogleCloudPlatform/knowledge-catalog/tree/main): open-source AI-powered data and metadata catalog.
 - [visual-explainer](https://github.com/nicobailon/visual-explainer): agent skill that turns complex terminal output into styled HTML pages you actually want to read. (MIT) Ask your agent to explain architecture, review a diff, or compare requirements against a plan. You get self-contained HTML in the browser instead of ASCII art.
 - [kklimuk/docx-cli](https://github.com/kklimuk/docx-cli): CLI for AI agents (Claude, Codex) to read, edit, and comment on `.docx` files with full format fidelity. (MIT)
+- [kgoedecke/doop](https://github.com/kgoedecke/doop): The open-source alternative to Paper.design. A multiplayer design canvas where humans and AI agents design together, live. MCP built in.
 
 ## License
 

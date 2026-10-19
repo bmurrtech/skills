@@ -2,11 +2,14 @@
 name: setup-bmurrtech-skills
 description: >
   Idempotent greenfield provision for bmurrtech skills conventions: gitignore
-  (incl. .scratch/), .scratch/diagrams/ + .scratch/adr-optics/, AGENTS.md,
-  CLAUDE.md pointer, CONTEXT.md, knowledge OKF stub, docs/adr index; PRD track
-  vs ignore choice (default ignore); optional docx (docx-cli + office host). Use
-  when bootstrapping a repo or repairing missing scaffold — never silent
-  overwrite of user content; re-runs re-ask optional choices.
+  (incl. .scratch/), .scratch/visuals/ + .scratch/adr-optics/ + .scratch/doop/,
+  docs/visuals/,
+  AGENTS.md, CLAUDE.md pointer, CONTEXT.md, knowledge OKF stub, docs/adr index;
+  PRD track vs ignore choice (default ignore); optional docx (docx-cli + office
+  host); optional donation CTAs (Ko-fi / Buy Me a Coffee / similar → FUNDING.yml
+  + README + CONTEXT). Use when bootstrapping a repo or repairing missing
+  scaffold — never silent overwrite of user content; re-runs re-ask optional
+  choices.
 disable-model-invocation: true
 ---
 
@@ -20,12 +23,14 @@ This does **not** install skill folders into the consumer (use `npx skills add b
 
 Inspect:
 
-- `.gitignore`, `AGENTS.md`, `CLAUDE.md`, `CONTEXT.md`, `knowledge/`, `docs/adr/`
+- `.gitignore`, `AGENTS.md`, `CLAUDE.md`, `CONTEXT.md`, `knowledge/`, `docs/adr/`, `docs/visuals/`
 - **PRD policy class** for `docs/prd/` (`conflict` | `ignored` | `tracked` | `unset`) — see [references/prd-tracking.md](references/prd-tracking.md)
 - Whether `.scratch/` is ignored
-- Whether `.scratch/`, `.scratch/diagrams/`, and `.scratch/adr-optics/` exist as local folders
+- Whether `.scratch/`, `.scratch/visuals/`, `.scratch/adr-optics/`, and `.scratch/doop/` exist as local folders
+- Whether `.scratch/diagrams/` exists (legacy visual-explainer scratch name)
 - Remotes / GitHub (informational only — no issue-tracker setup unless asked later)
 - Optional: `docx` on PATH, Word / LibreOffice if offering docx tooling
+- Optional: `.github/FUNDING.yml`, README Support heading, CONTEXT Donation CTA terms
 
 **Done when:** present/missing map + PRD policy class ready.
 
@@ -37,8 +42,10 @@ Show what you will create vs leave alone. Recommended defaults:
 |----------|-------------------|
 | `.gitignore` entries | Ensure `/pm/`, `.agents/`, `.claude/`, `.cursor/`, `.scratch/` (and `/docs/prd/` **only** when PRD choice is **A**) |
 | `.scratch/` | Create directory (untracked scratch pad — see below) |
-| `.scratch/diagrams/` | Create directory (HTML output for **visual-explainer**) |
-| `.scratch/adr-optics/` | Create directory (at-a-glance HTML for **`to-adr`**) |
+| `.scratch/visuals/` | Create directory (default HTML home for **visual-explainer**). If `.scratch/diagrams/` exists and `visuals/` does not, rename `diagrams` → `visuals` when the rename will not clobber files. |
+| `.scratch/adr-optics/` | Create directory (at-a-glance HTML for **`create-adr`**) |
+| `.scratch/doop/` | Create directory (session sidecars for **`doop`**: canvas URL/id + meeting notes). Optional operator note: Doop install home `DOOP_HOME` (default `~/.doop`); bun dev ports **:4300** (web/MCP) + **:4400** (API) |
+| `docs/visuals/` | Create directory (tracked home for durable **visual-explainer** HTML) |
 | `AGENTS.md` | Create lean ops manual (link glossary; skills only under `skills/` if that dir exists; include Test index stub under Testing; PRD bullets match A/B choice) |
 | `CLAUDE.md` | Body exactly `AGENTS.md` |
 | `CONTEXT.md` | OKF-shaped glossary stub (PRD locality matches A/B) |
@@ -67,29 +74,42 @@ If yes: install **`docx`** skill if missing, point the operator at library
 (`ensure_toolchain.py`). Do not download the CLI or run `--install`. Office
 hosts stay manual. Do not restate install matrices here.
 
+### Optional: Want to add donation CTAs?
+
+Offer **once per run** (default **no**). Full prompt, target files, and write
+matrix: [references/donation-cta.md](references/donation-cta.md).
+
+> Want to add donation CTAs (Ko-fi, Buy Me a Coffee, or similar)?
+
+If yes: collect usernames/URLs; write `.github/FUNDING.yml`, README
+**Support this Repo**, and CONTEXT glossary entries per that reference. Never
+invent links. Silent / no on this question → skip.
+
 ### `.scratch/` purpose
 
-Untracked scratch pad for exploratory, pre-PRD, and other **agent artifact dumps** tied to these skills (draft notes, session dumps). **`.scratch/diagrams/`** is the default home for **visual-explainer** HTML (and optional Markdown companions). **`.scratch/adr-optics/`** holds **`to-adr`** at-a-glance catalog HTML. **`.scratch/handoffs/`** holds **kept** (non-transitory) **`handoff`** docs only — default handoffs stay in OS temp. **`.scratch/ideas/`** holds **`idea`** brain dumps (created on demand; promote only via **`roadmap`**). Never commit it. Prefer it over polluting `docs/`, `pm/`, or tracked trees. Harness skill install dirs remain **`npx skills`** — setup does not create Cursor/Claude/Pi/OpenClaw skill trees.
+Untracked scratch pad for exploratory, pre-PRD, and other **agent artifact dumps** tied to these skills (draft notes, session dumps). **`.scratch/visuals/`** is the default home for **visual-explainer** HTML (and optional Markdown companions); durable team/commit visuals go under tracked **`docs/visuals/`**. **`.scratch/adr-optics/`** holds **`create-adr`** at-a-glance catalog HTML. **`.scratch/doop/`** holds **`doop`** session sidecars (canvas URL/id + meeting notes; Doop DB stays in the Doop install’s `data/`). **`.scratch/handoffs/`** holds **kept** (non-transitory) **`handoff`** docs only — default handoffs stay in OS temp. **`.scratch/ideas/`** holds **`idea`** brain dumps (created on demand; promote only via **`roadmap`**). Never commit it. Prefer it over polluting `docs/`, `pm/`, or tracked trees. Harness skill install dirs remain **`npx skills`** — setup does not create Cursor/Claude/Pi/OpenClaw skill trees.
 
-Wait for confirmation before writing (scaffold table + PRD A/B + docx).
+Wait for confirmation before writing (scaffold table + PRD A/B + docx + donation CTA).
 
-**Done when:** user confirmed creates/patches and A/B (or defaulted to A); docx yes/no settled.
+**Done when:** user confirmed creates/patches and A/B (or defaulted to A); docx yes/no settled; donation CTA yes/no (+ URLs if yes) settled.
 
 ## 3. Write
 
 Apply confirmed creates/patches only. Prefer append for `.gitignore` missing lines over rewriting the whole file.
 
-Ensure `.gitignore` contains a distinct `.scratch/` (or `/.scratch/`) entry. Create `.scratch/`, `.scratch/diagrams/`, and `.scratch/adr-optics/` on disk if missing.
+Ensure `.gitignore` contains a distinct `.scratch/` (or `/.scratch/`) entry. Create `.scratch/`, `.scratch/visuals/`, `.scratch/adr-optics/`, `.scratch/doop/`, and `docs/visuals/` on disk if missing. If `.scratch/diagrams/` exists and `.scratch/visuals/` does not, rename `diagrams` → `visuals` when safe (no clobber).
 
 Apply the chosen PRD policy per [references/prd-tracking.md](references/prd-tracking.md) (A or B). Do **not** add `/docs/prd/` when the choice is **B**.
 
 If the user confirmed docx: run **`docx`** ensure steps. Report versions / probe results — never claim ready without evidence.
 
-**Done when:** confirmed artifacts exist; PRD policy surfaces match A or B; `CLAUDE.md` pointer holds; `.scratch/`, `.scratch/diagrams/`, and `.scratch/adr-optics/` ignored + present locally; optional docx result reported if chosen; user told what changed (including already-A/B no-ops).
+If the user confirmed donation CTAs + URLs: apply [references/donation-cta.md](references/donation-cta.md).
+
+**Done when:** confirmed artifacts exist; PRD policy surfaces match A or B; `CLAUDE.md` pointer holds; `.scratch/`, `.scratch/visuals/`, `.scratch/adr-optics/`, and `.scratch/doop/` ignored + present locally; `docs/visuals/` present; optional docx / donation CTA results reported if chosen; user told what changed (including already-A/B no-ops).
 
 ## 4. Point next
 
-Suggest: `npx skills add bmurrtech/skills` (if skills not present), then `grill-me` / `to-prd` / `to-adr` as needed. If docx was opted in, mention **`docx`**. If PRD policy is **B**, note that **`commit`** can track `docs/prd/` when ready.
+Suggest: `npx skills add bmurrtech/skills` (if skills not present), then `grill-me` / `create-prd` / `create-adr` as needed. If docx was opted in, mention **`docx`**. If PRD policy is **B**, note that **`commit`** can track `docs/prd/` when ready.
 
 For scaffold inventory, point humans at library **`docs/skill-scaffold.md`** (tree) and **`knowledge/skill-scaffold.md`** (why) on [bmurrtech/skills](https://github.com/bmurrtech/skills) — not copied into the consumer by setup. Flows: **`docs/how-to-bmurrtech-skills.md`**.
 

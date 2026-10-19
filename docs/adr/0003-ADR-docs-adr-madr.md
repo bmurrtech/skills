@@ -32,7 +32,7 @@ Chosen option: "`docs/adr/NNNN-ADR-<slug>.md` + `index.md` (MADR headings)", bec
 ### Consequences
 
 * Good, because ADRs are versioned with the library
-* Good, because `to-adr` has a stable target layout
+* Good, because `create-adr` has a stable target layout
 * Bad, because richer templates cost a little authoring time
 
 ### Confirmation
@@ -66,5 +66,5 @@ Every ADR appears in `docs/adr/index.md`; accepted files are not edited in place
 
 ## Implementation Notes (Normative)
 
-- Author via `skills/to-adr`.
+- Author via `skills/create-adr`.
 - Update `docs/adr/index.md` on create and supersede.

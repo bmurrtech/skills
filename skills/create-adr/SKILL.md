@@ -1,16 +1,17 @@
 ---
-name: to-adr
+name: create-adr
 description: >
-  Author or supersede Architectural Decision Records under docs/adr/ with
-  shipped mechanics headings; classify cited prior ADRs as supersede vs relate;
-  update docs/adr/index.md; rebuild at-a-glance HTML catalog. Use when a
-  decision is costly to reverse, alternatives were real, someone will ask why
-  months later, a new ADR replaces an Accepted one, or when visualizing the
-  decision log.
+  Author, in-place-edit (in-flight), or supersede (published Accepted)
+  Architectural Decision Records under docs/adr/ with shipped mechanics
+  headings; classify cited prior ADRs as supersede vs relate; update
+  docs/adr/index.md; rebuild at-a-glance HTML catalog. Use when a decision is
+  costly to reverse, alternatives were real, someone will ask why months later,
+  an in-flight ADR needs refinement, a published Accepted ADR must be replaced,
+  or when visualizing the decision log.
 disable-model-invocation: true
 ---
 
-# to-adr
+# create-adr
 
 Record **one** significant decision per file under `docs/adr/`. Markdown is
 authoritative; the HTML catalog is a generated view.
@@ -24,12 +25,22 @@ When **`writing-for-agents`** is installed, apply its levers to ADR prose
 ## Boundaries
 
 - Do **not** put feature scope, journeys, MVP phases, or sprint plans in an ADR
-  — those belong in a PRD (via **`to-prd`** when present).
+  — those belong in a PRD (via **`create-prd`** when present).
 - Do **not** paste standing ops or glossary text into an ADR — link consumer
   `AGENTS.md` / `CONTEXT.md` / `knowledge/` (when they exist) or another ADR.
-- Do **not** edit an **Accepted** ADR in place — supersede with a new file.
 - Do **not** invent Implementation Notes checklists (security/CI/ops) unless
   that topic *is* the decision — see [references/mechanics.md](references/mechanics.md).
+- **In-flight vs published (edit gate):**
+  - **In-flight** = the ADR file is not yet on the remote default branch (typical:
+    untracked, or only on a local/unpushed commit; never merged/pushed to
+    `origin/<default>`). While in-flight, **edit the same file in place** —
+    refine Outcome, Consequences, Implementation Notes, Status. Do **not**
+    invent a superseding `NNNN+1` for the same decision.
+  - **Published** = the ADR path exists on the remote default branch (pushed /
+    merged). Then **Accepted** is immutable: change means a **new** file that
+    **supersedes** the old path. Never rewrite published Accepted ADRs in place.
+  - Detect with evidence (`git status`, `git log origin/<default> -- <path>`,
+    or equivalent) — do not assume “Accepted in Status” alone means published.
 
 ## Warrant (before a new file)
 
@@ -46,10 +57,19 @@ insistence after a failed warrant → ask once; default remains no file.
 
 ### 1. Resolve intent
 
-New vs edit: Accepted ADRs are immutable — “change” means a new ADR that
-**supersedes** the old path. Ambiguous → ask.
+Classify the target ADR as **in-flight** or **published** (see Boundaries).
 
-**Done when:** create vs supersede is clear.
+| Situation | Action |
+|-----------|--------|
+| New decision, no file yet | Create new `NNNN-ADR-…` |
+| In-flight file needs a better outcome / notes | **Edit that file in place** (same `NNNN`) |
+| Published **Accepted** decision must change | New file that **supersedes** the old path |
+| Ambiguous publish state | Ask once; prefer in-place edit when evidence shows not on remote default |
+
+Do **not** supersede solely because Status says Accepted while the file is still
+local-only / unpushed.
+
+**Done when:** create vs in-place edit vs supersede is clear.
 
 ### 2. Classify cited prior ADRs
 
@@ -100,23 +120,23 @@ Status on both rows.
 After create/supersede (or when the user asks for the decision log / catalog):
 
 1. If **`.scratch/adr-optics/`** is missing, run **`setup-bmurrtech-skills`**
-   (creates `.scratch/`, `.scratch/diagrams/`, `.scratch/adr-optics/`, and the
+   (creates `.scratch/`, `.scratch/visuals/`, `.scratch/adr-optics/`, and the
    rest of the scaffold) — then continue.
 2. Rebuild and **open** the catalog with this skill’s **repo-local** helper
    (ships beside this `SKILL.md`; no remote install):
 
 | | |
 |--|--|
-| **Script** | `scripts/build_catalog.py` under this skill directory (library path: `skills/to-adr/scripts/build_catalog.py`; harness installs: same relative path on the installed skill) |
+| **Script** | `scripts/build_catalog.py` under this skill directory (library path: `skills/create-adr/scripts/build_catalog.py`; harness installs: same relative path on the installed skill) |
 | **Reads** | Markdown ADRs under `--home` (default: `docs/adr/`); template `scripts/visualizer_template.html` |
 | **Writes** | Always: slim tracked `docs/adr/catalog.json` (`schema_version` 2: decisions + `lineage_edges` + `issues`). Optional `--write-index`: refresh `docs/adr/index.md` (incl. lineage-review notes). With `--visualize`: fat `.scratch/adr-optics/adr-catalog.json` + `adr-at-a-glance.html` (gitignored) |
 | **Side effects** | `--open` may launch the default browser on a `file://` URI; no network font/CDN loads (system fonts only). Exit **non-zero** only for `invalid_lineage` (self-target / cycle) after still writing catalog artifacts |
 
 ```bash
-python3 skills/to-adr/scripts/build_catalog.py --home docs/adr --visualize --open
+python3 skills/create-adr/scripts/build_catalog.py --home docs/adr --visualize --open
 ```
 
-If this skill lives outside `skills/to-adr/` (harness install path), point at
+If this skill lives outside `skills/create-adr/` (harness install path), point at
 this skill’s `scripts/build_catalog.py` instead.
 
 `--open` launches the default browser (`file://`). If the harness cannot open a

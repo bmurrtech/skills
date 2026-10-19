@@ -13,7 +13,7 @@ MVP: journey, behavioral FRs, DoD, bug appendix.
 ## Track vs ignore
 
 **Default (setup A):** `docs/prd/` is gitignored — day-to-day specs churn and
-stay local while **`to-prd`** / **`implement`** still have a stable home.
+stay local while **`create-prd`** / **`implement`** still have a stable home.
 
 **Opt-in (setup B):** track `docs/prd/` so teammates and remote agents share
 PRD context from the repo. Setup re-asks on every run and retargets
@@ -30,11 +30,11 @@ Library pointer: [docs/about-prd.md](../docs/about-prd.md).
 - Home is always `docs/prd/` — policy is ignore **or** track, not a different path
 - No project-key prefix
 - Cite ADRs under `docs/adr/`; do not put architecture rationale in the PRD
-- Diagrams via `ascii`; new ADRs via `to-adr` when warranted
+- Diagrams via `ascii`; new ADRs via `create-adr` when warranted
 
 ## Related
 
-- Skill: [`skills/to-prd`](../skills/to-prd/SKILL.md)
+- Skill: [`skills/create-prd`](../skills/create-prd/SKILL.md)
 - Setup choice: [`skills/setup-bmurrtech-skills/references/prd-tracking.md`](../skills/setup-bmurrtech-skills/references/prd-tracking.md)
 - Scaffold why: [skill-scaffold.md](skill-scaffold.md)
 - Glossary: [CONTEXT.md](../CONTEXT.md)

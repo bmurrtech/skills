@@ -7,7 +7,7 @@ Accepted
 - **Date (optional):** 2026-09-25
 - **Supersedes:** —
 - **Superseded by:** —
-- **Related ADRs:** [0011](0011-ADR-skill-scanner-posture-prereqs.md)
+- **Related ADRs:** [0011](0011-ADR-skill-scanner-posture-prereqs.md), [0015-ADR-donation-cta-changelog-release-notes.md](0015-ADR-donation-cta-changelog-release-notes.md)
 - **Related PRDs:** —
 
 ## Context and Problem Statement

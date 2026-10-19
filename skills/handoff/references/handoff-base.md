@@ -13,7 +13,7 @@ replace this file.
 <Where the work stands in 2–4 sentences. No “see this chat.”>
 
 ## Next action
-- **Skill / command:** `<e.g. implement | code-review | to-adr | wait>`
+- **Skill / command:** `<e.g. implement | code-review | create-adr | wait>`
 - **Spec / focus path:** `<path or N/A>`
 - **Commit allowed:** `<yes | no | ask>`
 - **Deploy allowed:** `<yes | no | ask>`

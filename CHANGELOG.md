@@ -13,6 +13,30 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
+## [0.3.0-rc1] - 2026-10-18
+
+Operator-facing ship: experimental **`doop`**, **`create-adr`/`create-prd`** rename, visual-explainer dual homes, Donation CTA + CHANGELOG-extract release notes.
+
+### Added
+
+- `.github/FUNDING.yml` (Ko-fi + Buy Me a Coffee: `bmurrtech`); Donation CTA + CHANGELOG-extract notes + skill-only extractor SoT ([ADR 0015](docs/adr/0015-ADR-donation-cta-changelog-release-notes.md)).
+- `skills/release/scripts/changelog_release_notes.py`: CHANGELOG section → GitHub Release body + optional Donation CTA footer; wired in `.github/workflows/release.yml` (single SoT; no repo-`scripts/` twin).
+- **`setup-bmurrtech-skills`**: optional Donation CTA (FUNDING.yml + README **Support this Repo** + CONTEXT); [references/donation-cta.md](skills/setup-bmurrtech-skills/references/donation-cta.md).
+- **`create-adr`**: in-flight vs published edit gate — edit unpushed ADRs in place; supersede only after remote default has the file.
+- **`doop`** (**experimental**): localhost Doop skill for business-process and present-state architecture canvases via external MCP; compose + form templates; `ensure_doop.py` (checkout + live identity gates; safe stop); session sidecars under `.scratch/doop/`; `tests.test_ensure_doop`. API, MCP, and form contracts may change before a stable cut.
+- **`setup-bmurrtech-skills`**: provision `.scratch/doop/` for doop sidecars.
+- README How to use: default cycle extends through **`commit`** / **`merge`** / **`release`** and side-path **`idea`** → **`roadmap`**; new Quick scenarios table for common “when do I…?” prompts.
+- **`visual-explainer`** dual homes: default `.scratch/visuals/`; tracked `docs/visuals/` on team/group/commit/docs cues; mode suggest-once when unclear; [ADR 0014](docs/adr/0014-ADR-visual-explainer-homes.md); `references/homes.md`.
+- **`setup-bmurrtech-skills`**: provision `.scratch/visuals/` + `docs/visuals/` (rename legacy `.scratch/diagrams/` → `visuals/` when safe).
+
+### Changed
+
+- **`release`**: notes extractor SoT is only `skills/release/scripts/changelog_release_notes.py` (drop repo-`scripts/` twin); notes template + bootstrap prefer CHANGELOG extract + CTA footer (no hardcoded stubs).
+- Skills renamed: **`create-adr`**, **`create-prd`** (was `to-adr` / `to-prd`); dirs, frontmatter, and living refs updated.
+- Scratch visual path: `.scratch/diagrams/` → `.scratch/visuals/` across skill, scaffold, how-tos, CONTEXT.
+
+### Fixed
+
 ## [0.2.2-rc3] - 2026-10-09
 
 Operator-facing ship: **`writing-for-humans`** + **`discovery`**, skill-scripts OKF, tighter **`code-review`/`implement`/`to-adr`/`grill-me`** contracts, and linter token-productivity fixes.

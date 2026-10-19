@@ -12,4 +12,4 @@ Use visual-first slides: diagrams, charts, tables, SVG accents. Vary composition
 
 This remake does **not** ship a PPTX exporter — deliver the HTML deck as the source of truth.
 
-Write to `.scratch/diagrams/` and open in the browser. Optional AI-readable companion `.md` only when requested (ask before replace).
+Write under the **resolved home** and open in the browser. Optional AI-readable companion `.md` only when requested (ask before replace).

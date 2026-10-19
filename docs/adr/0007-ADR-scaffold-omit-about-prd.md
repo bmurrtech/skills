@@ -17,7 +17,7 @@ ADR 0004 required `setup-bmurrtech-skills` to create a tracked `docs/about-prd.m
 ## Decision Drivers
 
 * Keep consumer scaffold lean (OKF + ADR index + ignore rules)
-* Keep `docs/prd/` gitignored and usable by **`to-prd`**
+* Keep `docs/prd/` gitignored and usable by **`create-prd`**
 * Preserve a short “why PRDs are local” explainer for humans who seek it — in the library repo, not forced into every consumer
 
 ## Considered Options
@@ -34,7 +34,7 @@ Chosen option: "Drop `about-prd.md` from setup; explain in library docs (`docs/a
 
 * Good, because scaffold stays knowledge/indexes-first without doc bloat
 * Good, because library still answers “why aren’t PRDs tracked?”
-* Bad, because a consumer clone without visiting the library may lack an in-repo PRD explainer (mitigated by `to-prd` skill + ignore rule + AGENTS structure line)
+* Bad, because a consumer clone without visiting the library may lack an in-repo PRD explainer (mitigated by `create-prd` skill + ignore rule + AGENTS structure line)
 
 ### Confirmation
 
@@ -59,7 +59,7 @@ Chosen option: "Drop `about-prd.md` from setup; explain in library docs (`docs/a
 
 ## Assumptions
 
-- `to-prd` remains the authoring path for `docs/prd/`.
+- `create-prd` remains the authoring path for `docs/prd/`.
 - Consumers who need the rationale can open this library’s docs.
 
 ## Constraints

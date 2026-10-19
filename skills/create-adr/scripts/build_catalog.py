@@ -571,7 +571,7 @@ def _catalog_payload(
     slim: bool,
 ) -> dict:
     rows = [_slim_decision(d) for d in decisions] if slim else decisions
-    generated: dict[str, str] = {"by": "bmurrtech/skills/to-adr"}
+    generated: dict[str, str] = {"by": "bmurrtech/skills/create-adr"}
     if not slim:
         # Fat/scratch only — keep slim tracked catalog free of wall-clock churn
         generated["at"] = datetime.now().astimezone().isoformat()

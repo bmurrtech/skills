@@ -18,7 +18,7 @@ Use **`/discovery`** when you need to:
 - Produce a scored recap, or re-score when evidence changed
 
 Do **not** use it to write a PRD, ADR, ticket, or roadmap entry. Point at
-**`to-prd`**, **`to-adr`**, or **`roadmap`** after the discovery record
+**`create-prd`**, **`create-adr`**, or **`roadmap`** after the discovery record
 exists.
 
 ## Flow

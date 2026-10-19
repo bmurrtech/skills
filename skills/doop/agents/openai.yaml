@@ -1,0 +1,5 @@
+interface:
+  display_name: "Doop"
+  short_description: "Process and architecture canvases on localhost Doop via MCP"
+policy:
+  allow_implicit_invocation: false

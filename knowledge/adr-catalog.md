@@ -1,15 +1,15 @@
 ---
 title: ADR catalog
-description: Seam map for to-adr build_catalog parse, lineage, dual-write catalog, at-a-glance visualizer.
+description: Seam map for create-adr build_catalog parse, lineage, dual-write catalog, at-a-glance visualizer.
 type: test-map
-tags: [tests, adr, to-adr]
+tags: [tests, adr, create-adr]
 ---
 
 # ADR catalog (test map)
 
 ## Seam
 
-`skills/to-adr/scripts/build_catalog.py` public contract:
+`skills/create-adr/scripts/build_catalog.py` public contract:
 
 - Parse ADR Status (title, author status → OKF status, date, supersedes /
   superseded-by links, related links) without requiring the rest of the template.
@@ -41,5 +41,5 @@ python3 -m unittest tests.test_adr_catalog -v
 ## Related
 
 - Concept: [adr.md](adr.md)
-- Skill: [`skills/to-adr`](../skills/to-adr/SKILL.md)
+- Skill: [`skills/create-adr`](../skills/create-adr/SKILL.md)
 - How-to: [docs/how-to-adr.md](../docs/how-to-adr.md)

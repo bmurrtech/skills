@@ -1,5 +1,0 @@
-interface:
-  display_name: "To ADR"
-  short_description: "Author/supersede ADRs; catalog at-a-glance"
-policy:
-  allow_implicit_invocation: false

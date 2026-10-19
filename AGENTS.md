@@ -11,8 +11,10 @@
 - `scripts/package_skills.py` — builds filtered release tarball + sha256
 - `scripts/quick_validate.py` / `scripts/init_skill.py` — skill frontmatter validate + scaffold CLIs (library CI/ops; not product skills)
 - `.github/workflows/ci.yml` — unittest (package/docx/adr/roadmap) + all-skills validate + package smoke
-- `.github/workflows/release.yml` — on `v*` tags: same unittests + package + GitHub Release assets
+- `.github/workflows/release.yml` — on `v*` tags: same unittests + package + GitHub Release assets (notes via `skills/release/scripts/changelog_release_notes.py`)
+- `.github/FUNDING.yml` — GitHub Sponsors / Ko-fi / Buy Me a Coffee (optional consumer scaffold via setup Donation CTA)
 - `docs/adr/` — tracked ADRs + slim `catalog.json` (rebuildable; glance HTML under `.scratch/adr-optics/`)
+- `docs/visuals/` — tracked **visual-explainer** HTML (team/commit cues; default scratch is `.scratch/visuals/`)
 - `docs/how-to-bmurrtech-skills.md` — consumer how-to (flows + branches + PRDs A/B); README links here
 - `docs/how-to-adr.md` — ADR authoring + at-a-glance prompts
 - `docs/how-to-visual-explainer.md` — visual-explainer modes + prompts
@@ -21,7 +23,7 @@
 - `docs/ROADMAP.md` — durable unordered idea ledger (**`roadmap`**; capture → **`idea`**)
 - `CHANGELOG.md` — Keep a Changelog (Unreleased + release-cut owned by **upkeep**)
 - `docs/prd/` — PRDs (ignored here; setup **A**; consumers may choose **B** track)
-- `.scratch/` — untracked agent scratch pad (subdir roles → [CONTEXT.md](CONTEXT.md) **.scratch/**; ideas → `.scratch/ideas/`)
+- `.scratch/` — untracked agent scratch pad (subdir roles → [CONTEXT.md](CONTEXT.md) **.scratch/**; ideas → `.scratch/ideas/`; doop sidecars → `.scratch/doop/`)
 - `docs/about-license.md` — license explainer
 - `AGENTS.md` / `CLAUDE.md` — ops manual + pointer
 - `pm/`, `.agents/`, `.claude/`, `.cursor/` — local-only; ignored
@@ -43,7 +45,7 @@ Release packaging: `scripts/package_skills.py` (see [ADR 0005](docs/adr/0005-ADR
 
 ```bash
 python3 scripts/quick_validate.py skills/<name>
-python3 -m unittest tests.test_package_skills tests.test_docx_ensure tests.test_adr_catalog tests.test_roadmap_promote tests.test_implement_soc tests.test_writing_for_humans_linter tests.test_discovery_priority_score -v
+python3 -m unittest tests.test_package_skills tests.test_docx_ensure tests.test_adr_catalog tests.test_roadmap_promote tests.test_implement_soc tests.test_writing_for_humans_linter tests.test_discovery_priority_score tests.test_changelog_release_notes tests.test_ensure_doop -v
 ```
 
 - Validate every new or edited skill locally with `scripts/quick_validate.py` (CI also validates all `skills/*/SKILL.md` on PR/`main`).
@@ -60,6 +62,8 @@ One-liners → `knowledge/` test-maps for session-scoped runs (see **`tdd`**).
 - [Implement SoC](knowledge/implement-soc.md) — `python3 -m unittest tests.test_implement_soc -v`
 - [Writing for humans linter](knowledge/writing-for-humans-linter.md) — `python3 -m unittest tests.test_writing_for_humans_linter -v`
 - [Discovery priority score](knowledge/discovery-priority-score.md) — `python3 -m unittest tests.test_discovery_priority_score -v`
+- [Changelog release notes](knowledge/changelog-release-notes.md) — `python3 -m unittest tests.test_changelog_release_notes -v`
+- [Ensure doop](knowledge/ensure-doop.md) — `python3 -m unittest tests.test_ensure_doop -v`
 
 ## Code style
 
@@ -79,7 +83,7 @@ One-liners → `knowledge/` test-maps for session-scoped runs (see **`tdd`**).
 - Tracked/published skills only under `skills/` (never dual-track SoT into agent dirs). Library-local / maintainer skills may live under ignored `.agents/skills/` so hosts (Cursor) can load them — not tracked, not shipped, not catalog SoT ([ADR 0009](docs/adr/0009-ADR-local-maintainer-skills-host-path.md)).
 - Skill-named paths at **repo root** (`ascii/`, `release/`, …) are install noise (often symlinks to stale agent copies) — **delete**; never edit or stage them. SoT is `skills/` only. Reinstall with `npx skills` into agent homes (`~/.agents/skills/`, …) — not this library’s root.
 - After `implement` or `code-review` **in this library**, run **upkeep** then **context** (universal skills soft-skip when those artifacts are absent in consumer repos).
-- Accepted ADRs are immutable — supersede via **to-adr**.
+- Published Accepted ADRs are immutable — supersede via **create-adr**. In-flight (not yet on remote default) ADRs: edit in place; do not invent a superseding file for the same decision. Status=Accepted alone ≠ published — see [CONTEXT.md](CONTEXT.md) **ADR** / **`create-adr`**.
 - Handoffs: default OS temp; **keep** → `.scratch/handoffs/` ([CONTEXT.md](CONTEXT.md) **.scratch/**).
 - Prefer **grill-me** before implementing ambiguous designs.
 

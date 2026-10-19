@@ -1,0 +1,5 @@
+interface:
+  display_name: "Create ADR"
+  short_description: "Author/edit in-flight/supersede published ADRs; catalog"
+policy:
+  allow_implicit_invocation: false

@@ -56,7 +56,7 @@ plans/ADRs and without overloading chat.
 - Filenames use `{kind}-{slug}-{ts}` or `{slug}-{ts}` — no `bmurrtech-*-handoff-*`
 - Default destination remains OS temp; keep → `.scratch/handoffs/`
 - Reply after write is at-a-glance only; full detail in the file
-- `adr` kind captures candidacy for a later **`to-adr`** session; handoff does
+- `adr` kind captures candidacy for a later **`create-adr`** session; handoff does
   not author ADR/PRD bodies
 
 ## Pros and Cons of the Options

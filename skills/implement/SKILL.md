@@ -27,7 +27,7 @@ Locate the acceptance target, in order:
 4. User paste / this chat
 
 If scope is still a design tree with open frontier, **suggest** **`grill-me`**
-(or **`to-prd`** when they want a written PRD) — do not hard-gate every ticket.
+(or **`create-prd`** when they want a written PRD) — do not hard-gate every ticket.
 Post-grill routes that land here: **`grill-me` B** → **`handoff`** (`impl`);
 **C**/`Go` is bare implement *without* this skill — do not treat that as an
 **`implement`** invoke.
@@ -81,7 +81,7 @@ conventions): run **`upkeep`** then **`context`**.
 Otherwise skip with a one-line note. Do not fail an implement because
 glossary/ops files are missing.
 
-If an ADR-worthy decision appeared and **`to-adr`** is available, offer it (or
+If an ADR-worthy decision appeared and **`create-adr`** is available, offer it (or
 note for later).
 
 **Done when:** housekeeping applied or explicitly skipped.

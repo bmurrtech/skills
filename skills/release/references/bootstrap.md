@@ -18,8 +18,30 @@ Scaffold minimal tag-triggered workflow that:
 - checks out, sets up toolchain as needed
 - runs the **same** local release/package command
 - creates GitHub Release / attaches artifacts as the repo already intends
+- builds release notes via CHANGELOG extract (not a hardcoded stub)
 
 Do not embed one-off language recipes that diverge from the local command.
+
+## Release notes + CTA
+
+1. Copy SoT [`../scripts/changelog_release_notes.py`](../scripts/changelog_release_notes.py)
+   → consumer `scripts/changelog_release_notes.py` (one file; no library-ops twin).
+2. In the workflow’s `gh release create` step, set notes from:
+
+   ```bash
+   NOTES="$(python3 scripts/changelog_release_notes.py \
+     --version "$VERSION" \
+     --repo-root . \
+     --extra-note "<optional install / artifact blurb>")"
+   ```
+
+   (This library dogfoods `python3 skills/release/scripts/changelog_release_notes.py`
+   instead of maintaining a second copy under repo `scripts/`.)
+
+3. CTA footer is automatic when `.github/FUNDING.yml` (or CONTEXT URLs) exist —
+   see [release-notes-template.md](release-notes-template.md). Do not invent
+   donation links during bootstrap; that is **`setup-bmurrtech-skills`**
+   Donation CTA opt-in.
 
 ## After scaffold
 

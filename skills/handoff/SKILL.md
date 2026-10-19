@@ -31,7 +31,7 @@ deltas — do not copy the base into the kind file.
   fact into the file or omit it.
 - Do **not** paste the full handoff into chat — glance only.
 - Do **not** include secrets, tokens, passwords, or PII.
-- Do **not** author ADR or PRD bodies here — point at **`to-adr`** / **`to-prd`**.
+- Do **not** author ADR or PRD bodies here — point at **`create-adr`** / **`create-prd`**.
 - Do **not** overwrite an existing handoff on correct/reprompt — write a **new**
   timestamped file.
 

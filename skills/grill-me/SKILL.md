@@ -2,8 +2,8 @@
 name: grill-me
 description: >
   Relentless frontier-round interview (❓ Qn + ➡️ recommendation each round)
-  until the design tree is empty; then A/B/C (to-prd / handoff→implement / bare Go).
-  Soft-update glossary/ADRs via context / to-adr only after answers settle when
+  until the design tree is empty; then A/B/C (create-prd / handoff→implement / bare Go).
+  Soft-update glossary/ADRs via context / create-adr only after answers settle when
   those skills and files exist. Use when stress-testing a plan, grilling a design,
   or before implementing ambiguous work.
 disable-model-invocation: true
@@ -13,7 +13,7 @@ disable-model-invocation: true
 
 Interview until the design tree is empty. Work **frontier rounds** only. Do not
 implement until the user picks a post-grill route (A/B/C). Soft docs (`context` /
-`to-adr`) only after a round’s answers settle — never as the opening move.
+`create-adr`) only after a round’s answers settle — never as the opening move.
 
 ## Design tree
 
@@ -106,11 +106,11 @@ follows that convention): as terms resolve, run **`context`** immediately — do
 not batch. Otherwise skip with a one-line note.
 
 When a settled choice passes the ADR warrant (costly to reverse · real
-alternatives · future “why?”) and **`to-adr`** is available: ask once to create
-via **`to-adr`**. Yes → follow `to-adr` then cite. No → continue; optional todo.
+alternatives · future “why?”) and **`create-adr`** is available: ask once to create
+via **`create-adr`**. Yes → follow `create-adr` then cite. No → continue; optional todo.
 If authoring would muddy the grill thread, suggest **`handoff`** first.
 
-Do **not** auto-author PRDs during rounds — that is post-grill **A** (`to-prd`).
+Do **not** auto-author PRDs during rounds — that is post-grill **A** (`create-prd`).
 
 **Done when:** glossary/OKF updated when applicable; warranted ADRs created or
 explicitly deferred — or soft-skipped.
@@ -124,7 +124,7 @@ explicitly deferred — or soft-skipped.
   headings for the round template; recommendations live only on `➡️` lines.
 - On Round 1 only: do not omit the LGTM opener or Set closer. After Round 1: do
   not repeat those accept-all cues (noise).
-- Do not run `context` / `to-adr` / `to-prd` as a substitute for asking frontier
+- Do not run `context` / `create-adr` / `create-prd` as a substitute for asking frontier
   questions.
 - Never treat silence or a partial reply as leaving questions open; **rec-default**
   already accepted those ➡️ lines.

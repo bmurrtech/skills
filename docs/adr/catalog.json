@@ -1,7 +1,7 @@
 {
   "schema_version": 2,
   "generated": {
-    "by": "bmurrtech/skills/to-adr"
+    "by": "bmurrtech/skills/create-adr"
   },
   "decisions": [
     {
@@ -154,7 +154,8 @@
       "date": "2026-09-25",
       "month": "2026-09",
       "related": [
-        "/0011-ADR-skill-scanner-posture-prereqs.md"
+        "/0011-ADR-skill-scanner-posture-prereqs.md",
+        "/0015-ADR-donation-cta-changelog-release-notes.md"
       ],
       "related_kinds": [
         "adr"
@@ -162,7 +163,8 @@
       "supersedes": [],
       "superseded_by": [],
       "related_adrs": [
-        "/0011-ADR-skill-scanner-posture-prereqs.md"
+        "/0011-ADR-skill-scanner-posture-prereqs.md",
+        "/0015-ADR-donation-cta-changelog-release-notes.md"
       ],
       "related_prds": [],
       "synopsis": "Installers need a lightweight skills package. Shipping the library’s `knowledge/` / `CONTEXT.md` / ops docs into consumer repos risks colliding with consumer OKF (or other `knowledge/` conventions) and bloats drop-in installs. Should library meta be gitignored, or filtered only at package time?",
@@ -356,7 +358,7 @@
       "slug": "0010-ADR-to-adr-mechanics-shipped",
       "type": "ADR",
       "number": "0010",
-      "title": "ADR template SoT lives in shipped to-adr mechanics",
+      "title": "ADR template SoT lives in shipped create-adr mechanics",
       "status": "stable",
       "status_raw": "accepted",
       "date": "2026-09-26",
@@ -365,7 +367,7 @@
         "/0003-ADR-docs-adr-madr.md",
         "/0005-ADR-skills-release-artifact.md",
         "/0011-ADR-skill-scanner-posture-prereqs.md",
-        "/../../skills/to-adr/SKILL.md"
+        "/../../skills/create-adr/SKILL.md"
       ],
       "related_kinds": [
         "adr",
@@ -380,7 +382,7 @@
         "/0011-ADR-skill-scanner-posture-prereqs.md"
       ],
       "related_prds": [],
-      "synopsis": "ADR 0003 fixed ADRs under `docs/adr/` with MADR headings, but left heading/process detail easy to drift into library-only `knowledge/` — which does not ship in the skills release artifact. Consumer installs of **`to-adr`** need a self-contained authoring contract (placement vs ops/glossary, anti-bloat Implementation Notes, optional at-a-glance catalog) without depending on this repo’s OKF.",
+      "synopsis": "ADR 0003 fixed ADRs under `docs/adr/` with MADR headings, but left heading/process detail easy to drift into library-only `knowledge/` — which does not ship in the skills release artifact. Consumer installs of **`create-adr`** need a self-contained authoring contract (placement vs ops/glossary, anti-bloat Implementation Notes, optional at-a-glance catalog) without depending on this repo’s OKF.",
       "lineage": {
         "predecessors": [
           "0003-ADR-docs-adr-madr"
@@ -425,7 +427,7 @@
         "/0010-ADR-to-adr-mechanics-shipped.md"
       ],
       "related_prds": [],
-      "synopsis": "Post-ingest scanners (Snyk / Socket / Gen) flagged **MEDIUM** on shipped **`code-review`**, **`docx`**, and **`to-adr`**. Maintainers want cleaner PASS posture without gutting core review / Word / ADR function. How should published skills obtain CLIs, Spec context, and visualizer assets — agent download/install/fetch, or operator prerequisites plus local-only inputs?",
+      "synopsis": "Post-ingest scanners (Snyk / Socket / Gen) flagged **MEDIUM** on shipped **`code-review`**, **`docx`**, and **`create-adr`**. Maintainers want cleaner PASS posture without gutting core review / Word / ADR function. How should published skills obtain CLIs, Spec context, and visualizer assets — agent download/install/fetch, or operator prerequisites plus local-only inputs?",
       "lineage": {
         "predecessors": [],
         "successors": [],
@@ -487,6 +489,7 @@
       "related": [
         "/0007-ADR-scaffold-omit-about-prd.md",
         "/0002-ADR-glossary-okf.md",
+        "/0015-ADR-donation-cta-changelog-release-notes.md",
         "/../../skills/setup-bmurrtech-skills/references/prd-tracking.md",
         "/../../skills/setup-bmurrtech-skills/SKILL.md",
         "/../../knowledge/prd.md",
@@ -501,7 +504,8 @@
       ],
       "superseded_by": [],
       "related_adrs": [
-        "/0002-ADR-glossary-okf.md"
+        "/0002-ADR-glossary-okf.md",
+        "/0015-ADR-donation-cta-changelog-release-notes.md"
       ],
       "related_prds": [],
       "synopsis": "ADR 0007 kept `docs/prd/` always gitignored and omitted `docs/about-prd.md` from scaffold. Teams and remote AI agents often need PRDs in git history for shared context. Should every consumer be forced local-only, or may setup offer a durable track-vs-ignore choice?",
@@ -519,6 +523,83 @@
         ],
         "descendants": [],
         "depth": 2
+      }
+    },
+    {
+      "path": "/0014-ADR-visual-explainer-homes.md",
+      "slug": "0014-ADR-visual-explainer-homes",
+      "type": "ADR",
+      "number": "0014",
+      "title": "Visual-explainer dual homes: scratch vs tracked docs/visuals",
+      "status": "stable",
+      "status_raw": "accepted",
+      "date": "2026-10-10",
+      "month": "2026-10",
+      "related": [
+        "/0002-ADR-glossary-okf.md",
+        "/0013-ADR-prd-tracking-choice.md",
+        "/../../skills/visual-explainer/SKILL.md",
+        "/../../skills/visual-explainer/references/homes.md",
+        "/../../skills/setup-bmurrtech-skills/SKILL.md",
+        "/../how-to-visual-explainer.md"
+      ],
+      "related_kinds": [
+        "adr",
+        "other"
+      ],
+      "supersedes": [],
+      "superseded_by": [],
+      "related_adrs": [
+        "/0002-ADR-glossary-okf.md",
+        "/0013-ADR-prd-tracking-choice.md"
+      ],
+      "related_prds": [],
+      "synopsis": "**visual-explainer** produces self-contained HTML. Some visuals are throwaway session aids; others should live in git for the team. How should the skill choose a write root, and what should setup provision?",
+      "lineage": {
+        "predecessors": [],
+        "successors": [],
+        "roots": [
+          "0014-ADR-visual-explainer-homes"
+        ],
+        "ancestors": [],
+        "descendants": [],
+        "depth": 0
+      }
+    },
+    {
+      "path": "/0015-ADR-donation-cta-changelog-release-notes.md",
+      "slug": "0015-ADR-donation-cta-changelog-release-notes",
+      "type": "ADR",
+      "number": "0015",
+      "title": "Donation CTAs via setup; CHANGELOG-extract release notes",
+      "status": "stable",
+      "status_raw": "accepted",
+      "date": "2026-10-18",
+      "month": "2026-10",
+      "related": [
+        "/0005-ADR-skills-release-artifact.md",
+        "/0013-ADR-prd-tracking-choice.md"
+      ],
+      "related_kinds": [
+        "adr"
+      ],
+      "supersedes": [],
+      "superseded_by": [],
+      "related_adrs": [
+        "/0005-ADR-skills-release-artifact.md",
+        "/0013-ADR-prd-tracking-choice.md"
+      ],
+      "related_prds": [],
+      "synopsis": "GitHub Release bodies for this library were a hardcoded stub that ignored `CHANGELOG.md`. Operators also want optional Ko-fi / Buy Me a Coffee (and similar) surfaces for the library and for consumer scaffolds — without forcing funding on every repo. How should funding files, README CTAs, glossary terms, and release-note generation relate — and where does the notes extractor live?",
+      "lineage": {
+        "predecessors": [],
+        "successors": [],
+        "roots": [
+          "0015-ADR-donation-cta-changelog-release-notes"
+        ],
+        "ancestors": [],
+        "descendants": [],
+        "depth": 0
       }
     }
   ],

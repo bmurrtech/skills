@@ -14,7 +14,7 @@ etc.).
 ```markdown
 ## Kind: visual-explainer (vs-expl)
 - **Mode:** `<diagram | visual-plan | slides | diff-review | plan-review | project-recap | fact-check | …>`
-- **Output dir:** `.scratch/diagrams/`
+- **Home:** `<.scratch/visuals/ | docs/visuals/ | resolve>`
 - **Companion .md:** `<yes | no | ask>`
 - **Subject / paths:** `<what to visualize>`
 ```

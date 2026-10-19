@@ -59,7 +59,7 @@ Verify each claim against the code. If something cannot be verified, mark it as 
 
 **Visual hierarchy**: Sections 1-3 should dominate the viewport on load (hero depth, larger type, more padding). Sections 6+ are reference material and should feel lighter (flat or recessed depth, compact layout, collapsible where appropriate).
 
-Include responsive section navigation. Use diff-style visual language throughout: red for removed/before, green for added/after, yellow for modified, blue for neutral context. Write to `.scratch/diagrams/` (create if missing), open in the browser when allowed, and report the path. Optional AI-readable companion `.md` only when requested (ask before replace).
+Include responsive section navigation. Use diff-style visual language throughout: red for removed/before, green for added/after, yellow for modified, blue for neutral context. Write under the **resolved home** from the skill (create if missing), open in the browser when allowed, and report the path. Optional AI-readable companion `.md` only when requested (ask before replace).
 
 Ultrathink.
 

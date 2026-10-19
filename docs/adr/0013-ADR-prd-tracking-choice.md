@@ -7,7 +7,7 @@ Accepted
 - **Date (optional):** 2026-09-30
 - **Supersedes:** [0007-ADR-scaffold-omit-about-prd.md](0007-ADR-scaffold-omit-about-prd.md)
 - **Superseded by:** —
-- **Related ADRs:** [0002-ADR-glossary-okf.md](0002-ADR-glossary-okf.md)
+- **Related ADRs:** [0002-ADR-glossary-okf.md](0002-ADR-glossary-okf.md), [0015-ADR-donation-cta-changelog-release-notes.md](0015-ADR-donation-cta-changelog-release-notes.md)
 - **Related PRDs:** —
 
 ## Context and Problem Statement
@@ -37,7 +37,7 @@ Chosen option: "Setup A/B choice: **A** ignore (default) · **B** track; retarge
 * Good, because consumers can share PRDs with teammates and remote agents
 * Good, because default A preserves ADR 0007’s quiet local pad
 * Good, because re-running setup can flip policy surgically
-* Bad, because `to-prd` / OKF / how-to must speak in dual policy (ignore *or* track)
+* Bad, because `create-prd` / OKF / how-to must speak in dual policy (ignore *or* track)
 * Bad, because B→A flips need care around already-tracked files (`git rm --cached` only with confirm)
 
 ### Confirmation
@@ -65,7 +65,7 @@ Chosen option: "Setup A/B choice: **A** ignore (default) · **B** track; retarge
 
 ## Assumptions
 
-- `to-prd` always authors under `docs/prd/` regardless of track vs ignore.
+- `create-prd` always authors under `docs/prd/` regardless of track vs ignore.
 - Library how-tos / `docs/about-prd.md` remain library-only (not setup creates).
 - Policy SoT = `.gitignore` presence of `docs/prd` ignore lines + matching `AGENTS.md` bullets (optional CONTEXT gloss).
 

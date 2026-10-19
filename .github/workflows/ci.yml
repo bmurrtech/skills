@@ -27,8 +27,8 @@ jobs:
         with:
           python-version: "3.12"
 
-      - name: Unit tests (package + docx + adr + roadmap + implement SoC)
-        run: python3 -m unittest tests.test_package_skills tests.test_docx_ensure tests.test_adr_catalog tests.test_roadmap_promote tests.test_implement_soc tests.test_writing_for_humans_linter tests.test_discovery_priority_score -v
+      - name: Unit tests (package + docx + adr + roadmap + implement SoC + doop)
+        run: python3 -m unittest tests.test_package_skills tests.test_docx_ensure tests.test_adr_catalog tests.test_roadmap_promote tests.test_implement_soc tests.test_writing_for_humans_linter tests.test_discovery_priority_score tests.test_changelog_release_notes tests.test_ensure_doop -v
 
       - name: Validate tracked skills
         run: |

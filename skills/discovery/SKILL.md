@@ -21,7 +21,7 @@ Do not pitch a solution early. Stakeholder name stays blank for a human.
 - Do **not** fill the **Stakeholder:** line (even if a transcript names someone).
 - Do **not** copy raw transcripts into the committed bundle — cite a local path.
 - Do **not** author PRDs, ADRs, tickets, or roadmap entries — point at
-  **`to-prd`**, **`to-adr`**, or **`roadmap`**.
+  **`create-prd`**, **`create-adr`**, or **`roadmap`**.
 - Do **not** run a requirements workshop on the first pain meeting.
 - Do **not** invent KPI numbers or clear gates with assumptions.
 - Do **not** treat department jargon as the schema — keep field names generic.

@@ -40,7 +40,7 @@ jobs:
           echo "tag=$TAG" >> "$GITHUB_OUTPUT"
 
       - name: Unit tests
-        run: python3 -m unittest tests.test_package_skills tests.test_docx_ensure tests.test_adr_catalog tests.test_roadmap_promote tests.test_implement_soc tests.test_writing_for_humans_linter tests.test_discovery_priority_score -v
+        run: python3 -m unittest tests.test_package_skills tests.test_docx_ensure tests.test_adr_catalog tests.test_roadmap_promote tests.test_implement_soc tests.test_writing_for_humans_linter tests.test_discovery_priority_score tests.test_changelog_release_notes -v
 
       - name: Build skills release artifact
         run: |
@@ -58,10 +58,10 @@ jobs:
           TAG="${{ steps.ver.outputs.tag }}"
           TARBALL="dist/bmurrtech-skills-${VERSION}.tar.gz"
           SUM="${TARBALL}.sha256"
-          NOTES="Skills release ${TAG}
-
-          Artifact contains \`skills/\` + \`LICENSE\` only (library OKF/ops/docs excluded).
-          See ADR 0005."
+          NOTES="$(python3 skills/release/scripts/changelog_release_notes.py \
+            --version "$VERSION" \
+            --repo-root . \
+            --extra-note "Artifact contains \`skills/\` + \`LICENSE\` only (library OKF/ops/docs excluded). See ADR 0005.")"
           gh release create "$TAG" "$TARBALL" "$SUM" \
             --title "bmurrtech-skills ${VERSION}" \
             --notes "$NOTES"

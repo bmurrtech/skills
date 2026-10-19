@@ -77,7 +77,7 @@ Verify each claim against the code and the plan. If something cannot be verified
 
 **Visual hierarchy**: Sections 1-4 should dominate the viewport on load (hero depth for summary, elevated for architecture diagrams). Sections 6+ are reference material and should feel lighter (flat or recessed depth, compact layout, collapsible where appropriate).
 
-Include responsive section navigation. Use a current-vs-planned visual language throughout: blue/neutral for current state, green/purple for planned additions, amber for areas of concern, red for gaps or risks. Write to `.scratch/diagrams/` (create if missing), open in the browser when allowed, and report the path. Optional AI-readable companion `.md` only when requested (ask before replace).
+Include responsive section navigation. Use a current-vs-planned visual language throughout: blue/neutral for current state, green/purple for planned additions, amber for areas of concern, red for gaps or risks. Write under the **resolved home** from the skill (create if missing), open in the browser when allowed, and report the path. Optional AI-readable companion `.md` only when requested (ask before replace).
 
 Ultrathink.
 

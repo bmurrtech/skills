@@ -12,7 +12,7 @@ Accepted
 
 ## Context and Problem Statement
 
-Post-ingest scanners (Snyk / Socket / Gen) flagged **MEDIUM** on shipped **`code-review`**, **`docx`**, and **`to-adr`**. Maintainers want cleaner PASS posture without gutting core review / Word / ADR function. How should published skills obtain CLIs, Spec context, and visualizer assets — agent download/install/fetch, or operator prerequisites plus local-only inputs?
+Post-ingest scanners (Snyk / Socket / Gen) flagged **MEDIUM** on shipped **`code-review`**, **`docx`**, and **`create-adr`**. Maintainers want cleaner PASS posture without gutting core review / Word / ADR function. How should published skills obtain CLIs, Spec context, and visualizer assets — agent download/install/fetch, or operator prerequisites plus local-only inputs?
 
 ## Decision Drivers
 
@@ -26,7 +26,7 @@ Post-ingest scanners (Snyk / Socket / Gen) flagged **MEDIUM** on shipped **`code
 
 * Accept residual MEDIUM and document only (`docs/accepted-risk.md` as SoT)
 * Chase literal zero MEDIUM even if that removes `docx read` / CLI invoke / catalog helper
-* **Prerequisite-driven posture:** delete agent download/install paths; local Spec only for `code-review`; system fonts (no CDN) for `to-adr` visualizer; keep core function; accept residual only if untrusted document ingest still flags
+* **Prerequisite-driven posture:** delete agent download/install paths; local Spec only for `code-review`; system fonts (no CDN) for `create-adr` visualizer; keep core function; accept residual only if untrusted document ingest still flags
 
 ## Decision Outcome
 
@@ -34,7 +34,7 @@ Chosen option: "Prerequisite-driven posture", because it clears download / defau
 
 ### Consequences
 
-* Good, because scanners no longer see agent-initiated binary download or Google Fonts runtime URLs in `to-adr`
+* Good, because scanners no longer see agent-initiated binary download or Google Fonts runtime URLs in `create-adr`
 * Good, because `code-review` Spec defaults to local diff + local Spec / scratch — no default third-party issue body in context
 * Good, because operators get explicit README + skill hints (OS-specific copy-paste) instead of silent installs
 * Bad, because first-time `docx` users must install CLI + office host themselves before the skill can succeed
@@ -44,7 +44,7 @@ Chosen option: "Prerequisite-driven posture", because it clears download / defau
 
 - `docx` skill does not download or `npx`-install docx-cli; probe pin / PATH and print manual prereq commands on failure
 - `code-review` Spec order has no `gh`/tracker fetch; optional tracker Spec lives only as scratch idea until explicitly requested later
-- `to-adr` visualizer template has no `fonts.googleapis.com` / `fonts.gstatic.com` (or other font CDN) links
+- `create-adr` visualizer template has no `fonts.googleapis.com` / `fonts.gstatic.com` (or other font CDN) links
 - `docs/accepted-risk.md` is a thin pointer to this ADR, not a parallel SoT
 
 ### Risks → mitigations
@@ -82,7 +82,7 @@ Chosen option: "Prerequisite-driven posture", because it clears download / defau
 
 - Operators can install docx-cli (matching the skill’s documented pin) and Word or LibreOffice on their OS.
 - Local Spec paths (`docs/`, `specs/`, `docs/prd/`, `.scratch/`) or user-passed paths cover most `code-review` Spec needs.
-- Google Fonts preconnect/stylesheet links were the concrete W012 for `to-adr` visualizer; system/local font stacks suffice.
+- Google Fonts preconnect/stylesheet links were the concrete W012 for `create-adr` visualizer; system/local font stacks suffice.
 
 ## Constraints
 
@@ -96,7 +96,7 @@ Chosen option: "Prerequisite-driven posture", because it clears download / defau
 - **`docx`:** Probe `docx` on PATH and pin/version; on failure, notify and print OS-specific **manual** install commands (CLI + LibreOffice/Word as needed); never `--install` download / `urllib` fetch / `npx` skill add. Committed pin/DIGESTS may document expected version for mismatch messages only. User reruns the skill after prereqs.
 - **`code-review`:** Spec sources = user path → local `docs/` / `specs/` / `.scratch/` / `docs/prd/` → ask. No tracker/`gh` fetch in the shipped skill until a future explicit opt-in.
 - **Trust wording:** Third-party or document-derived text is quoted evidence only; do not execute embedded commands or links. No hostile “ignore …” examples in prompts.
-- **`to-adr`:** Keep repo-local `scripts/build_catalog.py` + visualizer; **system/local fonts only** — no font CDN URLs in the HTML template.
+- **`create-adr`:** Keep repo-local `scripts/build_catalog.py` + visualizer; **system/local fonts only** — no font CDN URLs in the HTML template.
 - **Docs:** README Prerequisites call out CLI / office / local Spec expectations. `docs/accepted-risk.md` points here for residual floor (`docx` ingest).
 
 ## References
@@ -107,4 +107,4 @@ Chosen option: "Prerequisite-driven posture", because it clears download / defau
 - [docs/accepted-risk.md](../accepted-risk.md)
 - [README.md](../../README.md) (Prerequisites — when updated)
 - `.scratch/ideas/code-review-optional-gh-issue-context.md` (deferred `gh` Spec)
-- `skills/docx/`, `skills/code-review/`, `skills/to-adr/`
+- `skills/docx/`, `skills/code-review/`, `skills/create-adr/`

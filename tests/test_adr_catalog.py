@@ -1,4 +1,4 @@
-"""Seams for to-adr ADR catalog / at-a-glance visualizer."""
+"""Seams for create-adr ADR catalog / at-a-glance visualizer."""
 
 from __future__ import annotations
 
@@ -11,7 +11,7 @@ from pathlib import Path
 from unittest import mock
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
-SCRIPTS = REPO_ROOT / "skills" / "to-adr" / "scripts"
+SCRIPTS = REPO_ROOT / "skills" / "create-adr" / "scripts"
 
 SAMPLE_ADR = """# Keep release artifact filtered
 
@@ -230,7 +230,7 @@ class BuildCatalogTests(unittest.TestCase):
             fat, slim, invalid = catalog.build_catalog(home, write_index_md=False)
             self.assertEqual(len(fat["decisions"]), 1)
             self.assertEqual(fat["schema_version"], 2)
-            self.assertEqual(fat["generated"]["by"], "bmurrtech/skills/to-adr")
+            self.assertEqual(fat["generated"]["by"], "bmurrtech/skills/create-adr")
             self.assertIn("lineage_edges", fat)
             self.assertIn("issues", fat)
             self.assertFalse(invalid)
@@ -318,7 +318,7 @@ class BuildCatalogTests(unittest.TestCase):
             fat, slim, _ = catalog.build_catalog(home)
             self.assertIn("at", fat["generated"])
             self.assertNotIn("at", slim["generated"])
-            self.assertEqual(slim["generated"]["by"], "bmurrtech/skills/to-adr")
+            self.assertEqual(slim["generated"]["by"], "bmurrtech/skills/create-adr")
 
     def test_malformed_supersession_issue(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:

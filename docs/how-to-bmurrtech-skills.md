@@ -42,10 +42,10 @@ Spine from install through ship. Three shape entries; take one.
 |   bmurrtech/skills              |
 |                                 |
 | /setup-bmurrtech-skills [opt]   |
-|   .scratch/ (+ diagrams,          |
+|   .scratch/ (+ visuals,           |
 |   adr-optics), AGENTS, CLAUDE,    |
 |   CONTEXT, knowledge/, docs/adr   |
-|   docs/prd A/B; optional docx |
+|   docs/prd A/B; optional docx / donation CTA |
 +================+================+
                  |
                  v
@@ -69,10 +69,10 @@ Spine from install through ship. Three shape entries; take one.
                  |
                  | [need durable decision?]
                  |      |
-                 |      +--> /to-adr  (docs/adr/)
+                 |      +--> /create-adr  (docs/adr/)
                  | [need local product spec?]
                  |      |
-                 |      +--> /to-prd  (docs/prd/; ignore or track per setup)
+                 |      +--> /create-prd  (docs/prd/; ignore or track per setup)
                  |           cite ADRs; /ascii for structure
                  | [not this sprint / brain dump?]
                  |      |
@@ -112,7 +112,7 @@ intent with **`roadmap`**; do not treat scratch capture as a tracker ticket.
 ```text
 +------------------+
 | /grill-me / edit |
-| /to-prd / /to-adr|
+| /create-prd / /create-adr|
 +--------+---------+
          |
          v
@@ -205,13 +205,13 @@ intent with **`roadmap`**; do not treat scratch capture as a tracker ticket.
 |-----------|----------|
 | Skills not installed | `npx skills@latest add bmurrtech/skills` |
 | Repo lacks AGENTS / CONTEXT / ADR / `.scratch` conventions | **`setup-bmurrtech-skills`** ([tree](skill-scaffold.md)) |
-| Design ambiguous; need shared understanding | **`grill-me`** (ends with A→`to-prd` / B→`handoff` impl / C→`Go`) |
-| Need a PRD / focused sprint spec | **`to-prd`** (see [PRDs](#prds-docsprd) below) |
-| Costly-to-reverse decision | **`to-adr`** ([how-to](how-to-adr.md)) |
+| Design ambiguous; need shared understanding | **`grill-me`** (ends with A→`create-prd` / B→`handoff` impl / C→`Go`) |
+| Need a PRD / focused sprint spec | **`create-prd`** (see [PRDs](#prds-docsprd) below) |
+| Costly-to-reverse decision | **`create-adr`** ([how-to](how-to-adr.md)) |
 | Park a thought for later (not this sprint) | **`idea`** → `.scratch/ideas/` |
 | Promote durable idea to public ledger | **`roadmap`** → [ROADMAP.md](ROADMAP.md) |
 | Publish idea to GitHub / Fizzy | **`roadmap`** publish (explicit; not from capture alone) |
-| Structure clearer as a diagram | **`ascii`** (terminal) or **`visual-explainer`** (HTML under `.scratch/diagrams/`) |
+| Structure clearer as a diagram | **`ascii`** (terminal) or **`visual-explainer`** (HTML under `.scratch/visuals/` or `docs/visuals/`) |
 | Build from a clear acceptance target | **`implement`** (prefer **`tdd`**; then subagent **`code-review`** or **`handoff` → `code-review`**; Git via **`commit`**) |
 | Review only (branch / PR / local diff) | **`code-review`** (prefer after **`handoff`** to a fresh agent) |
 | Red-green at agreed seams | **`tdd`** |
@@ -244,14 +244,14 @@ Why / track-vs-ignore: [knowledge/prd.md](../knowledge/prd.md). Thin library poi
 | knowledge/       |     | (bodies+index)   |
 +------------------+     +------------------+
          ^                        |
-         | cite                   | author with to-prd
+         | cite                   | author with create-prd
          +------------------------+
 ```
 
 - Path: `docs/prd/NNNN-PRD-<slug>.md` (four-digit sequence, no project-key prefix)
 - Each file is an OKF concept (YAML frontmatter + Markdown body)
 - Catalog: `docs/prd/index.md` (same track/ignore policy as the directory)
-- Author with **`to-prd`**; cite ADRs under tracked `docs/adr/` via **`to-adr`**
+- Author with **`create-prd`**; cite ADRs under tracked `docs/adr/` via **`create-adr`**
 
 ## Skill registry
 
@@ -261,18 +261,18 @@ Details live here (README keeps a short index only).
 
 | Skill | Role |
 |-------|------|
-| **`setup-bmurrtech-skills`** | Idempotent scaffold: gitignore, `.scratch/` (+ `diagrams/`, `adr-optics/`), AGENTS/CLAUDE/CONTEXT, knowledge stub, `docs/adr/`, **Commit PRDs?** A ignore / B track (default A; re-ask on re-run). Optional **`docx`**. Never silent overwrite. Tree: [skill-scaffold.md](skill-scaffold.md). |
+| **`setup-bmurrtech-skills`** | Idempotent scaffold: gitignore, `.scratch/` (+ `visuals/`, `adr-optics/`, `doop/`), `docs/visuals/`, AGENTS/CLAUDE/CONTEXT, knowledge stub, `docs/adr/`, **Commit PRDs?** A ignore / B track (default A; re-ask on re-run). Optional **`docx`**. Optional **Donation CTA** (FUNDING.yml + README **Support this Repo** + CONTEXT; default no). Never silent overwrite. Tree: [skill-scaffold.md](skill-scaffold.md). |
 | **`docx`** | Word `.docx` via pinned docx-cli (operator install — [how-to-docx-cli.md](how-to-docx-cli.md)); LibreOffice/Word probe. Opt in at setup or `--skill docx`. |
 
 ### Shape and record
 
 | Skill | Role |
 |-------|------|
-| **`grill-me`** | Design-tree interview until shared understanding; then A/B/C next step (**A** `/to-prd` recommended, **B** `/handoff`→implement, **C** `Go` bare implement); updates glossary/OKF when present; may warrant **`to-adr`**. |
-| **`to-prd`** | OKF PRDs under `docs/prd/` (ignore or track per setup). Cite ADRs; use **`ascii`** for structure. |
-| **`to-adr`** | Tracked ADRs under `docs/adr/`; optional at-a-glance under `.scratch/adr-optics/`. [how-to-adr.md](how-to-adr.md). |
+| **`grill-me`** | Design-tree interview until shared understanding; then A/B/C next step (**A** `/create-prd` recommended, **B** `/handoff`→implement, **C** `Go` bare implement); updates glossary/OKF when present; may warrant **`create-adr`**. |
+| **`create-prd`** | OKF PRDs under `docs/prd/` (ignore or track per setup). Cite ADRs; use **`ascii`** for structure. |
+| **`create-adr`** | Tracked ADRs under `docs/adr/`; optional at-a-glance under `.scratch/adr-optics/`. [how-to-adr.md](how-to-adr.md). |
 | **`ascii`** | Plain-text structure diagrams in-terminal. |
-| **`visual-explainer`** | Intent-routed HTML under `.scratch/diagrams/`. [how-to-visual-explainer.md](how-to-visual-explainer.md). |
+| **`visual-explainer`** | Intent-routed HTML under `.scratch/visuals/` (default) or tracked `docs/visuals/`. [how-to-visual-explainer.md](how-to-visual-explainer.md); [ADR 0014](adr/0014-ADR-visual-explainer-homes.md). |
 | **`writing-for-agents`** | Levers for skills and other agent-facing instructions (pointers, hierarchy, Boundaries, pruning). |
 | **`writing-for-humans`** | Mode-route STE-inspired instructions vs prose (Generate / Edit / Detect); optional controlled overlay; measure-only linter JSON + revision budget (LLM judges). |
 | **`discovery`** | Business analysis for solution creators: pain → map → prioritize → requirements → recap/reassess; team OKF under `docs/discovery/<team>/`; scripted P-level + N. [how-to-discovery.md](how-to-discovery.md). |

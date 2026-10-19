@@ -35,7 +35,15 @@ Agent operating manual. Owned by `upkeep`. May link here; must not restate gloss
 Repo file whose entire body is exactly `AGENTS.md`.
 
 **ADR**:
-Tracked decision under `docs/adr/NNNN-ADR-<slug>.md`, indexed by `docs/adr/index.md`. Accepted = immutable; change via supersede. Authoring SoT ships in **`to-adr`** (`references/mechanics.md`); library OKF only summarizes. Rebuildable slim **decision catalog** at `docs/adr/catalog.json`; local glance under `.scratch/adr-optics/`.
+Tracked decision under `docs/adr/NNNN-ADR-<slug>.md`, indexed by `docs/adr/index.md`. **Published** Accepted = immutable (change via supersede); **in-flight** (not yet on remote default) may be edited in place. Authoring SoT ships in **`create-adr`** (`references/mechanics.md`); library OKF only summarizes. Rebuildable slim **decision catalog** at `docs/adr/catalog.json`; local glance under `.scratch/adr-optics/`.
+
+**create-adr** (skill):
+Author, in-place-edit (in-flight), or supersede (published Accepted) under `docs/adr/`; classify cited priors; update `docs/adr/index.md`; rebuild slim `catalog.json` and optional `.scratch/adr-optics/` glance. How-to: [docs/how-to-adr.md](docs/how-to-adr.md). Gate SoT: [`skills/create-adr/SKILL.md`](skills/create-adr/SKILL.md).
+_Avoid_: editing published Accepted ADRs in place; treating Status=Accepted alone as published; PRD/feature scope inside an ADR
+
+**create-prd** (skill):
+Author OKF-shaped PRDs under `docs/prd/` (ignore or track per setup). Cite tracked ADRs; use **`ascii`** for structure diagrams. Durable “why” stays in **`create-adr`**.
+_Avoid_: stack/architecture rationale in the PRD body
 
 **Decision catalog**:
 Rebuildable JSON for one ADR home (`docs/adr/catalog.json`, `schema_version` 2). Source Markdown stays authoritative. Slim tracked cache (no full bodies); fat copy under `.scratch/adr-optics/` only for the at-a-glance HTML.
@@ -51,15 +59,15 @@ _Avoid_: `how-to-use-…` naming; duplicating setup into every topic how-to; sca
 
 
 **.scratch/**:
-Gitignored local scratch pad for exploratory, pre-PRD, and other agent artifact dumps related to these skills. Includes `.scratch/diagrams/` for **visual-explainer** HTML (optional Markdown companions), `.scratch/adr-optics/` for **`to-adr`** at-a-glance HTML + fat `adr-catalog.json` (tracked slim catalog stays `docs/adr/catalog.json`), `.scratch/handoffs/` for **kept** (non-transitory) **`handoff`** docs, and `.scratch/ideas/` for **`idea`** brain dumps (promote only via **`roadmap`**). Default handoffs are throwaway under the OS temp dir; only an explicit keep signal lands under `.scratch/handoffs/`.
-_Avoid_: committing scratch; using tracked `docs/` for throwaways; `/pm/diagrams` or harness skill dirs as diagram SoT; writing default handoffs into the repo; treating scratch ideas as roadmap or tracker commitments
+Gitignored local scratch pad for exploratory, pre-PRD, and other agent artifact dumps related to these skills. Includes `.scratch/visuals/` for default **visual-explainer** HTML (optional Markdown companions; durable team/commit visuals → tracked `docs/visuals/`), `.scratch/adr-optics/` for **`create-adr`** at-a-glance HTML + fat `adr-catalog.json` (tracked slim catalog stays `docs/adr/catalog.json`), `.scratch/doop/` for **`doop`** session sidecars (canvas URL/id + meeting notes; Doop DB stays in the Doop install `data/`), `.scratch/handoffs/` for **kept** (non-transitory) **`handoff`** docs, and `.scratch/ideas/` for **`idea`** brain dumps (promote only via **`roadmap`**). Default handoffs are throwaway under the OS temp dir; only an explicit keep signal lands under `.scratch/handoffs/`.
+_Avoid_: committing scratch; using tracked `docs/` for throwaways; `/pm/diagrams` or harness skill dirs as visual SoT; writing default handoffs into the repo; treating scratch ideas as roadmap or tracker commitments; treating Doop `data/` as a consumer-repo path
 
 **handoff** (skill):
 Writes one markdown file so a fresh agent can continue without this chat. The file is the brief you point at later — full detail lives there. **Aim:** optional invoke arg when present; else infer. If ≥2 plausible next aims and no arg, one short ask before write. After write, a brief in-chat at-a-glance (path + temp|keep, intent + kind as Display (slug) or none, next action, 2–4 check bullets, reprompt-if-wrong cue) — not a dump of the file. **What travels in the file:** next action, acceptance/constraints/verdict, and session facts the next skill needs. Long specs/plans/ADRs stay path refs (hybrid). **What does not:** “see this chat” as the only carrier of a fact. Irrelevant history stays out. Temp by default; **keep** / clear persist intent → `.scratch/handoffs/`. Shape: `references/handoff-base.md` + optional kind overlays; legend in `references/kind-legend.md`. Name: `{kind}-{slug}-{yyyyMMdd-HHmmss}.md` when a closed kind matches; else `{slug}-{yyyyMMdd-HHmmss}.md`. Decision: [ADR 0012](docs/adr/0012-ADR-handoff-hybrid-kinds.md).
 _Avoid_: `bmurrtech-*-handoff-*` prefixes; inventing kind slugs; `generic` kind; pasting full specs; transcript-only pointers; pasting the full handoff into chat; default writes into the repo; hard facts about repo state with no re-verify cue; skipping the post-write glance; asking before write when aim is already clear
 
 **Handoff kind**:
-Closed slug from `kind-legend.md` (filename prefix + machine id). In the handoff **body** and glance, write **Display (slug)** — e.g. code-review (`cd-rvw`) — so readers need no legend. No match → base only, title/slug filename, no invented kind. **`adr`**: fork — put ADR candidacy in the handoff; run **`to-adr`** in a separate session. Handoff never authors the ADR/PRD.
+Closed slug from `kind-legend.md` (filename prefix + machine id). In the handoff **body** and glance, write **Display (slug)** — e.g. code-review (`cd-rvw`) — so readers need no legend. No match → base only, title/slug filename, no invented kind. **`adr`**: fork — put ADR candidacy in the handoff; run **`create-adr`** in a separate session. Handoff never authors the ADR/PRD.
 _Avoid_: open-ended kind invention; catch-all `generic`; full-template copies per kind; drafting ADR/PRD bodies inside `handoff`; slug-only kind labels in the handoff body or glance; kind abbreviations alone in how-to diagrams
 
 **ROADMAP.md**:
@@ -75,7 +83,7 @@ OKF concept (`type: test-map`) under `knowledge/` naming a seam, the smallest ru
 _Avoid_: dumping the whole `tests/` tree into context each session
 
 **grill-me**:
-Design-tree interview in frontier rounds; after frontier empty, A/B/C route (**A** `to-prd` recommended, **B** `handoff`→implement, **C** bare `Go`); updates glossary via `context`; warrants ADRs via `to-adr`.
+Design-tree interview in frontier rounds; after frontier empty, A/B/C route (**A** `create-prd` recommended, **B** `handoff`→implement, **C** bare `Go`); updates glossary via `context`; warrants ADRs via `create-adr`.
 
 **upkeep** / **context** (skills):
 Ops manual vs glossary/OKF ownership — never cross-edit.
@@ -113,11 +121,27 @@ Compact pretrained token the agent thinks with while running a document (*tight*
 _Avoid_: coining words with no prior; restating the same idea as a phrase in three places
 
 **setup-bmurrtech-skills**:
-Idempotent provision of gitignore (incl. `.scratch/`), `.scratch/` + `.scratch/diagrams/` + `.scratch/adr-optics/`, AGENTS/CLAUDE/CONTEXT, knowledge stub, docs/adr index; **Commit PRDs?** A ignore (default) / B track ([ADR 0013](docs/adr/0013-ADR-prd-tracking-choice.md)); optional **`docx`**. Does not install skill folders into harnesses (that is `npx skills`) and does not copy library how-tos / explainers into the consumer. Does not pre-create `.scratch/handoffs/` — **`handoff`** creates it on **keep**. Tree: [docs/skill-scaffold.md](docs/skill-scaffold.md); why: [knowledge/skill-scaffold.md](knowledge/skill-scaffold.md).
+Idempotent provision of gitignore (incl. `.scratch/`), `.scratch/` + `.scratch/visuals/` + `.scratch/adr-optics/`, tracked `docs/visuals/`, AGENTS/CLAUDE/CONTEXT, knowledge stub, docs/adr index; **Commit PRDs?** A ignore (default) / B track ([ADR 0013](docs/adr/0013-ADR-prd-tracking-choice.md)); optional **`docx`**; optional **Donation CTA** (default no; re-ask on re-run). Does not install skill folders into harnesses (that is `npx skills`) and does not copy library how-tos / explainers into the consumer. Does not pre-create `.scratch/handoffs/` — **`handoff`** creates it on **keep**. Tree: [docs/skill-scaffold.md](docs/skill-scaffold.md); why: [knowledge/skill-scaffold.md](knowledge/skill-scaffold.md).
+
+**Donation CTA**:
+Optional setup choice to scaffold repo funding surfaces: `.github/FUNDING.yml`, a README **Support this Repo** section (badges + links), and matching `CONTEXT.md` glossary entries for the chosen platforms/URLs. Default **no**; re-ask on every setup run. This OSS library keeps its own README heading **Support open source**. Decision: [ADR 0015](docs/adr/0015-ADR-donation-cta-changelog-release-notes.md).
+_Avoid_: inventing non-GitHub funding filenames; forcing CTAs on private/internal repos without asking; using “Support open source” wording in non-OSS consumer scaffolds
+
+**FUNDING.yml**:
+GitHub-recognized funding file at `.github/FUNDING.yml` (Sponsors sidebar). Preferred platforms here: Ko-fi + Buy Me a Coffee usernames; other keys left empty unless the operator supplies them. This library: `ko_fi` / `buy_me_a_coffee` → `bmurrtech`.
+_Avoid_: `CTA.yaml` or other nonstandard names GitHub ignores
+
+**Release notes (CHANGELOG extract)**:
+GitHub Release body built by extracting the matching dated `## [<version>]` section from `CHANGELOG.md`, plus a short install/artifact blurb and an optional Donation CTA footer when funding context exists. Owned by the tag-triggered release workflow (and the same pattern in **`release`** bootstrap scaffolds). SoT script: `skills/release/scripts/changelog_release_notes.py` (this library’s CI calls it in-place; bootstrap copies it into consumer `scripts/`). Decision: [ADR 0015](docs/adr/0015-ADR-donation-cta-changelog-release-notes.md).
+_Avoid_: hardcoded stub release bodies that ignore CHANGELOG; competing `gh release create` notes when the workflow owns publication; a second ops copy under repo `scripts/`
 
 **visual-explainer**:
-Lean Agent Skill that turns architectures, diffs, plans, tables, and related intent into self-contained HTML under `.scratch/diagrams/`. Single entry with intent routing to modes (diagram, visual-plan, slides, diff-review, plan-review, project-recap, fact-check); modes also callable manually. Optional AI-readable Markdown companion (same basename) only when requested; ask before replace. Inspired by [nicobailon/visual-explainer](https://github.com/nicobailon/visual-explainer) (MIT); no Pi/MCP/PPTX bundle in this remake.
-_Avoid_: ASCII/box-drawing as the primary artifact when this skill is loaded; writing diagrams under `/pm/` or agent install dirs; treating the `.md` companion as HTML source
+Lean Agent Skill that turns architectures, diffs, plans, tables, and related intent into self-contained HTML. Default **`.scratch/visuals/`**; tracked **`docs/visuals/`** on durable cues (team/group/commit/docs). Resolves mode then home; unclear mode or help → suggest once from content. Modes: diagram, visual-plan, slides, diff-review, plan-review, project-recap, fact-check. Optional AI-readable Markdown companion (same basename, same home) only when requested; ask before replace. [ADR 0014](docs/adr/0014-ADR-visual-explainer-homes.md). Inspired by [nicobailon/visual-explainer](https://github.com/nicobailon/visual-explainer) (MIT); no Pi/MCP/PPTX bundle in this remake.
+
+**doop** (skill):
+Localhost Doop canvases for business-process and present-state architecture diagrams, edited live over MCP from the coding harness. Session sidecars → **`.scratch/doop/`**; canvas data stays in the Doop install. Not UI mockups (prefer **visual-explainer** / raw Doop) and not ascii-only Markdown diagrams (**`ascii`**).
+_Avoid_: Doop Agent Settings as primary path; skill-owned export/graduate; treating Doop `data/` as a repo path
+_Avoid_: ASCII/box-drawing as the primary artifact when this skill is loaded; writing visuals under `/pm/` or agent install dirs; treating the `.md` companion as HTML source; asking mode when the ask already names slides/diff/plan-review/etc.
 
 **docx**:
 Word `.docx` via pinned **docx-cli** on PATH (operator-installed; pin **0.26.0**). Skill probes version/pin and prints OS-specific **manual** prereq commands on failure — does not download or auto-install CLI/office. Install how-to: [docs/how-to-docx-cli.md](docs/how-to-docx-cli.md). Word or LibreOffice required for render/import. Prefer **`ensure_toolchain`** façade; cores remain `ensure_docx` / `ensure_office`. **ToolchainReady** is the typed evidence report (pin ok ∧ office ready). DIGESTS = operator verify for the pin only. Posture: [ADR 0011](docs/adr/0011-ADR-skill-scanner-posture-prereqs.md).
@@ -128,7 +152,7 @@ Portable skill for any consumer repo: **`implement`**, **`code-review`**, **`tdd
 _Avoid_: requiring `quick_validate.py` for ordinary app/lib work; assuming every consumer is a skills monorepo; default issue-body fetch in code-review; treating Git publish as part of **`implement`**; nesting **`implement`** inside **`code-review`**; loading agent-artifacts / **`tdd`** on every review when the gate is false
 
 **Library-specific skill**:
-Opinionated for this library (or repos that opted into the convention): **`writing-for-agents`**, **`writing-for-humans`**, **`discovery`**, **`setup-bmurrtech-skills`**, **`docx`**, **`visual-explainer`**, **`to-prd`** / **`to-adr`** homes, **`upkeep`** / **`context`** as glossary/ops maintainers.
+Opinionated for this library (or repos that opted into the convention): **`writing-for-agents`**, **`writing-for-humans`**, **`discovery`**, **`setup-bmurrtech-skills`**, **`docx`**, **`visual-explainer`**, **`doop`**, **`create-prd`** / **`create-adr`** homes, **`upkeep`** / **`context`** as glossary/ops maintainers.
 _Avoid_: shipping library layout rules inside universal sprint skills
 
 **Skills release artifact**:

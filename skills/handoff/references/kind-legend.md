@@ -11,8 +11,8 @@ legend. Filenames still use the slug prefix only.
 |------|-------------------------------|------------------|---------|
 | `impl` | implement (`impl`) | Next session runs **`implement`** against a plan/spec | [kinds/impl.md](kinds/impl.md) |
 | `cd-rvw` | code-review (`cd-rvw`) | Next session runs **`code-review`** (or applies review fixes) | [kinds/cd-rvw.md](kinds/cd-rvw.md) |
-| `prd` | to-prd (`prd`) | Next session runs **`to-prd`** (create/edit) | [kinds/prd.md](kinds/prd.md) |
-| `adr` | to-adr (`adr`) | Mid-session fork — ADR candidacy for later **`to-adr`** | [kinds/adr.md](kinds/adr.md) |
+| `prd` | create-prd (`prd`) | Next session runs **`create-prd`** (create/edit) | [kinds/prd.md](kinds/prd.md) |
+| `adr` | create-adr (`adr`) | Mid-session fork — ADR candidacy for later **`create-adr`** | [kinds/adr.md](kinds/adr.md) |
 | `idea` | idea (`idea`) | Capture/continue under **`idea`** / `.scratch/ideas/` | [kinds/idea.md](kinds/idea.md) |
 | `rd-mp` | roadmap (`rd-mp`) | Next session runs **`roadmap`** (promote/status/publish) | [kinds/rd-mp.md](kinds/rd-mp.md) |
 | `vs-expl` | visual-explainer (`vs-expl`) | Next session runs **`visual-explainer`** | [kinds/vs-expl.md](kinds/vs-expl.md) |

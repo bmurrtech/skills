@@ -13,7 +13,7 @@ Present exactly this choice (adapt slash style to the host if needed):
 
 **Next step?** (route A/B/C — not setup Commit PRDs? A/B)
 
-**A)** `/to-prd` — write a PRD under docs/prd/ from this grill
+**A)** `/create-prd` — write a PRD under docs/prd/ from this grill
 **B)** `/handoff` → implement (`impl`) — pack plan for a fresh agent
 **C)** `Go` — kick off implementation in this session without a skill
 
@@ -26,7 +26,7 @@ Always recommend **A**. One-line why is enough.
 
 | Choice | Action |
 |--------|--------|
-| **A** (or affirmatives that accept the ➡️) | Auto-run **`to-prd`** in this session from the grilled decisions. Do not wait for a second invoke. |
+| **A** (or affirmatives that accept the ➡️) | Auto-run **`create-prd`** in this session from the grilled decisions. Do not wait for a second invoke. |
 | **B** | Auto-run **`handoff`** with aim **implement** / kind **`impl`**. Spec = grilled plan (link paths if any). No aim-ask beat. |
 | **C** / `Go` / `GO` | Wait only if they have not already said Go in this message. Then implement the settled plan **in this session without loading `/implement`**. Still honor hard bans (no stage/commit/push/PR unless the user separately runs **`commit`**). |
 
@@ -37,4 +37,4 @@ Silent on some options after a partial answer → do **not** invent a route; ask
 - Do **not** auto-author a PRD unless the user picked **A** (or accepted ➡️ A).
 - Do **not** load **`implement`** on **C** — bare build only.
 - **B** owns the handoff file; the next agent owns **`implement`**.
-- README default cycle stays grill → to-prd → implement; A matches that path.
+- README default cycle stays grill → create-prd → implement; A matches that path.

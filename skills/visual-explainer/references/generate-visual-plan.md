@@ -22,4 +22,4 @@ Read relevant repo files before planning. Identify entry points, existing patter
 
 Use hierarchy: overview and architecture dominate; detailed file/test/reference sections stay compact or collapsible. Follow the skill’s Mermaid, table, overflow, and delivery rules.
 
-Write to `.scratch/diagrams/` and open in browser. Optional AI-readable companion `.md` only when requested (ask before replace).
+Write under the **resolved home** and open in browser. Optional AI-readable companion `.md` only when requested (ask before replace).
