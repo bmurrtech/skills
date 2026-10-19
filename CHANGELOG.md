@@ -11,6 +11,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+- README Features example prompts: lead with `/skill-name` slash form (hyphenated).
+
 ### Fixed
 
 ## [0.3.0-rc1] - 2026-10-18

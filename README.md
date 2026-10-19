@@ -119,38 +119,38 @@ Tree and whys: **[docs/skill-scaffold.md](docs/skill-scaffold.md)** · [knowledg
 
 | Skill | What it does | Example prompt |
 |-------|----------------|----------------|
-| [`setup-bmurrtech-skills`](skills/setup-bmurrtech-skills/) | Scaffold AGENTS/CONTEXT/`.scratch`/ADR home; **Commit PRDs?** A/B | `Run setup-bmurrtech-skills on this repo` |
-| [`docx`](skills/docx/) | Edit Word `.docx` via pinned docx-cli (operator-installed) | `Fill this contract template with the docx skill` |
+| [`setup-bmurrtech-skills`](skills/setup-bmurrtech-skills/) | Scaffold AGENTS/CONTEXT/`.scratch`/ADR home; **Commit PRDs?** A/B | `/setup-bmurrtech-skills on this repo` |
+| [`docx`](skills/docx/) | Edit Word `.docx` via pinned docx-cli (operator-installed) | `/docx Fill this contract template` |
 
 ### Shape and record
 
 | Skill | What it does | Example prompt |
 |-------|----------------|----------------|
-| [`grill-me`](skills/grill-me/) | Interviews until the design tree is resolved; then A/B/C (PRD / handoff→implement / Go) | `Grill me on this auth redesign before we code` |
-| [`discovery`](skills/discovery/) | Meetings/notes → ranked use cases + POC requirements; team OKF under `docs/discovery/<team>/` | ` /discovery new — notes at path/to/kickoff.md for Acme ` |
-| [`create-prd`](skills/create-prd/) | Writes a sprint PRD under `docs/prd/` (ignore or track per setup) | `Turn that grill into a PRD for the MVP` |
-| [`create-adr`](skills/create-adr/) | Records a tracked ADR under `docs/adr/` | `Write an ADR for picking Postgres over SQLite` |
-| [`ascii`](skills/ascii/) | Draws structure as plain text in the terminal | `ASCII the request path through the API gateway` |
-| [`visual-explainer`](skills/visual-explainer/) | HTML visuals → `.scratch/visuals/` or tracked `docs/visuals/` | `Visual explainer for this architecture diff` · `Put this diagram in docs for the team` |
-| [`doop`](skills/doop/) | Localhost Doop process/architecture canvases via MCP | `Doop the lead funnel and present-state stack` · `Add an enrichment step on the canvas` |
-| [`writing-for-agents`](skills/writing-for-agents/) | Tightens skills and other agent-facing docs | `Rewrite this SKILL.md with writing-for-agents` |
-| [`writing-for-humans`](skills/writing-for-humans/) | Mode-routes aircraft-manual-inspired (ASD-STE100) instructions vs prose ([ASD-STE100](https://www.asd-ste100.org/STE_downloads.html)); tightens step-by-step clarity to cut AI slop when writing instructions | `Rewrite this runbook with writing-for-humans` |
+| [`grill-me`](skills/grill-me/) | Interviews until the design tree is resolved; then A/B/C (PRD / handoff→implement / Go) | `/grill-me on this auth redesign before we code` |
+| [`discovery`](skills/discovery/) | Meetings/notes → ranked use cases + POC requirements; team OKF under `docs/discovery/<team>/` | `/discovery new — notes at path/to/kickoff.md for Acme` |
+| [`create-prd`](skills/create-prd/) | Writes a sprint PRD under `docs/prd/` (ignore or track per setup) | `/create-prd Turn that grill into a PRD for the MVP` |
+| [`create-adr`](skills/create-adr/) | Records a tracked ADR under `docs/adr/` | `/create-adr for picking Postgres over SQLite` |
+| [`ascii`](skills/ascii/) | Draws structure as plain text in the terminal | `/ascii the request path through the API gateway` |
+| [`visual-explainer`](skills/visual-explainer/) | HTML visuals → `.scratch/visuals/` or tracked `docs/visuals/` | `/visual-explainer for this architecture diff` · `/visual-explainer Put this diagram in docs for the team` |
+| [`doop`](skills/doop/) | Localhost Doop process/architecture canvases via MCP | `/doop the lead funnel and present-state stack` · `/doop Add an enrichment step on the canvas` |
+| [`writing-for-agents`](skills/writing-for-agents/) | Tightens skills and other agent-facing docs | `/writing-for-agents Rewrite this SKILL.md` |
+| [`writing-for-humans`](skills/writing-for-humans/) | Mode-routes aircraft-manual-inspired (ASD-STE100) instructions vs prose ([ASD-STE100](https://www.asd-ste100.org/STE_downloads.html)); tightens step-by-step clarity to cut AI slop when writing instructions | `/writing-for-humans Rewrite this runbook` |
 
 ### Ship
 
 | Skill | What it does | Example prompt |
 |-------|----------------|----------------|
-| [`tdd`](skills/tdd/) | Red-green loops at seams you agree on first | `TDD the invoice total calculator at this seam` |
-| [`implement`](skills/implement/) | Spec → TDD → checks → housekeeping; exits via fresh-context review (never owns Git) | `Implement the PRD; prefer tdd at the seams we listed` |
-| [`code-review`](skills/code-review/) | Standards and Spec review with a ship call | `Code-review the diff since main` |
+| [`tdd`](skills/tdd/) | Red-green loops at seams you agree on first | `/tdd the invoice total calculator at this seam` |
+| [`implement`](skills/implement/) | Spec → TDD → checks → housekeeping; exits via fresh-context review (never owns Git) | `/implement the PRD; prefer /tdd at the seams we listed` |
+| [`code-review`](skills/code-review/) | Standards and Spec review with a ship call | `/code-review the diff since main` |
 
 ### Git lifecycle
 
 | Skill | What it does | Example prompt |
 |-------|----------------|----------------|
-| [`commit`](skills/commit/) | Local-first commit + maintenance (`upkeep` / roadmap status); push/PR only on intent | `Commit this` · `Commit and push this` · `Push this directly to main` |
-| [`merge`](skills/merge/) | Integrate a chosen PR under GitHub gates; hard-stop if maintenance missing | `Merge PR #42` |
-| [`release`](skills/release/) | Version + publication gates; channel-preserving recommend as default; build-before-tag; one `v*` tag | `Release` · `Release 0.2.1-rc1` |
+| [`commit`](skills/commit/) | Local-first commit + maintenance (`upkeep` / roadmap status); push/PR only on intent | `/commit this` · `/commit and push this` · `/commit Push this directly to main` |
+| [`merge`](skills/merge/) | Integrate a chosen PR under GitHub gates; hard-stop if maintenance missing | `/merge PR #42` |
+| [`release`](skills/release/) | Version + publication gates; channel-preserving recommend as default; build-before-tag; one `v*` tag | `/release` · `/release 0.2.1-rc1` |
 
 Defaults and overrides: **[how-to](docs/how-to-bmurrtech-skills.md#git-lifecycle)**.
 
@@ -158,12 +158,12 @@ Defaults and overrides: **[how-to](docs/how-to-bmurrtech-skills.md#git-lifecycle
 
 | Skill | What it does | Example prompt |
 |-------|----------------|----------------|
-| [`handoff`](skills/handoff/) | Hybrid portable brief for a fresh agent ([ADR 0012](docs/adr/0012-ADR-handoff-hybrid-kinds.md)); temp or keep | `Handoff this for implement; keep under .scratch` |
-| [`idea`](skills/idea/) | Parks a brain dump under `.scratch/ideas/` without promoting it | `Capture this idea; don't work on it now` |
-| [`roadmap`](skills/roadmap/) | Moves durable ideas into [docs/ROADMAP.md](docs/ROADMAP.md) | `Promote that scratch idea onto the roadmap` |
-| [`wait-what`](skills/wait-what/) | Re-explains when the last message did not land | `Wait-what; re-pitch that last explanation` |
-| [`upkeep`](skills/upkeep/) | AGENTS, CLAUDE pointer, CHANGELOG Unreleased; release-cut promote on intent | `Run upkeep after that layout change` |
-| [`context`](skills/context/) | Maintains `CONTEXT.md` and the `knowledge/` OKF | `Update CONTEXT for the new billing terms` |
+| [`handoff`](skills/handoff/) | Hybrid portable brief for a fresh agent ([ADR 0012](docs/adr/0012-ADR-handoff-hybrid-kinds.md)); temp or keep | `/handoff this for /implement; keep under .scratch` |
+| [`idea`](skills/idea/) | Parks a brain dump under `.scratch/ideas/` without promoting it | `/idea Capture this; don't work on it now` |
+| [`roadmap`](skills/roadmap/) | Moves durable ideas into [docs/ROADMAP.md](docs/ROADMAP.md) | `/roadmap Promote that scratch idea` |
+| [`wait-what`](skills/wait-what/) | Re-explains when the last message did not land | `/wait-what; re-pitch that last explanation` |
+| [`upkeep`](skills/upkeep/) | AGENTS, CLAUDE pointer, CHANGELOG Unreleased; release-cut promote on intent | `/upkeep after that layout change` |
+| [`context`](skills/context/) | Maintains `CONTEXT.md` and the `knowledge/` OKF | `/context Update CONTEXT for the new billing terms` |
 
 ## Want AI to edit your `.docx` files?
 
