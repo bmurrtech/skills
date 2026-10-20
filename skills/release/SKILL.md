@@ -99,7 +99,9 @@ enough after version was authorized.
 
 Then create **annotated** tag `v…`; push **only that tag** (never
 `git push --tags` as normal). Observe the release workflow; verify GitHub
-Release + expected artifacts.
+Release + expected artifacts. For prerelease channel, confirm the Release is
+marked **Pre-release** (not **Latest**) — workflow should pass
+`--prerelease --latest=false` when the version has a SemVer pre-id.
 
 Pushed tags are **immutable** — never move/delete/recreate; cut a new version.
 

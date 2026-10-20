@@ -19,6 +19,9 @@ Scaffold minimal tag-triggered workflow that:
 - runs the **same** local release/package command
 - creates GitHub Release / attaches artifacts as the repo already intends
 - builds release notes via CHANGELOG extract (not a hardcoded stub)
+- for SemVer pre-release versions (`X.Y.Z-<id>`, e.g. `-rcN`), pass
+  `gh release create --prerelease --latest=false` so GitHub **Latest** stays on
+  the newest stable release
 
 Do not embed one-off language recipes that diverge from the local command.
 

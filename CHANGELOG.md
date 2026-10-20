@@ -9,11 +9,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- README Quick start: **Pin to a release** — `npx skills@latest add bmurrtech/skills@v…`
+  for stable or pre-release tags.
+
 ### Changed
 
 - README Features example prompts: lead with `/skill-name` slash form (hyphenated).
+- Release workflow + **`release`** skill/bootstrap: SemVer pre-release tags use
+  `gh release create --prerelease --latest=false` so GitHub **Latest** stays on
+  stable.
 
 ### Fixed
+
+- Historical GitHub `-rc*` releases marked as pre-releases so **Latest** is the
+  newest stable (`v0.2.0`), not an older RC that was published as a full release.
 
 ## [0.3.0-rc1] - 2026-10-18
 

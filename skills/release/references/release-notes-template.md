@@ -19,7 +19,9 @@ python3 scripts/changelog_release_notes.py \
 under `skills/release/scripts/` directly.
 
 **Bootstrap:** copy the skill script → consumer `scripts/changelog_release_notes.py`,
-then wire `gh release create` with `--notes "$(…)"` as above.
+then wire `gh release create` with `--notes "$(…)"` as above. When the tag
+version is a SemVer pre-release, also pass `--prerelease --latest=false`
+(channel from the version gate must map to GitHub’s prerelease flag).
 
 **CTA footer:** script reads `.github/FUNDING.yml` first; if empty/missing, falls
 back to Ko-fi / Buy Me a Coffee URLs in `CONTEXT.md`; otherwise omits the

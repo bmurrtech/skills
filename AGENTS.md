@@ -11,7 +11,7 @@
 - `scripts/package_skills.py` — builds filtered release tarball + sha256
 - `scripts/quick_validate.py` / `scripts/init_skill.py` — skill frontmatter validate + scaffold CLIs (library CI/ops; not product skills)
 - `.github/workflows/ci.yml` — unittest (package/docx/adr/roadmap) + all-skills validate + package smoke
-- `.github/workflows/release.yml` — on `v*` tags: same unittests + package + GitHub Release assets (notes via `skills/release/scripts/changelog_release_notes.py`)
+- `.github/workflows/release.yml` — on `v*` tags: same unittests + package + GitHub Release assets (notes via `skills/release/scripts/changelog_release_notes.py`); SemVer pre-ids (`-rcN`, …) get `--prerelease --latest=false`
 - `.github/FUNDING.yml` — GitHub Sponsors / Ko-fi / Buy Me a Coffee (optional consumer scaffold via setup Donation CTA)
 - `docs/adr/` — tracked ADRs + slim `catalog.json` (rebuildable; glance HTML under `.scratch/adr-optics/`)
 - `docs/visuals/` — tracked **visual-explainer** HTML (team/commit cues; default scratch is `.scratch/visuals/`)

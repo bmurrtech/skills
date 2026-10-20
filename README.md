@@ -29,6 +29,18 @@ A full GitHub URL or a path into a skill folder works too.
 
 New repo with no scaffold? After install, run **`setup-bmurrtech-skills`**.
 
+### Pin to a release
+
+Default `bmurrtech/skills` tracks the repo tip. To install a **specific GitHub Release** (stable or pre-release), append `@` + the tag:
+
+```bash
+npx skills@latest add bmurrtech/skills@v0.2.0 --list
+npx skills@latest add bmurrtech/skills@v0.2.0 --all
+npx skills@latest add bmurrtech/skills@v0.3.0-rc1 --skill doop
+```
+
+Tags match [Releases](https://github.com/bmurrtech/skills/releases) (`v0.2.0` = Latest stable; `v…-rcN` = pre-release). A `/tree/<tag>` GitHub URL also works.
+
 ### Update installed skills
 
 After a new release of this pack, refresh from **`bmurrtech/skills`**:
@@ -37,7 +49,7 @@ After a new release of this pack, refresh from **`bmurrtech/skills`**:
 npx skills@latest add bmurrtech/skills --all
 ```
 
-That reinstalls every skill in this repo (not every skill on your machine). Scope with `-g` (global) or omit for project. Named skills only: `npx skills@latest update grill-me create-prd` (`-p` / `-g` / `-y` still apply to `update`). To refresh already-installed skills without re-picking the package: `npx skills@latest update` (same `-p` / `-g` / `-y`).
+That reinstalls every skill in this repo (not every skill on your machine). Scope with `-g` (global) or omit for project. Named skills only: `npx skills@latest update grill-me create-prd` (`-p` / `-g` / `-y` still apply to `update`). To refresh already-installed skills without re-picking the package: `npx skills@latest update` (same `-p` / `-g` / `-y`). To stay on a pin, re-run `add` with the same `@v…` tag.
 
 ## How to use
 
