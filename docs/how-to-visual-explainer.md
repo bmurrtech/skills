@@ -28,7 +28,8 @@ Prefer HTML over ASCII murals when this skill is loaded. For text-first docs
 
 - Architecture / flowchart / sequence / ER / state (Mermaid or CSS Grid)
 - Visual implementation plans
-- Magazine-style HTML slide decks
+- Magazine-style HTML slide decks — frozen `deck-shell.html`, action-title
+  outline first, `scripts/check_slides.py` green before delivery
 - Diff review and plan-vs-code review pages
 - Project recap (mental-model snapshot)
 - Fact-check of an HTML/MD doc against the codebase

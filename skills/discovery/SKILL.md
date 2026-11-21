@@ -1,108 +1,109 @@
 ---
 name: discovery
 description: >
-  Discovery for solution creators: turn meetings, transcripts, or notes into
-  ranked use cases and requirements (pain → map → prioritize → requirements →
-  recap → reassess). Use on initial / pain / kickoff; map the pains; follow up /
-  prioritize / which first; requirements / good enough / POC / MVP; recap /
-  score / rank; rerank / re-score / things changed; recall last decision. Not
-  for PRD, ADR, tickets, or roadmap authoring.
+  Stakeholder discovery that turns meetings, transcripts, and notes into
+  evidence-scored use cases ranked P0–P3 (KPFS: impact, pain, feasibility,
+  sentiment). Use to prep a meeting's questions, capture a meeting, brief or
+  re-score a use case, or rank all use cases. Not for PRDs, ADRs, tickets, or
+  intake documents.
 disable-model-invocation: true
 ---
 
 # discovery
 
-Business-analysis aid for **solution creators**. Fewer, higher-value
-opportunities. Stay on the problem until value and constraints are clear.
-Do not pitch a solution early. Stakeholder name stays blank for a human.
+Work like a detective: listen for *pain*, demand *evidence*, and name every *gap*
+instead of guessing. A use case is ranked only when all four dimensions have
+evidence behind them.
+
+## 1. Mode
+
+Use the mode the user named; otherwise infer from the request and bundle state.
+Run several modes in a row only when asked (e.g. capture then brief).
+
+| Mode | When | Load |
+|---|---|---|
+| **prep** | Before or during a meeting: what to listen for and ask | [prep-questions.md](references/prep-questions.md) · [scoring.md](references/scoring.md) |
+| **capture** | Notes or transcript from one meeting | [capture-template.md](references/capture-template.md) · [kpi-catalog.md](references/kpi-catalog.md) |
+| **brief** | Write or re-score per-use-case briefs; answers to earlier asks | [brief-template.md](references/brief-template.md) · [scoring.md](references/scoring.md) · [kpi-catalog.md](references/kpi-catalog.md) |
+| **rank** | Order every brief in the bundle | [ranking-template.md](references/ranking-template.md) · [scoring.md](references/scoring.md) |
+
+Every mode that writes also follows [okf-discovery.md](references/okf-discovery.md).
+
+**Done when:** one mode is stated (ask once if still ambiguous).
+
+## 2. Home
+
+`docs/discovery/<team>/`. A user-named path wins. Otherwise reuse a folder whose
+slug matches the team/client/engagement (case-insensitive; `-` `_` space equal)
+or that already holds this work. Two plausible folders → ask once. None → create
+a 2–4 token kebab slug from the user's words (no dates); if no name is given,
+ask once with examples (team, client, company).
+
+**Done when:** the bundle path is stated, plus any reuse choice.
+
+## 3. Run the mode
+
+### prep
+
+Read existing briefs in the bundle. Emit need-to-know + questions per
+`prep-questions.md`, open brief gaps first. Optionally seed an empty capture.
+
+**Done when:** every dimension K/P/F/S has at least one tagged line or is marked
+already evidenced.
+
+### capture
+
+Write `YYYY-MM-DD-<slug>.md` from the capture template. Fill only evidenced
+cells. Open questions start with linked briefs' open asks.
+
+**Done when:** the capture exists, blanks are still blank, and the registry
+section is present (empty until brief).
+
+### brief
+
+If the user names a meeting summary and a capture exists, refresh the capture
+first. Target the named brief; otherwise write one brief per distinct use case
+from the capture, reusing a brief on a title match. Ambiguous target → state the
+guessed path once.
+
+1. Band K/P/F/S or leave null; record blockers and the weakest F area (`scoring.md`).
+2. Run `scripts/priority_score.py` on the touched briefs and copy its fields.
+3. Fill gaps: top missing, plus tagged asks ordered most blocking first.
+4. Re-score: change only the dimensions the new evidence touches; history logs
+   was→now for dims and priority.
+5. Patch the source capture's registry row for every brief touched.
+
+**Done when:** every targeted brief has scorer-sourced priority fields, a gap
+table, and a new history row, and the registry rows match the briefs.
+
+### rank
+
+Collect K/P/F/S from every `UseCase` in the bundle, run the scorer once, and
+write `YYYY-MM-DD-ranking.md` in scorer order. List stale briefs under Re-brief.
+
+**Done when:** the ranking lists every brief exactly once (ranked or
+needs-discovery), and the team index plus `catalog.json` are refreshed.
+
+## 4. Hand-off
+
+End with one next action:
+
+- **Open gaps:** brief path · top missing · numbered `[K|P|F|S]` asks · "answer
+  here or rerun `/discovery brief` on this file". Questions only.
+- **Ready:** point the top use case(s) at **`create-prd`** or the team's intake.
+
+**Done when:** exactly one next action is stated.
 
 ## Boundaries
 
-- Do **not** fill the **Stakeholder:** line (even if a transcript names someone).
-- Do **not** copy raw transcripts into the committed bundle — cite a local path.
-- Do **not** author PRDs, ADRs, tickets, or roadmap entries — point at
-  **`create-prd`**, **`create-adr`**, or **`roadmap`**.
-- Do **not** run a requirements workshop on the first pain meeting.
-- Do **not** invent KPI numbers or clear gates with assumptions.
-- Do **not** treat department jargon as the schema — keep field names generic.
-- Do **not** ask twenty questions — one highest-value missing ask when thin.
-
-## Workflow
-
-### 1. Route cycle + team home
-
-Infer cycle from the ask + bundle evidence:
-
-| Signal | Cycle | Load |
-|--------|-------|------|
-| `new`, initial, pain, kickoff; no pains on file | Initial | [pain-point-finder-template.md](references/pain-point-finder-template.md) |
-| Pains clear; same meeting; map / use cases | Map | [discovery-template.md](references/discovery-template.md) |
-| follow up, prioritize, priority, which first | Prioritize | [prioritization-template.md](references/prioritization-template.md) |
-| requirements, good enough, POC, MVP | Requirements | [requirements-gathering-template.md](references/requirements-gathering-template.md) |
-| recap, score, rank them | Recap | [prioritization-meeting-recap.md](references/prioritization-meeting-recap.md) + [priority-formula.md](references/priority-formula.md) |
-| rerank, re-score, things changed, didn't deliver | Reassess | Same recap + formula; append delta (no blank rediscovery) |
-| last time, what did we decide | Recall | Read bundle; write only if something changed |
-
-Bundle home: `docs/discovery/<team>/` (OKF v0.2). Read
-[okf-discovery.md](references/okf-discovery.md) before first write.
-
-**Team:** infer from ask, materials, or existing folder. If the user said
-`new` and named a team/client/company → use that slug. If `new` with no
-name → ask once with brief dynamic examples (department, client, company).
-Do not re-ask when the folder is already clear.
-
-**Materials:** expect a path or ref to notes/transcripts/supporting docs.
-Synthesize from them. Infer when evidence supports it; ask only when a
-high-value field is unclear and the ask would unblock prioritization or
-the next meeting — keep the run as zero-shot as possible.
-
-**Done when:** cycle chosen; team bundle path known or asked once; materials
-loaded or noted missing.
-
-### 2. Run the cycle template
-
-Follow the loaded template. Placeholder style: `[guidance]`. Drop blocks the
-source does not support. Expand a question only when the answer is too
-ambiguous to prioritize, book a follow-up, or start a POC.
-
-On prioritize: confirm external vs internal with the room; re-ask priority
-in different frames until consensus; record the frame that settled it.
-
-On requirements: winners only (or explicit ask).
-
-**Done when:** template artifact drafted; thin fields flagged with one next ask.
-
-### 3. Score when ranking or reassessing
-
-Assign bands K / P / F / S (1–5) and gates from evidence — see
-[priority-formula.md](references/priority-formula.md). Run the skill script
-(do not hand-compute N / P-level):
-
-```bash
-python3 <this-skill>/scripts/priority_score.py --stdin <<'EOF'
-{"candidates":[{"id":"example","K":4,"P":5,"F":4,"S":5,"confidence":"H"}]}
-EOF
-```
-
-Library checkout: `skills/discovery/scripts/priority_score.py`.
-
-Reassess: re-score only dimensions new evidence touches; keep old P/N
-visible; append a Reassessment block — do not rewrite history in place.
-
-**Done when:** script JSON applied to recap table + use-case frontmatter;
-judgment gaps named in one line each.
-
-### 4. Write the OKF bundle
-
-Create or update `docs/discovery/<team>/` per
-[okf-discovery.md](references/okf-discovery.md). Update parent
-`docs/discovery/index.md` team list when minting a new team. Rebuild
-`catalog.json` from Markdown. Link concepts with bundle-relative `/…` paths.
-
-**Done when:** session/recap and touched use cases/decisions on disk; indexes
-and catalog current; stakeholder lines blank.
+- Never invent people, emails, measures, approvals, or bands. Unknown stays null.
+- Never hand-compute BV, DR, Overall, or priority. If the scorer fails, report the error and stop.
+- Do not clear needs-discovery without new evidence; unclear answers get a clarifying question.
+- Do not paste transcripts into the bundle. Cite their paths.
+- Do not author PRDs, ADRs, tickets, intake, or design docs.
+- Do not design solutions (hosting, auth, architecture) during discovery.
 
 ## Further reading
 
-- Consumer how-to: [docs/how-to-discovery.md](https://github.com/bmurrtech/skills/blob/main/docs/how-to-discovery.md)
+- How-to: [docs/how-to-discovery.md](https://github.com/bmurrtech/skills/blob/main/docs/how-to-discovery.md)
 - Script vs LLM: [knowledge/skill-scripts.md](https://github.com/bmurrtech/skills/blob/main/knowledge/skill-scripts.md)

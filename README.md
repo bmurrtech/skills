@@ -36,7 +36,7 @@ Default `bmurrtech/skills` tracks the repo tip. To install a **specific GitHub R
 ```bash
 npx skills@latest add bmurrtech/skills@v0.2.0 --list
 npx skills@latest add bmurrtech/skills@v0.2.0 --all
-npx skills@latest add bmurrtech/skills@v0.3.0-rc1 --skill doop
+npx skills@latest add bmurrtech/skills@v0.3.0 --skill discovery
 ```
 
 Tags match [Releases](https://github.com/bmurrtech/skills/releases) (`v0.2.0` = Latest stable; `v…-rcN` = pre-release). A `/tree/<tag>` GitHub URL also works.
@@ -97,7 +97,8 @@ Flows, branches, and every skill: **[docs/how-to-bmurrtech-skills.md](docs/how-t
 | Need an HTML diagram/slides/diff visual (draft) | **`visual-explainer`** → `.scratch/visuals/` |
 | Same, but for the team / commit history / docs | **`visual-explainer`** → `docs/visuals/` |
 | Unsure which visual mode fits the content | **`visual-explainer`** (suggests once, then waits) |
-| Live process / architecture canvas on localhost Doop | **`doop`** (MCP + harness; notes → `.scratch/doop/`) |
+| Pasted meeting / talk transcript needs a retained-signal summary | **`summarize-transcript`** |
+| BA: pain points, stakeholder sentiment, high-impact use cases from messy notes/transcripts; prioritize by business impact + feasibility | **`discovery`** → [how-to](docs/how-to-discovery.md) · [formula deck](docs/visuals/discovery-skill-formula-deck.html) |
 
 Full catalog with example prompts: [Features](#features) below.
 
@@ -139,12 +140,12 @@ Tree and whys: **[docs/skill-scaffold.md](docs/skill-scaffold.md)** · [knowledg
 | Skill | What it does | Example prompt |
 |-------|----------------|----------------|
 | [`grill-me`](skills/grill-me/) | Interviews until the design tree is resolved; then A/B/C (PRD / handoff→implement / Go) | `/grill-me on this auth redesign before we code` |
-| [`discovery`](skills/discovery/) | Meetings/notes → ranked use cases + POC requirements; team OKF under `docs/discovery/<team>/` | `/discovery new — notes at path/to/kickoff.md for Acme` |
+| [`discovery`](skills/discovery/) | Business analysis: pain points, stakeholder sentiment, and high-impact use cases from messy notes/transcripts; prioritize by business impact + feasibility (P0–P3; prep · capture · brief · rank). [How-to](docs/how-to-discovery.md) · [formula deck](docs/visuals/discovery-skill-formula-deck.html) · team OKF `docs/discovery/<team>/` | `/discovery capture notes at path/to/kickoff.md for Acme` |
+| [`summarize-transcript`](skills/summarize-transcript/) | Already-provided transcript → retained-signal Markdown (*core summary*, themes, takeaways; optional stance / decisions / actions). Not transcription; not a discovery brief | `/summarize-transcript this meeting paste` · `/summarize-transcript path/to/notes.txt` |
 | [`create-prd`](skills/create-prd/) | Writes a sprint PRD under `docs/prd/` (ignore or track per setup) | `/create-prd Turn that grill into a PRD for the MVP` |
 | [`create-adr`](skills/create-adr/) | Records a tracked ADR under `docs/adr/` | `/create-adr for picking Postgres over SQLite` |
 | [`ascii`](skills/ascii/) | Draws structure as plain text in the terminal | `/ascii the request path through the API gateway` |
 | [`visual-explainer`](skills/visual-explainer/) | HTML visuals → `.scratch/visuals/` or tracked `docs/visuals/` | `/visual-explainer for this architecture diff` · `/visual-explainer Put this diagram in docs for the team` |
-| [`doop`](skills/doop/) | Localhost Doop process/architecture canvases via MCP | `/doop the lead funnel and present-state stack` · `/doop Add an enrichment step on the canvas` |
 | [`writing-for-agents`](skills/writing-for-agents/) | Tightens skills and other agent-facing docs | `/writing-for-agents Rewrite this SKILL.md` |
 | [`writing-for-humans`](skills/writing-for-humans/) | Mode-routes aircraft-manual-inspired (ASD-STE100) instructions vs prose ([ASD-STE100](https://www.asd-ste100.org/STE_downloads.html)); tightens step-by-step clarity to cut AI slop when writing instructions | `/writing-for-humans Rewrite this runbook` |
 
@@ -152,7 +153,7 @@ Tree and whys: **[docs/skill-scaffold.md](docs/skill-scaffold.md)** · [knowledg
 
 | Skill | What it does | Example prompt |
 |-------|----------------|----------------|
-| [`tdd`](skills/tdd/) | Red-green loops at seams you agree on first | `/tdd the invoice total calculator at this seam` |
+| [`tdd`](skills/tdd/) | Red-green loops at seams you agree on first (code or Agent Skills: triggering / functional / baseline) | `/tdd the invoice total calculator at this seam` · `/tdd triggering for the discovery skill` |
 | [`implement`](skills/implement/) | Spec → TDD → checks → housekeeping; exits via fresh-context review (never owns Git) | `/implement the PRD; prefer /tdd at the seams we listed` |
 | [`code-review`](skills/code-review/) | Standards and Spec review with a ship call | `/code-review the diff since main` |
 

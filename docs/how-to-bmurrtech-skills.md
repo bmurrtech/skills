@@ -45,7 +45,7 @@ Spine from install through ship. Three shape entries; take one.
 |   .scratch/ (+ visuals,           |
 |   adr-optics), AGENTS, CLAUDE,    |
 |   CONTEXT, knowledge/, docs/adr   |
-|   docs/prd A/B; optional docx / donation CTA |
+|   docs/prd + docs/discovery A/B; optional docx / donation CTA |
 +================+================+
                  |
                  v
@@ -222,7 +222,7 @@ intent with **`roadmap`**; do not treat scratch capture as a tracker ticket.
 | Cut a versioned GitHub Release | **`release`** |
 | Author or tighten a skill / agent instructions | **`writing-for-agents`** |
 | Human-facing procedures, prose, or mixed tech replies | **`writing-for-humans`** |
-| Stakeholder meeting → ranked use cases / POC requirements | **`discovery`** ([how-to](how-to-discovery.md)) |
+| Stakeholder meeting → scored, ranked use cases | **`discovery`** ([how-to](how-to-discovery.md)) |
 | Word `.docx` edit path | **`docx`** (+ ensure scripts) |
 | HTML diagrams / slides / visual reviews | **`visual-explainer`** ([how-to](how-to-visual-explainer.md)) |
 | Explanation did not land | **`wait-what`** |
@@ -253,6 +253,34 @@ Why / track-vs-ignore: [knowledge/prd.md](../knowledge/prd.md). Thin library poi
 - Catalog: `docs/prd/index.md` (same track/ignore policy as the directory)
 - Author with **`create-prd`**; cite ADRs under tracked `docs/adr/` via **`create-adr`**
 
+## Discovery records (`docs/discovery/`)
+
+Team OKF for **`discovery`**: prep → capture → brief → rank under
+`docs/discovery/<team>/`. May include names, emails, titles/roles, client
+business details, pain points, stakeholder sentiment, tech stack/systems, and
+other client-confidential fields. Operator how-to: [how-to-discovery.md](how-to-discovery.md).
+
+**Setup choice (re-asked every run):** **A** ignore (default) · **B** track —
+retargets `.gitignore` + `AGENTS.md` (+ `CONTEXT.md` when applicable). Same
+patch discipline as PRDs ([discovery-tracking.md](../skills/setup-bmurrtech-skills/references/discovery-tracking.md)).
+**B** only on explicit choice — keep the repo **private** (never public).
+
+```text
++------------------+     +------------------+
+| Always tracked   |     | docs/discovery/  |
+| docs/adr/        |     | A: gitignored    |
+| CONTEXT.md       |     | B: tracked       |
+| knowledge/       |     | (keep private)   |
++------------------+     +------------------+
+         ^                        |
+         | cite                   | author with discovery
+         +------------------------+
+```
+
+- Why default-ignore: personal/client data must not land in public git history by accident
+- This library dogfoods **A** (`/docs/discovery/` in `.gitignore`)
+- Author with **`discovery`**; do not invent people or bands
+
 ## Skill registry
 
 Details live here (README keeps a short index only).
@@ -261,7 +289,7 @@ Details live here (README keeps a short index only).
 
 | Skill | Role |
 |-------|------|
-| **`setup-bmurrtech-skills`** | Idempotent scaffold: gitignore, `.scratch/` (+ `visuals/`, `adr-optics/`, `doop/`), `docs/visuals/`, AGENTS/CLAUDE/CONTEXT, knowledge stub, `docs/adr/`, **Commit PRDs?** A ignore / B track (default A; re-ask on re-run). Optional **`docx`**. Optional **Donation CTA** (FUNDING.yml + README **Support this Repo** + CONTEXT; default no). Never silent overwrite. Tree: [skill-scaffold.md](skill-scaffold.md). |
+| **`setup-bmurrtech-skills`** | Idempotent scaffold: gitignore, `.scratch/` (+ `visuals/`, `adr-optics/`, `doop/`), `docs/visuals/`, AGENTS/CLAUDE/CONTEXT, knowledge stub, `docs/adr/`, **Commit PRDs?** + **Commit discovery records?** A ignore / B track (default A; re-ask on re-run; discovery B → private repo). Optional **`docx`**. Optional **Donation CTA** (FUNDING.yml + README **Support this Repo** + CONTEXT; default no). Never silent overwrite. Tree: [skill-scaffold.md](skill-scaffold.md). |
 | **`docx`** | Word `.docx` via pinned docx-cli (operator install — [how-to-docx-cli.md](how-to-docx-cli.md)); LibreOffice/Word probe. Opt in at setup or `--skill docx`. |
 
 ### Shape and record
@@ -275,7 +303,7 @@ Details live here (README keeps a short index only).
 | **`visual-explainer`** | Intent-routed HTML under `.scratch/visuals/` (default) or tracked `docs/visuals/`. [how-to-visual-explainer.md](how-to-visual-explainer.md); [ADR 0014](adr/0014-ADR-visual-explainer-homes.md). |
 | **`writing-for-agents`** | Levers for skills and other agent-facing instructions (pointers, hierarchy, Boundaries, pruning). |
 | **`writing-for-humans`** | Mode-route STE-inspired instructions vs prose (Generate / Edit / Detect); optional controlled overlay; measure-only linter JSON + revision budget (LLM judges). |
-| **`discovery`** | Business analysis for solution creators: pain → map → prioritize → requirements → recap/reassess; team OKF under `docs/discovery/<team>/`; scripted P-level + N. [how-to-discovery.md](how-to-discovery.md). |
+| **`discovery`** | Business analysis for solution creators: prep → capture → brief → rank; team OKF under `docs/discovery/<team>/` (setup default-ignore; see [Discovery records](#discovery-records-docsdiscovery)); scripted KPFS → BV/DR/Overall → P0–P3. [how-to-discovery.md](how-to-discovery.md). |
 
 ### Ship
 
@@ -336,12 +364,34 @@ Future orchestration (`ultrawork` / `ralph` OMX integration): [ROADMAP.md](ROADM
 
 When changing skills in **bmurrtech/skills** itself:
 
-1. **`writing-for-agents`** for new/edited skills
+1. Glossary/OKF practices: [CONTEXT.md](../CONTEXT.md) **Skill** →
+   [`knowledge/agent-skill.md`](../knowledge/agent-skill.md); prose via
+   **`writing-for-agents`**
+   ([`references/mechanics.md`](../skills/writing-for-agents/references/mechanics.md))
 2. `python3 scripts/init_skill.py <name>` when scaffolding a new skill folder
+   (optional `--resources scripts,references,assets` — omit unused dirs)
 3. `python3 scripts/quick_validate.py skills/<name>`
-4. Session tests via AGENTS Test index → OKF test-maps (`**tdd**`)
+4. Skill TDD via **`tdd`** (triggering / functional / baseline —
+   [`skill-testing.md`](../skills/tdd/references/skill-testing.md)); session
+   code tests via AGENTS Test index → OKF test-maps
 5. After implement: **`upkeep`** → **`context`**, then **`code-review`** as subagent or **`handoff` → `code-review`**; publish only via **`commit`**
 6. Package smoke: `python3 scripts/package_skills.py --version <semver> --out dist/`
+
+### Skill folder contract
+
+```text
+skills/<kebab-name>/
+├── SKILL.md              # required (exact case)
+├── agents/openai.yaml    # required in this library
+├── scripts/              # optional
+├── references/           # optional
+└── assets/               # optional
+```
+
+- kebab-case folder = frontmatter `name`
+- no `README.md` inside the skill folder
+- `description` = what + when + key capabilities (user trigger phrases), ≤1024 chars, no `<`/`>`
+- body: specific steps + **Done when**; disclose detail under `references/`; see **`writing-for-agents`** `references/mechanics.md`
 
 Consumer repos without `CONTEXT.md` / `AGENTS.md`: portable skills (**`implement`**,
 **`code-review`**, **`tdd`**, **`grill-me`**, **`wait-what`**) soft-skip
@@ -353,7 +403,7 @@ glossary/ops housekeeping.
 - [ROADMAP.md](ROADMAP.md) — durable idea ledger (`idea` → promote → publish)
 - [skill-scaffold.md](skill-scaffold.md) — folders/files setup creates
 - [how-to-adr.md](how-to-adr.md) — ADR authoring + at-a-glance
-- [how-to-discovery.md](how-to-discovery.md) — discovery cycles, bundle, priority formula
+- [how-to-discovery.md](how-to-discovery.md) — discovery modes, bundle, KPFS scoring, personal-data / gitignore default
 - [how-to-visual-explainer.md](how-to-visual-explainer.md) — visual-explainer prompts
 - [about-license.md](about-license.md) — Apache-2.0
 - [adr/index.md](adr/index.md) — decisions

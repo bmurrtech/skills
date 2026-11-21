@@ -1,0 +1,5 @@
+interface:
+  display_name: "Summarize Transcript"
+  short_description: "Retained-signal transcript summarization"
+policy:
+  allow_implicit_invocation: false

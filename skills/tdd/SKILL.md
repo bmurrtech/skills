@@ -2,8 +2,10 @@
 name: tdd
 description: >
   Red-green TDD at pre-agreed seams with session-scoped runs via OKF test maps
-  and AGENTS index lines. Use when implementing with tests first, agreeing
-  seams, or checking test quality.
+  and AGENTS index lines. Also covers testing Agent Skills (triggering,
+  functional, baseline comparison) and iterating description/body from
+  under/over-trigger signals. Use when implementing with tests first, agreeing
+  seams, checking test quality, or validating a skill's triggers and behavior.
 disable-model-invocation: true
 ---
 
@@ -70,6 +72,38 @@ AGENTS one-liner form:
 1. **Red before green** — failing test first; only enough code to pass
 2. **One slice at a time** — one seam, one test, one minimal fix
 3. **Refactor out of band** — belongs to review (`code-review`), not the red→green cycle
+
+## Skills under test (callout)
+
+When the seam is an **Agent Skill** (`skills/<name>/`), treat trigger routing and
+workflow outcomes as the public interface — not private prose.
+
+> **Callout — skill TDD:** Iterate on **one hard user task** until it succeeds,
+> then extract the winning approach into the skill. Expand to a suite only after
+> that foundation works. Choose rigor by blast radius: manual chat probes →
+> scripted prompt suites → programmatic evals. Always cover **(1) triggering**,
+> **(2) functional outputs**, **(3) baseline comparison** when you claim the
+> skill improves results. Structural validate (`scripts/quick_validate.py` when
+> present) is red/green for layout/frontmatter — not a substitute for behavior.
+
+### Minimum skill loop
+
+1. Agree scenarios: should-trigger / should-not-trigger phrases + 1–2 functional cases.
+2. Structural red/green: `python3 scripts/quick_validate.py skills/<name>` (soft-skip if absent).
+3. Triggering: run phrases; fix **description** on under/over-trigger before rewriting the body.
+4. Functional: one vertical slice (failing scenario → minimal skill edit → re-run).
+5. Compare to baseline (turns, tool failures, tokens/time, user corrections) when success criteria exist.
+6. Index durable suites via OKF/AGENTS when this repo’s conventions apply; keep exploratory prompts under `.scratch/`.
+
+Depth, example suites, iteration signals (under/over-trigger, execution
+issues): [references/skill-testing.md](references/skill-testing.md).
+
+Skill authoring patterns and packaging troubleshooting:
+**`writing-for-agents`** `references/patterns.md` /
+`references/troubleshooting.md`.
+
+**Done when:** agreed skill scenarios pass at the chosen rigor; description
+routes correctly; structural validate green (or soft-skipped).
 
 ## After implement
 

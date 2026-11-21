@@ -1,215 +1,171 @@
 # How to use `discovery`
 
-Turn stakeholder meetings, transcripts, or notes into a short list of use
-cases worth building. Built for **solution creators** doing business analysis
-in any domain — not a department-specific playbook.
+Turn stakeholder meetings, transcripts, or notes into use cases scored on the
+same four dimensions and ranked P0–P3. Built for **solution creators** doing
+business analysis in any domain.
 
 Install skills with [how-to-bmurrtech-skills.md](how-to-bmurrtech-skills.md).
-This page covers cycles, the team OKF bundle, and the priority formula.
+This page covers modes, the team bundle, and the scoring model.
 
 ## When to use it
 
-Use **`/discovery`** when you need to:
+Use **`/discovery`** to:
 
-- Find pains in an initial conversation (not design a solution yet)
-- Map pains to rough use cases
-- Rank what to do first with the room
-- Capture good-enough requirements for a POC or MVP
-- Produce a scored recap, or re-score when evidence changed
+- Prep what to listen for and ask in a stakeholder meeting
+- Capture one meeting into a structured record
+- Brief each use case: scores, blockers, gaps, follow-up asks
+- Rank every use case in a team bundle
 
-Do **not** use it to write a PRD, ADR, ticket, or roadmap entry. Point at
-**`create-prd`**, **`create-adr`**, or **`roadmap`** after the discovery record
-exists.
+Do **not** use it to write a PRD, ADR, ticket, or intake document. After a use
+case is ranked, point at **`create-prd`** or your intake process.
 
 ## Flow
 
 ```text
-materials / "new" / team cue
-            |
-            v
-     +-------------+
-     | /discovery  |  infer cycle from words + bundle
-     +------+------+
-            |
-    +-------+-------+--------+----------+----------+
-    v       v       v        v          v          v
-  pain    map   prioritize  reqs      recap    reassess
-    |       |       |        |          |          |
-    +-------+-------+--------+----------+----------+
-                        |
-                        v
-           docs/discovery/<team>/   OKF bundle
-           (index.md + optional catalog.json)
+ "prep for X" / notes / transcript
+             |
+             v
+      +--------------+
+      |  /discovery  |   mode from your words + bundle state
+      +------+-------+
+             |
+   +---------+---------+----------+
+   v         v         v          v
+  prep    capture    brief       rank
+   |         |         |          |
+   |         |   K P F S bands    |
+   |         |   + scorer script  |
+   +---------+----+----+----------+
+                  v
+       docs/discovery/<team>/   (OKF bundle)
+                  |
+                  v
+   gaps open?  -> tagged follow-up asks -> answer -> brief again
+   all scored  -> create-prd / intake
 ```
 
 ## Quick start
 
-1. Point the agent at notes, a transcript, or say you are in a live meeting.
-2. Invoke `/discovery` and name the cycle if you know it (`new`, `prioritize`,
-   `recap`, `rerank`, …).
-3. If this is a **new** team and you did not name one, answer the one ask for
-   a team/client/company label.
-4. Review the written files under `docs/discovery/<team>/`.
-5. Leave **Stakeholder:** blank for a human to fill.
+1. Run `/discovery prep for <meeting>` and take the need-to-know list into the room.
+2. After the meeting: `/discovery capture notes at path/to/notes.md`.
+3. `/discovery brief`: one brief per use case, scored or marked needs-discovery.
+4. Answer the follow-up asks (paste them in chat), then rerun brief on that file.
+5. `/discovery rank` once the use cases you care about are scored.
 
 ### Example prompts
 
-- ` /discovery new — notes at path/to/kickoff.md for client Acme `
-- ` /discovery prioritize using docs/discovery/acme/ and today's transcript `
-- ` /discovery recap the ranking from yesterday `
-- ` /discovery re-score status-self-serve — feasibility spike failed `
+- ` /discovery prep for the Acme billing kickoff `
+- ` /discovery capture notes at notes/2026-11-20-acme.md for client Acme `
+- ` /discovery brief from today's capture `
+- ` /discovery brief intake-triage — sponsor confirmed, pilot data approved `
+- ` /discovery rank acme `
 
-## Cycles
+## Modes
 
-| Cycle | Trigger cues | What you get |
-|-------|--------------|--------------|
-| Initial (pain) | `new`, initial, pain, kickoff | Three questions; pain list; no solution design |
-| Map | map the pains, use cases from this meeting | Short read-back map |
-| Prioritize | follow up, prioritize, which first | Category check + re-asked priority frames |
-| Requirements | requirements, good enough, POC, MVP | Seven short asks for winners only |
-| Recap | recap, score, rank them | Scored table (P-level then N) |
-| Reassess | rerank, things changed, didn't deliver | Old vs new scores; history kept |
+| Mode | You get |
+|---|---|
+| **prep** | Need-to-know checklist + honed questions, each tagged K/P/F/S; open gaps from existing briefs first |
+| **capture** | Dated meeting record: roster, signals, metric claims, candidate use cases, registry, open questions |
+| **brief** | One durable file per use case: purpose, outcomes, stakeholders, background, scores, blockers, gaps, history |
+| **rank** | Dated ranking from the scorer: P0→P3, BV beside Overall, unscored listed separately |
 
-On prioritize, the skill re-asks priority in different words on purpose until
-the room converges. Record the frame that settled it.
+## Scoring model
 
-## Bundle layout (OKF v0.2)
+Four dimensions, each scored **1** Low · **2** Medium · **3** High from evidence,
+or left **unscored** when there is no usable signal.
 
-One OKF bundle **per team**. Project is an optional field, not a nested bundle.
-
-```text
-docs/discovery/
-  index.md                      # lists teams only
-  <team>/                       # bundle root
-    index.md                    # okf_version: "0.2"
-    catalog.json                # rebuildable cache (optional)
-    <slug>.md                   # UseCase or Decision
-    YYYY-MM-DD-<slug>.md        # Session or Recap
-```
+| Code | Dimension | Measure |
+|---|---|---|
+| **K** | Business impact | Business Value |
+| **P** | Problem severity | Business Value |
+| **F** | Delivery feasibility (weakest of tech/data/governance/delivery) | Delivery Readiness |
+| **S** | Stakeholder sentiment (want **and** sponsorship for a 3) | Delivery Readiness |
 
 ```text
-Purpose: what is inside one team bundle
-
-+===========================+
-| docs/discovery/<team>/    |
-|  index.md  (okf_version)  |
-|  catalog.json [Optional]  |
-|                           |
-|  status-self-serve.md ----+--> type: UseCase (stable)
-|  rank-first-slice.md -----+--> type: Decision
-|  2026-10-09-pain.md ------+--> type: Session
-|  2026-10-09-recap.md -----+--> type: Recap
-+===========================+
+BV      = ((K + P) / 6) × 100
+DR      = ((F + S) / 6) × 100
+Overall = (BV × 0.40) + (DR × 0.60)      → K 20% · P 20% · F 30% · S 30%
 ```
 
-Rules that keep the bundle compatible with OKF:
+| Priority | Overall |
+|---|---|
+| **P0** | ≥ 80 |
+| **P1** | ≥ 65 |
+| **P2** | ≥ 50 |
+| **P3** | < 50 |
+| **none** | any dimension unscored → status needs-discovery |
 
-- Every concept file has YAML frontmatter with a `type`.
-- Only the team root `index.md` may carry `okf_version`.
-- Links use bundle-relative paths like `/status-self-serve.md`.
-- `catalog.json` is a cache — regenerate it; do not treat it as source of truth.
-- Do not commit raw transcripts into the bundle; cite a local path instead.
+Example: K=3, P=3, F=2, S=3 → BV 100 · DR 83.3 · **Overall 90.0 · P0**.
 
-## Priority formula
+Delivery readiness carries 60%, so a well-supported, easy use case can outrank a
+high-value hard one. Rankings always show BV next to Overall so you can see this.
 
-The model assigns evidence bands. A small script applies the math so ranking
-stays reproducible.
+**Blockers** (no data access, unresolved compliance, no production owner, no
+integration path, no sponsor, no committed measure) lower the dimension they
+affect. They don't hide a use case. Timing and reuse are notes only; they add no points.
+
+### Judgment vs mechanics
 
 ```text
-Purpose: judgment vs mechanics
-
-  evidence / transcript
-           |
-           v
-     LLM: bands K,P,F,S + gates
-           |
-           v
-  priority_score.py  -->  P-level + N + order
-           |
-           v
-     LLM: write recap, name judgment gaps
+ evidence --> agent: bands + blockers + gap asks
+                 |
+                 v
+      priority_score.py --> BV, DR, Overall, P0–P3, order
+                 |
+                 v
+          agent: writes brief / ranking
 ```
 
-### Gates (before scoring)
-
-| Status | Meaning |
-|--------|---------|
-| Blocked | No path forward |
-| Deferred | Wait for a named reason |
-| Needs discovery | Not enough evidence to score |
-
-### Bands (1–5)
-
-| Code | Meaning |
-|------|---------|
-| **K** | KPI benefit (measurable change) |
-| **P** | Pain reduction |
-| **F** | Feasibility (weakest of tech / data / governance / delivery) |
-| **S** | Sentiment (orders inside a P-level only) |
-
-Unknown → score **2** with low confidence. Do not guess a 4.
-
-### Quadrant → P-level
-
-- **V = K + P**. High when V ≥ 7. High feasibility when F ≥ 4.
-
-```text
-                    FEASIBILITY
-               low (F ≤ 3)        high (F ≥ 4)
-            +------------------+------------------+
- high       |  P2 Resolve      |  P1 Do first     |
- (V ≥ 7)    |                  |                  |
-            +------------------+------------------+
- low        |  P4 Defer        |  P3 Quick win    |
- (V ≤ 6)    |                  |                  |
-            +------------------+------------------+
-```
-
-### N-score (within a P-level only)
-
-```text
-N = 5K + 5P + 6F + 4S     (20–100)
-```
-
-Value 40 · feasibility 30 · sentiment 20. Never compare N across P-levels.
-Near-tie when N differs by 5 or less — break on confidence, then S.
-
-### Run the script
-
-From the skills library checkout:
+Run the scorer yourself from the library checkout:
 
 ```bash
 python3 skills/discovery/scripts/priority_score.py --stdin <<'EOF'
-{
-  "candidates": [
-    {"id": "status-self-serve", "K": 4, "P": 5, "F": 4, "S": 5, "confidence": "H"},
-    {"id": "internal-compare", "K": 5, "P": 5, "F": 2, "S": 4, "confidence": "M", "gate": null}
-  ]
-}
+{"use_cases":[
+  {"id":"intake-triage","K":3,"P":3,"F":2,"S":3},
+  {"id":"report-pack","K":2,"P":null,"F":3,"S":2}
+]}
 EOF
 ```
 
-Or pass a JSON file path as the only argument. Gated example:
-`{"id": "x", "gate": "deferred"}`.
+Or pass a JSON file path. `null` (or omitted) dimensions put the use case under
+`unscored` with the missing dimensions listed.
 
-### Reassess
+## Bundle layout (OKF v0.2)
 
-When feasibility, value, sentiment, or a gate changes: re-score only the
-touched dimensions, keep old P/N visible, and append a Reassessment section.
-Do not rewrite the original recap tables in place.
+```text
+docs/discovery/
+  index.md                     # lists teams only
+  <team>/                      # bundle root
+    index.md                   # okf_version: "0.2"
+    catalog.json               # rebuildable cache (optional)
+    <slug>.md                  # UseCase brief (stable, updated in place)
+    YYYY-MM-DD-<slug>.md       # Capture (one per meeting)
+    YYYY-MM-DD-ranking.md      # Ranking (one per rank run)
+```
+
+- Every concept file has YAML frontmatter with a `type`.
+- Only the team root `index.md` carries `okf_version`.
+- Links are bundle-relative (`/intake-triage.md`).
+- Transcripts are cited by path, never copied in.
+
+**Personal data:** rosters and captures may record names, emails, titles/roles,
+client business details, pain points, stakeholder sentiment, tech stack/systems,
+and other client-confidential fields when the evidence names them.
+**`setup-bmurrtech-skills`** default-ignores `docs/discovery/` (**Commit discovery
+records?** **A**). Override with setup **B** only on an explicit choice — keep
+that repo **private** (never public). Details:
+[how-to-bmurrtech-skills.md — Discovery records](how-to-bmurrtech-skills.md#discovery-records-docsdiscovery).
 
 ## Verify
 
 - Team folder exists under `docs/discovery/<team>/` with `index.md`.
-- Use cases and decisions use stable slugs; sessions/recaps use `YYYY-MM-DD-`.
-- Stakeholder lines are blank.
-- Recap order matches script output (P-level, then N).
-- Optional: `python3 -m unittest tests.test_discovery_priority_score -v`
-  (library maintainers).
+- Every scored brief's priority matches the scorer; unscored briefs say needs-discovery.
+- Rankings list every brief once.
+- Library maintainers: `python3 -m unittest tests.test_discovery_priority_score -v`.
 
 ## Related
 
 - Skill: [`skills/discovery`](../skills/discovery/SKILL.md)
-- Formula detail: [`references/priority-formula.md`](../skills/discovery/references/priority-formula.md)
+- Scoring rules: [`references/scoring.md`](../skills/discovery/references/scoring.md)
 - Bundle rules: [`references/okf-discovery.md`](../skills/discovery/references/okf-discovery.md)
 - Glossary: [discovery](../knowledge/discovery.md) · [Skill scripts vs LLM](../knowledge/skill-scripts.md)

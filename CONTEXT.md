@@ -13,14 +13,23 @@ Opinionated library of Agent Skills for agentic coding. This file is the glossar
 ## Language
 
 **Skill**:
-A tracked folder under `skills/<name>/` with required `SKILL.md` and `agents/openai.yaml`, plus optional `scripts/`, `references/`, and `assets/`. The only place new skills are created in this repository.
-_Avoid_: prompt pack; `.agents/skills` as SoT; skill-named dirs/symlinks at repo root (install noise)
+A tracked folder under `skills/<name>/` with required `SKILL.md` and `agents/openai.yaml`, plus optional `scripts/`, `references/`, and `assets/` (omit unused dirs). The only place new skills are created or modified in this repository. Mint/modify/improve practices SoT: [knowledge/agent-skill.md](knowledge/agent-skill.md). Ops commands stay in [`AGENTS.md`](AGENTS.md).
+_Avoid_: prompt pack; `.agents/skills` as SoT; skill-named dirs/symlinks at repo root (install noise); skill-folder `README.md`; empty optional dirs by default
 
 **SKILL.md**:
-The skill entry document: YAML frontmatter (`name`, `description`) plus Markdown body loaded after the skill triggers.
+The skill entry document: YAML frontmatter (`name`, `description`) plus Markdown body loaded after the skill triggers. Filename must be exactly `SKILL.md` (case-sensitive). Body: lean Workflow steps with **Done when**; disclose branch-only detail under `references/`.
+_Avoid_: `skill.md` / `SKILL.MD`; stuffing always-irrelevant branches into the body
+
+**Skill description**:
+Frontmatter `description` — first progressive-disclosure level. Shape: **what + when + key capabilities** (concrete user trigger phrases; file types when relevant; ≤1024 chars; no `<` / `>`). Host uses it to decide whether to load the body.
+_Avoid_: vague “helps with X”; missing triggers; internals-only jargon with no user phrases
+
+**Skill testing**:
+Behavioral red/green for a skill seam under **`tdd`**: triggering (should / should-not), functional outputs, baseline comparison vs bare prompting. Prefer one hard task first, then expand. Structural layout/frontmatter checks use `scripts/quick_validate.py`. Depth: [skills/tdd/references/skill-testing.md](skills/tdd/references/skill-testing.md).
+_Avoid_: treating validate-only as proof the skill routes or executes well
 
 **agents/openai.yaml**:
-Host UI metadata (`interface`) and `policy.allow_implicit_invocation` for a skill.
+Host UI metadata (`interface`) and `policy.allow_implicit_invocation` for a skill. Required in this library; align policy with whether the skill may model-trigger.
 
 **OKF bundle**:
 A directory of Markdown concept files with YAML frontmatter, linked for progressive disclosure. Root glossary is this file; concepts live under `knowledge/`. PRDs are OKF concepts under `docs/prd/` (ignore or track via setup; this library ignores).
@@ -93,19 +102,23 @@ Library rule for optional `skills/<name>/scripts/`: LLM for judgment; scripts fo
 _Avoid_: smart/semantic scripts; scripting trivial arithmetic; dumping full computational traces into context
 
 **discovery** (skill):
-User-invoked business-analysis skill for solution creators: turn meetings, transcripts, or notes into ranked use cases and requirements toward a POC/MVP. Cycles: initial pain → map → prioritize → requirements → recap → reassess. Not HR/municipal-specific; not PRD/ADR/tickets (point at those skills). Depth: [knowledge/discovery.md](knowledge/discovery.md); how-to: [docs/how-to-discovery.md](docs/how-to-discovery.md).
-_Avoid_: filling stakeholder names; solution design before pain/value; stuffing raw transcripts into the committed bundle; department jargon as schema
+User-invoked business-analysis skill for solution creators: turn meetings, transcripts, or notes into evidence-scored use cases ranked P0–P3. Modes: prep → capture → brief → rank. Not sector-specific; not PRD/ADR/tickets/intake (point at those skills). Depth: [knowledge/discovery.md](knowledge/discovery.md); how-to: [docs/how-to-discovery.md](docs/how-to-discovery.md).
+_Avoid_: inventing people, emails, or bands; solution design during discovery; stuffing raw transcripts into the committed bundle; department jargon as schema
+
+**summarize-transcript** (skill):
+User-invoked skill that turns an already-provided transcript into retained-signal Markdown (*core summary*, themes, takeaways; optional stance / decisions / actions / evidence). Long input uses host-LLM map-reduce via assess/chunk scripts. Not transcription from audio/video; not a discovery brief.
+_Avoid_: inventing owners/dates; valence mood scores; marketing publish packs; calling external LLM APIs
 
 **Discovery OKF bundle**:
-One OKF v0.2 bundle per team at `docs/discovery/<team>/` (root `index.md` with `okf_version` only; concepts carry `type`; optional rebuildable `catalog.json` cache). Project is optional frontmatter, not a nested bundle. Parent `docs/discovery/index.md` lists teams only.
-_Avoid_: per-project OKF roots; `sessions/`/`use-cases/`/`decisions/` type subtrees as required layout; treating `catalog.json` as SoT
+One OKF v0.2 bundle per team at `docs/discovery/<team>/` (root `index.md` with `okf_version` only; concepts `Capture` / `UseCase` / `Ranking` carry `type`; optional rebuildable `catalog.json` cache). Project is optional frontmatter, not a nested bundle. Parent `docs/discovery/index.md` lists teams only. May hold personal/client-confidential fields (names, emails, titles, pain points, sentiment, stack) — setup **Commit discovery records?** A ignore (default) / B track; B → keep repo private. This library **A**. Pattern mirrors PRD A/B ([ADR 0013](docs/adr/0013-ADR-prd-tracking-choice.md)); no separate ADR yet.
+_Avoid_: per-project OKF roots; type subtrees as required layout; treating `catalog.json` as SoT; defaulting to track; public repos on B
 
 **Discovery priority formula**:
-Gates first, then bands K/P/F/S (1–5); V = K+P; P-level from V×F quadrant; N = 5K+5P+6F+4S orders within a P-level. LLM assigns bands; script applies formula. No Timing/Reuse weights.
-_Avoid_: comparing N across P-levels; inventing scores to clear gates; High/Medium or Tier labels
+KPFS bands 1–3 (or unscored). BV = (K+P)/6×100; DR = (F+S)/6×100; Overall = 0.4·BV + 0.6·DR → P0 ≥ 80 · P1 ≥ 65 · P2 ≥ 50 · P3 < 50. Any unscored dimension → priority none + needs-discovery. F = weakest area; S needs sponsorship for a 3. Generic blockers lower a band; they never suppress priority. LLM assigns bands; script applies the math. Timing/reuse are unscored notes.
+_Avoid_: defaulting unknowns to a band; hand-computing Overall; client-specific gates; hiding BV behind Overall
 
 **writing-for-agents**:
-Standalone guidance for writing skills and other agent instructions so behaviour is repeatable across LLMs. Owns levers: context pointers, two loads, information hierarchy, completion criteria, leading words, negative-imperative guardrails, pruning. Soft-skips skill validators when absent. Does not own ops-manual create/maintain.
+Standalone guidance for writing skills and other agent instructions so behaviour is repeatable across LLMs. Owns levers: context pointers, two loads, information hierarchy, completion criteria, leading words, negative-imperative guardrails, pruning. Skill mechanics (layout, description examples, body template), workflow **patterns**, and packaging **troubleshooting** live under its `references/`. Soft-skips skill validators when absent. Does not own ops-manual create/maintain. Library mint/modify SoT still summarized in [knowledge/agent-skill.md](knowledge/agent-skill.md).
 _Avoid_: flattening levers into unnamed checklist vibes; treating this as upkeep for ops manuals; soft bans where a hard Boundaries line is required
 
 **writing-for-humans**:
@@ -121,7 +134,7 @@ Compact pretrained token the agent thinks with while running a document (*tight*
 _Avoid_: coining words with no prior; restating the same idea as a phrase in three places
 
 **setup-bmurrtech-skills**:
-Idempotent provision of gitignore (incl. `.scratch/`), `.scratch/` + `.scratch/visuals/` + `.scratch/adr-optics/`, tracked `docs/visuals/`, AGENTS/CLAUDE/CONTEXT, knowledge stub, docs/adr index; **Commit PRDs?** A ignore (default) / B track ([ADR 0013](docs/adr/0013-ADR-prd-tracking-choice.md)); optional **`docx`**; optional **Donation CTA** (default no; re-ask on re-run). Does not install skill folders into harnesses (that is `npx skills`) and does not copy library how-tos / explainers into the consumer. Does not pre-create `.scratch/handoffs/` — **`handoff`** creates it on **keep**. Tree: [docs/skill-scaffold.md](docs/skill-scaffold.md); why: [knowledge/skill-scaffold.md](knowledge/skill-scaffold.md).
+Idempotent provision of gitignore (incl. `.scratch/`), `.scratch/` + `.scratch/visuals/` + `.scratch/adr-optics/`, tracked `docs/visuals/`, AGENTS/CLAUDE/CONTEXT, knowledge stub, docs/adr index; **Commit PRDs?** A ignore (default) / B track ([ADR 0013](docs/adr/0013-ADR-prd-tracking-choice.md)); **Commit discovery records?** A ignore (default) / B track (private-repo recommend; ref `discovery-tracking.md`); optional **`docx`**; optional **Donation CTA** (default no; re-ask on re-run). Does not install skill folders into harnesses (that is `npx skills`) and does not copy library how-tos / explainers into the consumer. Does not pre-create `.scratch/handoffs/` — **`handoff`** creates it on **keep**. Tree: [docs/skill-scaffold.md](docs/skill-scaffold.md); why: [knowledge/skill-scaffold.md](knowledge/skill-scaffold.md).
 
 **Donation CTA**:
 Optional setup choice to scaffold repo funding surfaces: `.github/FUNDING.yml`, a README **Support this Repo** section (badges + links), and matching `CONTEXT.md` glossary entries for the chosen platforms/URLs. Default **no**; re-ask on every setup run. This OSS library keeps its own README heading **Support open source**. Decision: [ADR 0015](docs/adr/0015-ADR-donation-cta-changelog-release-notes.md).
@@ -137,22 +150,30 @@ _Avoid_: hardcoded stub release bodies that ignore CHANGELOG; competing `gh rele
 
 **visual-explainer**:
 Lean Agent Skill that turns architectures, diffs, plans, tables, and related intent into self-contained HTML. Default **`.scratch/visuals/`**; tracked **`docs/visuals/`** on durable cues (team/group/commit/docs). Resolves mode then home; unclear mode or help → suggest once from content. Modes: diagram, visual-plan, slides, diff-review, plan-review, project-recap, fact-check. Optional AI-readable Markdown companion (same basename, same home) only when requested; ask before replace. [ADR 0014](docs/adr/0014-ADR-visual-explainer-homes.md). Inspired by [nicobailon/visual-explainer](https://github.com/nicobailon/visual-explainer) (MIT); no Pi/MCP/PPTX bundle in this remake.
-
-**doop** (skill):
-Localhost Doop canvases for business-process and present-state architecture diagrams, edited live over MCP from the coding harness. Session sidecars → **`.scratch/doop/`**; canvas data stays in the Doop install. Not UI mockups (prefer **visual-explainer** / raw Doop) and not ascii-only Markdown diagrams (**`ascii`**).
-_Avoid_: Doop Agent Settings as primary path; skill-owned export/graduate; treating Doop `data/` as a repo path
 _Avoid_: ASCII/box-drawing as the primary artifact when this skill is loaded; writing visuals under `/pm/` or agent install dirs; treating the `.md` companion as HTML source; asking mode when the ask already names slides/diff/plan-review/etc.
 
+**Deck shell** (visual-explainer slides):
+Frozen HTML/CSS/JS that owns deck mechanics. Keeps `100dvh` scroll-snap; shell patches include print-to-PDF CSS, 1-indexed `data-screen-label`, Esc overview, optional speaker-notes hook, plus existing nav/counter/localStorage. The model fills slide `<section>`s and theme tokens — it does not rewrite the shell.
+_Avoid_: regenerating SlideEngine / nav / scaling per deck; treating the reference deck as copy-paste of the whole file including engine; fixed-canvas letterbox rewrite this cycle
+
+**Action-title outline** (visual-explainer slides):
+Before slide bodies: the full deck as an ordered list of action titles (takeaway sentences, not topic labels). Titles alone must read as a coherent story (chat-only unless the user asks a file); then a per-slide **visual pattern** map (concept → `vx-*` pattern from the skill catalog) and bodies fill in (auto-continue unless interrupted). Frame classes (title / divider / statement / …) hold the slide; patterns (funnel, quadrant, merge, proportion, calculator, scale, pills, …) hold the visual. Free-form OK with a one-line why. Sans-default type; expressive display only when asked. Surf/raster only on ask or supplied brand assets. Deliver only after `check_slides` is green.
+_Avoid_: topic-label titles (“Customer Sentiment”); writing HTML before the title story and pattern map exist; hard-gating every outline for user OK by default; proactive surf; shipping a deck with a failing checker; domain-specific nouns in frozen skill refs (placeholders only)
+
+**doop** (skill, local-only):
+Experimental localhost Doop canvases for business-process and present-state architecture diagrams via MCP. **Not shipped** in the product catalog while `skills/doop/` is gitignored (kept on disk for library dogfood). Session sidecars → **`.scratch/doop/`**; canvas data stays in the Doop install. Not UI mockups (prefer **visual-explainer** / raw Doop) and not ascii-only Markdown diagrams (**`ascii`**).
+_Avoid_: treating doop as a published skill; Doop Agent Settings as primary path; skill-owned export/graduate; treating Doop `data/` as a repo path
+
 **docx**:
-Word `.docx` via pinned **docx-cli** on PATH (operator-installed; pin **0.26.0**). Skill probes version/pin and prints OS-specific **manual** prereq commands on failure — does not download or auto-install CLI/office. Install how-to: [docs/how-to-docx-cli.md](docs/how-to-docx-cli.md). Word or LibreOffice required for render/import. Prefer **`ensure_toolchain`** façade; cores remain `ensure_docx` / `ensure_office`. **ToolchainReady** is the typed evidence report (pin ok ∧ office ready). DIGESTS = operator verify for the pin only. Posture: [ADR 0011](docs/adr/0011-ADR-skill-scanner-posture-prereqs.md).
-_Avoid_: agent binary download; `--install` in skill scripts; auto sudo / package-manager install; npx upstream skill install; attack-demo phrases in SKILL.md
+Word `.docx` via pinned **docx-cli** on PATH (operator-installed; pin **0.26.0**). Skill probes version/pin and prints OS-specific **manual** prereq commands on failure — does not download or auto-install CLI/office. Install how-to: [docs/how-to-docx-cli.md](docs/how-to-docx-cli.md). Word or LibreOffice required for render/import. Prefer **`ensure_toolchain`** façade; cores remain `ensure_docx` / `ensure_office`. **ToolchainReady** is the typed evidence report (pin ok ∧ office ready). DIGESTS = operator verify for the pin only. Posture: [ADR 0011](docs/adr/0011-ADR-skill-scanner-posture-prereqs.md). Optional **themes** (professional / technical / editorial) restyle create output — kits under `skills/docx/references/themes/`; not domain templates.
+_Avoid_: agent binary download; `--install` in skill scripts; auto sudo / package-manager install; npx upstream skill install; attack-demo phrases in SKILL.md; inventing ad-hoc brand palettes when a named theme fits
 
 **Universal sprint skill**:
-Portable skill for any consumer repo: **`implement`**, **`code-review`**, **`tdd`**, plus soft-coupled **`grill-me`** / **`wait-what`** / **`handoff`**. Validation means the *target* repo’s checks; `upkeep`/`context` run only when installed and those artifacts exist. **`implement`** owns build + soft housekeeping (and apply-on-write agent bars when editing skills) and exits via fresh-context review (subagent **`code-review`** or **`handoff`** for code-review); it never stages/commits/pushes — Git is **`commit`** / **`merge`** / **`release`**. **`code-review`** judges only (never calls **`implement`**): gated **`tdd`** load + smallest evidence-run; path-gated agent-artifacts lens; Spec defaults to local diff + local Spec paths (no default tracker/`gh` fetch — [ADR 0011](docs/adr/0011-ADR-skill-scanner-posture-prereqs.md)).
+Portable skill for any consumer repo: **`implement`**, **`code-review`**, **`tdd`**, plus soft-coupled **`grill-me`** / **`wait-what`** / **`handoff`**. Validation means the *target* repo’s checks; `upkeep`/`context` run only when installed and those artifacts exist. **`tdd`** covers code seams **and** Agent Skill seams (triggering / functional / baseline — [Skill testing](#skill-testing)). **`implement`** owns build + soft housekeeping (and apply-on-write agent bars when editing skills) and exits via fresh-context review (subagent **`code-review`** or **`handoff`** for code-review); it never stages/commits/pushes — Git is **`commit`** / **`merge`** / **`release`**. **`code-review`** judges only (never calls **`implement`**): gated **`tdd`** load + smallest evidence-run; path-gated agent-artifacts lens; Spec defaults to local diff + local Spec paths (no default tracker/`gh` fetch — [ADR 0011](docs/adr/0011-ADR-skill-scanner-posture-prereqs.md)).
 _Avoid_: requiring `quick_validate.py` for ordinary app/lib work; assuming every consumer is a skills monorepo; default issue-body fetch in code-review; treating Git publish as part of **`implement`**; nesting **`implement`** inside **`code-review`**; loading agent-artifacts / **`tdd`** on every review when the gate is false
 
 **Library-specific skill**:
-Opinionated for this library (or repos that opted into the convention): **`writing-for-agents`**, **`writing-for-humans`**, **`discovery`**, **`setup-bmurrtech-skills`**, **`docx`**, **`visual-explainer`**, **`doop`**, **`create-prd`** / **`create-adr`** homes, **`upkeep`** / **`context`** as glossary/ops maintainers.
+Opinionated for this library (or repos that opted into the convention): **`writing-for-agents`**, **`writing-for-humans`**, **`discovery`**, **`setup-bmurrtech-skills`**, **`docx`**, **`visual-explainer`**, **`create-prd`** / **`create-adr`** homes, **`upkeep`** / **`context`** as glossary/ops maintainers. Local-only experimental **`doop`** is gitignored under `skills/doop/` until stable-ready.
 _Avoid_: shipping library layout rules inside universal sprint skills
 
 **Skills release artifact**:
@@ -174,15 +195,17 @@ _Avoid_: promoting Unreleased→dated outside `upkeep`; inventing version in `co
 ## Hard rules
 
 1. **Tracked/published skills live only in `skills/`.** Library-local skills may sit under ignored `.agents/skills/` (host-readable; not product; not OKF; not release). Skill-named paths at **repo root** are not SoT (install noise) — never dual-track.
-2. **No glossary/ops duplication.**
+2. **No glossary/ops duplication.** Skill mint/modify/improve **practices** live in [knowledge/agent-skill.md](knowledge/agent-skill.md) + glossary terms above; `AGENTS.md` keeps commands and points here — do not paste the essay into ops.
 3. **`docs/prd/` policy** — setup A/B ([ADR 0013](docs/adr/0013-ADR-prd-tracking-choice.md)); this library **A**. Ops bullets in `AGENTS.md`. ADRs stay tracked.
-4. **Release artifacts exclude library OKF/ops/docs** — filter at package time; keep `knowledge/` tracked.
+4. **`docs/discovery/` policy** — setup A/B (default ignore; B = private repo); this library **A**. Discovery skill does not own gitignore warnings. ADRs stay tracked.
+5. **Release artifacts exclude library OKF/ops/docs** — filter at package time; keep `knowledge/` tracked.
 
 Post-`implement`/`code-review` housekeeping lives in [`AGENTS.md`](AGENTS.md) Boundaries — not restated here.
 
 ## See also
 
 - [knowledge/index.md](knowledge/index.md)
+- [knowledge/agent-skill.md](knowledge/agent-skill.md) — mint / modify / improve skills
 - [docs/adr/index.md](docs/adr/index.md)
 - [docs/ROADMAP.md](docs/ROADMAP.md)
 - [docs/how-to-bmurrtech-skills.md](docs/how-to-bmurrtech-skills.md)

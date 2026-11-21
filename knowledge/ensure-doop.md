@@ -16,6 +16,6 @@ tags: [tests, doop, tdd]
 python3 -m unittest tests.test_ensure_doop -v
 ```
 
-**Tracked tests:** `tests/test_ensure_doop.py`
+**Tracked tests:** `tests/test_ensure_doop.py` (skips when `skills/doop/` absent).
 
-Skill script: `skills/doop/scripts/ensure_doop.py`. Residual posture: [docs/accepted-risk.md](../docs/accepted-risk.md) / [ADR 0011](../docs/adr/0011-ADR-skill-scanner-posture-prereqs.md).
+Skill script: `skills/doop/scripts/ensure_doop.py` — **local-only** while `/skills/doop/` is gitignored (not catalog SoT). Residual posture: [docs/accepted-risk.md](../docs/accepted-risk.md) / [ADR 0011](../docs/adr/0011-ADR-skill-scanner-posture-prereqs.md).

@@ -36,6 +36,7 @@ AGENTS / CLAUDE / glossary independently.
 | `docs/adr/` | Costly-to-reverse decisions need a **tracked** trail. |
 | `docs/visuals/` | Tracked home for durable **visual-explainer** HTML (team/commit/docs cues). |
 | `docs/prd/` | Home for **`create-prd`**; **ignore (A, default)** or **track (B)** via setup — [ADR 0013](../docs/adr/0013-ADR-prd-tracking-choice.md) |
+| `docs/discovery/` | Home for **`discovery`** team OKF; **ignore (A, default)** or **track (B)** via setup — B recommends a private repo (personal/client data) |
 | Optional docx | Needs host apps + pinned CLI; opt-in keeps scaffold light. |
 | Optional Donation CTA | Funding is personal/org policy; opt-in writes FUNDING.yml + README **Support this Repo** + CONTEXT — never invent links. |
 

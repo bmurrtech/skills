@@ -1,0 +1,919 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Use Case Prioritization — Balance Deck (draft)</title>
+<!--
+  Draft remake of docs/visuals/discovery-skill-formula-deck.html
+  Same palette / type / glass / grid / 1920×1080 stage.
+  Different compositions: compass → meters → buckets→ranking → tilt → ruler → ladder.
+  No entrance animations. surf unavailable — CSS/SVG only.
+-->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@500;600&display=swap">
+<style>
+:root{
+  --bg:#050816;
+  --glow:#00E5FF;
+  --secondary:#DC14FF;
+  --accent:#39FF14;
+  --highlight:#FF00FF;
+  --warn:#FFD60A;
+  --ink:#E8EEF7;
+  --muted:#9AA8BD;
+  --dim:#6B7A90;
+  --panel:rgba(12,18,36,.72);
+  --panel-raised:rgba(16,24,48,.88);
+  --hairline:rgba(0,229,255,.28);
+  --hairline-soft:rgba(255,255,255,.10);
+  --glow-soft:rgba(0,229,255,.12);
+  --sec-soft:rgba(220,20,255,.14);
+  --acc-soft:rgba(57,255,20,.12);
+  --hot-soft:rgba(255,0,255,.14);
+  --grid:rgba(0,229,255,.045);
+  --font:'IBM Plex Sans',system-ui,sans-serif;
+  --mono:'IBM Plex Mono',ui-monospace,monospace;
+}
+
+section{
+  padding:96px 112px 120px;
+  font-family:var(--font);
+  color:var(--ink);
+  display:flex;
+  flex-direction:column;
+  background:
+    radial-gradient(ellipse 80% 50% at 12% -10%, rgba(0,229,255,.10), transparent 55%),
+    radial-gradient(ellipse 60% 40% at 92% 110%, rgba(220,20,255,.08), transparent 50%),
+    linear-gradient(180deg, #070b1a 0%, var(--bg) 45%, #040612 100%);
+  position:relative;
+}
+section::before{
+  content:"";
+  position:absolute;inset:0;pointer-events:none;opacity:.55;
+  background-image:
+    linear-gradient(var(--grid) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+  background-size:48px 48px;
+  mask-image:radial-gradient(ellipse 75% 70% at 50% 40%, #000 20%, transparent 75%);
+}
+section > *{position:relative;z-index:1}
+
+.eyebrow{display:flex;align-items:center;gap:14px;margin:0 0 20px}
+.sq{
+  width:10px;height:10px;flex:none;
+  background:var(--glow);
+  box-shadow:0 0 12px rgba(0,229,255,.7);
+  clip-path:polygon(50% 0,100% 50%,50% 100%,0 50%);
+}
+.eyebrow-text{
+  margin:0;
+  font-family:var(--mono);
+  font-size:18px;font-weight:600;
+  letter-spacing:.18em;line-height:1.25;
+  text-transform:uppercase;
+  color:var(--glow);
+}
+.title{
+  margin:0 0 36px;
+  font-size:48px;font-weight:600;
+  line-height:1.12;letter-spacing:-.02em;
+  color:var(--ink);
+  max-width:1600px;
+}
+.title-hero{
+  font-size:64px;margin:0 0 40px;
+  letter-spacing:-.03em;
+  background:linear-gradient(105deg, #F2F7FF 0%, var(--glow) 55%, #A855F7 100%);
+  -webkit-background-clip:text;background-clip:text;
+  color:transparent;
+}
+
+.foot{
+  position:absolute;left:112px;bottom:48px;width:1696px;height:24px;
+  display:flex;justify-content:space-between;align-items:center;
+}
+.foot-l,.foot-r{
+  margin:0;
+  font-family:var(--mono);
+  font-size:16px;font-weight:500;
+  letter-spacing:.08em;text-transform:uppercase;
+  color:var(--dim);
+}
+.foot-r{color:var(--glow);opacity:.7}
+
+@keyframes rise{from{opacity:0;transform:translateY(20px)}}
+@keyframes slidein{from{opacity:0;transform:translateX(-36px)}}
+@keyframes fade{from{opacity:0}}
+@keyframes pulse-glow{
+  0%,100%{box-shadow:0 0 0 0 rgba(0,229,255,0), inset 0 1px 0 rgba(255,255,255,.06)}
+  50%{box-shadow:0 0 24px rgba(0,229,255,.18), inset 0 1px 0 rgba(255,255,255,.08)}
+}
+.rise{animation:rise .45s ease-out both}
+.slide-in{animation:slidein .45s ease-out both}
+.fade{animation:fade .55s ease-out both}
+.d1{animation-delay:.08s}.d2{animation-delay:.14s}.d3{animation-delay:.2s}.d4{animation-delay:.26s}
+.d5{animation-delay:.32s}.d6{animation-delay:.38s}.d7{animation-delay:.44s}.d8{animation-delay:.5s}
+.d9{animation-delay:.56s}.d10{animation-delay:.62s}.d11{animation-delay:.68s}.d12{animation-delay:.74s}
+
+.fragment{opacity:0;transform:translateY(20px);transition:opacity .4s ease,transform .4s ease}
+.fragment.visible{opacity:1;transform:none}
+.late-s{transition-delay:.12s}
+.late{transition-delay:.24s}
+
+@media (prefers-reduced-motion:reduce){
+  .rise,.slide-in,.fade{animation:none!important;opacity:1;transform:none}
+  .fragment{transition:none;opacity:0;transform:none}
+  .fragment.visible{opacity:1}
+  .pulse{animation:none!important}
+}
+
+.glass{
+  background:var(--panel);
+  border:1px solid var(--hairline);
+  border-radius:16px;
+  backdrop-filter:blur(14px) saturate(1.2);
+  -webkit-backdrop-filter:blur(14px) saturate(1.2);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.06),
+    0 0 0 1px rgba(0,0,0,.25);
+}
+.glass-raised{
+  background:var(--panel-raised);
+  border-color:rgba(0,229,255,.42);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.08),
+    0 0 28px var(--glow-soft);
+}
+.pulse{animation:pulse-glow 3.2s ease-in-out infinite}
+
+.keyline{display:flex;gap:14px;align-items:flex-start}
+.keyline .sq{margin-top:10px}
+.keytext{margin:0;font-size:24px;font-weight:500;line-height:1.35;color:var(--ink)}
+
+/* —— Slide 1: instrument (not pipeline) —— */
+.s1-grid{
+  display:grid;
+  grid-template-columns:1.1fr 1fr;
+  gap:48px;
+  align-items:center;
+  margin:0 0 28px;
+  flex:1;
+  min-height:0;
+}
+.gauge-ring{
+  width:100%;
+  max-width:620px;
+  margin:0 auto;
+  aspect-ratio:1;
+  position:relative;
+}
+.gauge-ring svg{width:100%;height:100%;display:block}
+.gauge-center{
+  position:absolute;inset:24%;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  text-align:center;
+  border-radius:50%;
+  background:rgba(8,14,28,.72);
+  border:1px solid var(--hairline);
+  box-shadow:0 0 40px var(--glow-soft);
+  padding:28px 24px;
+  box-sizing:border-box;
+}
+.gauge-center strong{
+  display:block;
+  width:100%;
+  margin:0;
+  font-family:var(--mono);
+  font-size:22px;font-weight:600;line-height:1.2;
+  letter-spacing:.14em;text-transform:uppercase;
+  text-indent:.14em; /* optical center with letter-spacing */
+  color:var(--glow);
+  text-align:center;
+}
+.gauge-center span{
+  display:block;
+  width:100%;
+  margin:10px 0 0;
+  font-size:18px;line-height:1.35;color:var(--muted);
+  text-align:center;
+}
+.promise-list{display:flex;flex-direction:column;gap:16px;justify-content:center}
+.promise{
+  display:flex;gap:18px;align-items:center;
+  padding:18px 22px;border-radius:14px;
+}
+.promise-n{
+  flex:none;
+  font-family:var(--mono);
+  font-size:28px;font-weight:600;
+  color:var(--glow);
+  line-height:1;
+  min-width:36px;
+  text-align:center;
+}
+.promise-t{margin:0;font-size:24px;line-height:1.35;color:var(--ink);text-align:left}
+
+/* —— Slide 2: four signal meters, full stage —— */
+.meters-wrap{
+  display:flex;
+  flex:1;min-height:0;
+  align-items:stretch;
+  width:100%;
+}
+.meters{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:24px;
+  align-items:stretch;
+  width:100%;
+  flex:1;
+}
+.meter{
+  display:flex;flex-direction:column;align-items:center;
+  padding:28px 22px 24px;
+  border-radius:16px;
+  border:1px solid var(--hairline);
+  background:var(--panel);
+  min-height:0;
+}
+.meter-code{
+  margin:0 0 10px;
+  font-family:var(--mono);
+  font-size:52px;font-weight:600;line-height:1;
+}
+.meter-name{
+  margin:0 0 8px;
+  font-size:24px;font-weight:600;line-height:1.2;
+  color:var(--ink);text-align:center;
+}
+.meter-ask{
+  margin:0 0 22px;
+  font-size:18px;line-height:1.35;color:var(--muted);
+  text-align:center;flex:none;
+  max-width:280px;
+}
+.meter-bar{
+  flex:1;width:72px;min-height:240px;
+  display:flex;flex-direction:column-reverse;
+  border-radius:12px;overflow:hidden;
+  border:1px solid var(--hairline-soft);
+  background:rgba(8,14,28,.65);
+}
+.meter-band{
+  flex:1;display:flex;align-items:center;justify-content:center;
+  font-family:var(--mono);font-size:14px;font-weight:600;
+  letter-spacing:.08em;text-transform:uppercase;
+  color:rgba(232,238,247,.35);
+  border-top:1px solid rgba(255,255,255,.06);
+}
+.meter-band:first-child{border-top:none}
+.meter-k{border-color:rgba(0,229,255,.45);box-shadow:0 0 24px var(--glow-soft)}
+.meter-k .meter-code{color:var(--glow)}
+.meter-k .meter-band.hi{background:rgba(0,229,255,.28);color:var(--glow)}
+.meter-p{border-color:rgba(220,20,255,.4);box-shadow:0 0 24px var(--sec-soft)}
+.meter-p .meter-code{color:#E879F9}
+.meter-p .meter-band.hi{background:rgba(220,20,255,.28);color:#E879F9}
+.meter-f{border-color:rgba(57,255,20,.4);box-shadow:0 0 24px var(--acc-soft)}
+.meter-f .meter-code{color:var(--accent)}
+.meter-f .meter-band.hi{background:rgba(57,255,20,.22);color:var(--accent)}
+.meter-s{border-color:rgba(255,214,10,.45);box-shadow:0 0 24px rgba(255,214,10,.12)}
+.meter-s .meter-code{color:var(--warn)}
+.meter-s .meter-band.hi{background:rgba(255,214,10,.22);color:var(--warn)}
+
+/* —— Slide 3: two buckets → priority ranking —— */
+.bucket-stage{
+  flex:1;min-height:0;
+  display:flex;flex-direction:column;
+  justify-content:center;
+  gap:18px;
+  width:100%;
+}
+.feeds-row{
+  display:grid;
+  grid-template-columns:1fr 100px minmax(280px,1.05fr) 100px 1fr;
+  gap:0;
+  align-items:end;
+}
+.feed-side{display:flex;flex-direction:column;gap:12px}
+.dim-feed{
+  display:flex;gap:10px;align-items:stretch;
+}
+.dim-feed .chip{flex:1}
+.feed-join{
+  display:flex;align-items:center;justify-content:center;gap:10px;
+  font-family:var(--mono);
+  font-size:14px;font-weight:600;
+  letter-spacing:.12em;text-transform:uppercase;
+  color:var(--dim);
+}
+.feed-join svg{flex:none;opacity:.7}
+.flow-row{
+  display:grid;
+  grid-template-columns:1fr 100px minmax(280px,1.05fr) 100px 1fr;
+  gap:0;
+  align-items:center;
+}
+.bucket{
+  padding:24px 26px;
+  border-radius:16px;
+  border:1px solid transparent;
+  display:flex;flex-direction:column;gap:12px;
+  min-height:200px;
+  justify-content:center;
+  box-sizing:border-box;
+}
+.bucket-bv{
+  background:rgba(0,229,255,.1);
+  border-color:rgba(0,229,255,.45);
+  box-shadow:0 0 32px var(--glow-soft);
+}
+.bucket-dr{
+  background:rgba(57,255,20,.08);
+  border-color:rgba(57,255,20,.4);
+  box-shadow:0 0 32px var(--acc-soft);
+}
+.bucket-tag{
+  margin:0;
+  font-family:var(--mono);
+  font-size:14px;font-weight:600;
+  letter-spacing:.14em;text-transform:uppercase;color:var(--dim);
+}
+.bucket-title{
+  margin:0;
+  font-family:var(--mono);
+  font-size:28px;font-weight:600;
+  letter-spacing:.08em;text-transform:uppercase;line-height:1.15;
+}
+.bucket-bv .bucket-title{color:var(--glow)}
+.bucket-dr .bucket-title{color:var(--accent)}
+.bucket-sub{margin:0;font-size:20px;line-height:1.4;color:var(--muted)}
+.bucket-mix{
+  margin:8px 0 0;
+  font-family:var(--mono);
+  font-size:18px;font-weight:600;
+  letter-spacing:.06em;
+}
+.bucket-bv .bucket-mix{color:var(--glow)}
+.bucket-dr .bucket-mix{color:var(--accent)}
+.chip{
+  flex:1;padding:16px 12px;border-radius:12px;text-align:center;
+  background:rgba(8,14,28,.55);
+  border:1px solid var(--hairline-soft);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+}
+.chip .c{margin:0;font-family:var(--mono);font-size:28px;font-weight:600;line-height:1}
+.chip .n{margin:6px 0 0;font-size:15px;font-weight:500;color:var(--ink);line-height:1.25}
+.chip.k{border-color:rgba(0,229,255,.4)}.chip.k .c{color:var(--glow)}
+.chip.p{border-color:rgba(220,20,255,.4)}.chip.p .c{color:#E879F9}
+.chip.f{border-color:rgba(57,255,20,.4)}.chip.f .c{color:var(--accent)}
+.chip.s{border-color:rgba(255,214,10,.45)}.chip.s .c{color:var(--warn)}
+.flow-arrow{
+  display:flex;align-items:center;justify-content:center;
+  height:100%;
+  color:var(--highlight);
+  opacity:.9;
+}
+.flow-arrow svg{width:72px;height:48px;filter:drop-shadow(0 0 10px rgba(255,0,255,.45))}
+.rank-box{
+  padding:28px 28px;
+  border-radius:16px;
+  text-align:center;
+  background:rgba(255,0,255,.1);
+  border:1px solid rgba(255,0,255,.5);
+  box-shadow:0 0 32px var(--hot-soft);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;
+  min-height:200px;
+  box-sizing:border-box;
+}
+.rank-box .bucket-tag{color:var(--dim)}
+.rank-title{
+  margin:0;
+  font-family:var(--mono);
+  font-size:32px;font-weight:600;
+  letter-spacing:.1em;text-transform:uppercase;line-height:1.15;
+  color:var(--highlight);
+}
+.rank-sub{margin:0;font-size:20px;line-height:1.4;color:var(--muted);max-width:280px}
+
+/* —— Slide 4: tilt panels (not pills + funnel) —— */
+.tilt{
+  display:grid;
+  grid-template-columns:2fr 3fr;
+  gap:0;
+  flex:1;min-height:0;
+  border-radius:16px;
+  overflow:hidden;
+  border:1px solid var(--hairline);
+}
+.tilt-bv,.tilt-dr{
+  padding:36px 40px;
+  display:flex;flex-direction:column;justify-content:center;gap:14px;
+  position:relative;
+}
+.tilt-bv{
+  background:rgba(0,229,255,.12);
+  border-right:1px solid rgba(0,229,255,.25);
+}
+.tilt-dr{background:rgba(57,255,20,.1)}
+.tilt-pct{
+  margin:0;
+  font-family:var(--mono);
+  font-size:120px;font-weight:600;
+  letter-spacing:-.04em;line-height:.9;
+}
+.tilt-bv .tilt-pct{color:var(--glow)}
+.tilt-dr .tilt-pct{color:var(--accent)}
+.tilt-name{
+  margin:0;
+  font-family:var(--mono);
+  font-size:24px;font-weight:600;
+  letter-spacing:.1em;text-transform:uppercase;
+}
+.tilt-eq{margin:0;font-size:22px;color:var(--muted);line-height:1.4}
+.score-ladder{
+  margin-top:28px;
+  display:flex;flex-direction:column;gap:10px;
+}
+.ladder-row{
+  display:flex;align-items:center;gap:16px;
+  height:52px;padding:0 20px;border-radius:10px;
+  border:1px solid var(--hairline-soft);
+  background:rgba(8,14,28,.55);
+  font-size:22px;font-weight:500;
+}
+.ladder-row .n{
+  font-family:var(--mono);font-weight:600;min-width:28px;
+}
+.lr-1{opacity:.75;color:var(--muted)}
+.lr-2{border-color:rgba(0,229,255,.35);background:rgba(0,229,255,.08)}
+.lr-3{
+  border-color:rgba(0,229,255,.55);
+  background:rgba(0,229,255,.16);
+  color:var(--glow);font-weight:600;
+}
+
+/* —— Slide 5: single ruler bar (not two groups) —— */
+.ruler-meta{
+  display:flex;justify-content:space-between;align-items:baseline;
+  margin:0 0 20px;
+}
+.ruler-meta p{margin:0;font-size:22px;color:var(--muted)}
+.ruler-meta strong{color:var(--ink);font-weight:600}
+.ruler{
+  display:flex;height:220px;border-radius:16px;overflow:hidden;
+  border:1px solid var(--hairline);
+  margin:0 0 28px;
+}
+.seg{
+  display:flex;flex-direction:column;justify-content:center;align-items:center;
+  gap:8px;padding:20px 12px;text-align:center;
+  position:relative;
+}
+.seg-k{flex:20;background:rgba(0,229,255,.18);border-right:1px solid rgba(0,229,255,.25)}
+.seg-p{flex:20;background:rgba(220,20,255,.16);border-right:1px solid rgba(220,20,255,.25)}
+.seg-f{flex:30;background:rgba(57,255,20,.14);border-right:1px solid rgba(57,255,20,.25)}
+.seg-s{flex:30;background:rgba(255,214,10,.1)}
+.seg-pct{
+  margin:0;
+  font-family:var(--mono);
+  font-size:56px;font-weight:600;line-height:1;letter-spacing:-.03em;
+}
+.seg-k .seg-pct{color:var(--glow)}
+.seg-p .seg-pct{color:#E879F9}
+.seg-f .seg-pct{color:var(--accent)}
+.seg-s .seg-pct{color:var(--warn)}
+.seg-name{margin:0;font-size:20px;font-weight:500;color:var(--ink);line-height:1.3}
+.seg-code{margin:0;font-family:var(--mono);font-size:14px;letter-spacing:.12em;text-transform:uppercase;color:var(--dim)}
+.band-labels{
+  display:grid;grid-template-columns:2fr 3fr;gap:16px;margin:0 0 24px;
+}
+.band{
+  padding:18px 22px;border-radius:12px;
+  border:1px solid var(--hairline);
+  background:var(--panel);
+  display:flex;align-items:center;justify-content:space-between;gap:16px;
+}
+.band-bv{border-color:rgba(0,229,255,.4)}
+.band-dr{border-color:rgba(57,255,20,.4)}
+.band span{
+  font-family:var(--mono);
+  font-size:16px;font-weight:600;
+  letter-spacing:.12em;text-transform:uppercase;
+}
+.band-bv span{color:var(--glow)}
+.band-dr span{color:var(--accent)}
+.band em{font-style:normal;font-size:22px;color:var(--ink);font-weight:500}
+
+/* —— Slide 6: formula + vertical ladder (not horizontal pills) —— */
+.s6{
+  display:grid;
+  grid-template-columns:1.25fr 0.75fr;
+  gap:36px;
+  align-items:stretch;
+  flex:1;min-height:0;
+}
+.math-stack{display:flex;flex-direction:column;gap:14px}
+.math{
+  padding:20px 26px;border-radius:14px;
+  border:1px solid transparent;
+}
+.math-bv{background:rgba(0,229,255,.1);border-color:rgba(0,229,255,.4)}
+.math-dr{background:rgba(57,255,20,.08);border-color:rgba(57,255,20,.4)}
+.math-ov{
+  background:rgba(255,0,255,.1);
+  border-color:rgba(255,0,255,.45);
+  box-shadow:0 0 28px var(--hot-soft);
+}
+.math-tag{
+  margin:0 0 6px;
+  font-family:var(--mono);
+  font-size:14px;font-weight:600;
+  letter-spacing:.14em;text-transform:uppercase;color:var(--dim);
+}
+.math-eq{
+  margin:0;
+  font-family:var(--mono);
+  font-size:26px;font-weight:600;line-height:1.35;
+  color:var(--ink);
+}
+.math-bv .math-eq{color:var(--glow)}
+.math-dr .math-eq{color:var(--accent)}
+.math-ov .math-eq{color:var(--highlight)}
+.math-ex{margin:10px 0 0;font-size:18px;line-height:1.45;color:var(--muted)}
+.prio-col{
+  display:flex;flex-direction:column;
+  border-radius:16px;overflow:hidden;
+  border:1px solid var(--hairline);
+}
+.prio{
+  flex:1;display:flex;align-items:center;justify-content:space-between;
+  gap:12px;padding:0 22px;
+  border-bottom:1px solid rgba(255,255,255,.06);
+  min-height:0;
+}
+.prio:last-child{border-bottom:none}
+.prio-name{margin:0;font-size:22px;font-weight:600;line-height:1.2}
+.prio-range{margin:0;font-family:var(--mono);font-size:15px;color:var(--muted);letter-spacing:.04em}
+.p0{background:rgba(255,0,255,.14)}.p0 .prio-name{color:var(--highlight)}
+.p1{background:rgba(0,229,255,.12)}.p1 .prio-name{color:var(--glow)}
+.p2{background:rgba(0,229,255,.06)}.p2 .prio-name{color:var(--ink)}
+.p3{background:rgba(8,14,28,.55)}.p3 .prio-name{color:var(--muted)}
+.pn{background:rgba(250,204,21,.07);border-top:1px dashed rgba(250,204,21,.4)}.pn .prio-name{color:var(--warn)}
+
+html,body{margin:0;height:100%;background:#02040a;overflow:hidden;font-family:var(--font)}
+.viewport{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;overflow:hidden}
+.stage{
+  position:relative;width:1920px;height:1080px;flex:none;
+  transform-origin:center center;
+  box-shadow:0 0 0 1px rgba(0,229,255,.15), 0 20px 80px rgba(0,0,0,.65);
+}
+section.slide{position:absolute;left:0;top:0;width:1920px;height:1080px;box-sizing:border-box;display:none;overflow:hidden}
+section.slide.active{display:flex}
+aside{display:none}
+.hud{
+  position:fixed;left:0;right:0;bottom:12px;
+  display:flex;justify-content:center;gap:10px;z-index:5;
+  opacity:0;transition:opacity .25s;
+}
+body:hover .hud{opacity:1}
+.hud button{
+  font:500 13px var(--mono);
+  letter-spacing:.06em;text-transform:uppercase;
+  padding:10px 16px;min-height:44px;
+  border:1px solid rgba(0,229,255,.4);
+  border-radius:8px;
+  background:rgba(5,8,22,.88);
+  color:var(--glow);
+  cursor:pointer;
+  backdrop-filter:blur(8px);
+}
+.hud button:hover{background:rgba(0,229,255,.12);box-shadow:0 0 16px var(--glow-soft)}
+.hud button:focus-visible{outline:2px solid var(--glow);outline-offset:2px}
+.notes{
+  position:fixed;left:50%;bottom:56px;transform:translateX(-50%);
+  width:min(900px,90vw);padding:16px 20px;border-radius:12px;
+  background:rgba(5,8,22,.94);
+  border:1px solid rgba(0,229,255,.3);
+  color:var(--ink);
+  font:400 15px/1.5 var(--font);
+  z-index:6;display:none;
+}
+.notes.on{display:block}
+@page{size:1920px 1080px;margin:0}
+@media print{
+  html,body{overflow:visible;height:auto;background:#050816}
+  .viewport{position:static;display:block}
+  .stage{transform:none!important;box-shadow:none;height:auto}
+  section.slide{display:flex!important;position:relative;break-after:page}
+  .fragment{opacity:1!important;transform:none!important;transition:none!important}
+  *{animation:none!important}
+  .hud,.notes{display:none!important}
+}
+</style>
+</head>
+<body>
+<div class="viewport"><div class="stage" id="stage">
+
+<!-- 1. Compass — same promise, not a left→right pipeline -->
+<section id="intro" class="slide" data-transition="fade">
+<div class="eyebrow"><div class="sq"></div><p class="eyebrow-text">Use case prioritization</p></div>
+<h1 class="title title-hero">Same compass. Every use case.</h1>
+<div class="s1-grid">
+  <div class="gauge-ring" aria-hidden="true">
+    <svg viewBox="0 0 400 400">
+      <circle cx="200" cy="200" r="168" fill="none" stroke="rgba(0,229,255,.18)" stroke-width="2"/>
+      <circle cx="200" cy="200" r="140" fill="none" stroke="rgba(0,229,255,.1)" stroke-width="1" stroke-dasharray="4 8"/>
+      <g stroke="#00E5FF" stroke-width="3" stroke-linecap="round">
+        <line x1="200" y1="28" x2="200" y2="48" opacity=".9"/>
+        <line x1="372" y1="200" x2="352" y2="200" opacity=".55"/>
+        <line x1="200" y1="372" x2="200" y2="352" opacity=".9"/>
+        <line x1="28" y1="200" x2="48" y2="200" opacity=".55"/>
+      </g>
+      <g font-family="IBM Plex Mono, monospace" font-size="24" font-weight="600" text-anchor="middle" dominant-baseline="central">
+        <text x="200" y="62" fill="#00E5FF">K</text>
+        <text x="338" y="200" fill="#FFD60A">S</text>
+        <text x="200" y="338" fill="#39FF14">F</text>
+        <text x="62" y="200" fill="#E879F9">P</text>
+      </g>
+      <path d="M200 200 L200 78" stroke="#FF00FF" stroke-width="4" stroke-linecap="round" opacity=".85"/>
+      <circle cx="200" cy="200" r="10" fill="#FF00FF"/>
+    </svg>
+    <div class="gauge-center glass-raised">
+      <strong>Reading</strong>
+      <span>Four bearings → one score</span>
+    </div>
+  </div>
+  <div class="promise-list">
+    <div class="promise glass"><p class="promise-n">01</p><p class="promise-t">Set the same four bearings on every case: K, P, F, and S.</p></div>
+    <div class="promise glass"><p class="promise-n">02</p><p class="promise-t">Weigh business value against delivery readiness.</p></div>
+    <div class="promise glass"><p class="promise-n">03</p><p class="promise-t">Rank by the shared reading, not the loudest pitch.</p></div>
+  </div>
+</div>
+<div class="foot"><p class="foot-l">Use case prioritization</p><p class="foot-r">1 / 6</p></div>
+<aside>Compass metaphor: four bearings (K/P/F/S) produce one shared reading. No entrance animation on this slide.</aside>
+</section>
+
+<!-- 2. Four signal meters — full stage -->
+<section id="dimensions" class="slide" data-transition="fade">
+<div class="eyebrow"><div class="sq"></div><p class="eyebrow-text">What we assess</p></div>
+<h2 class="title">Four dimensions. Same Low / Medium / High bands.</h2>
+<div class="meters-wrap">
+  <div class="meters">
+    <div class="meter meter-k">
+      <p class="meter-code">K</p>
+      <p class="meter-name">Business Impact</p>
+      <p class="meter-ask">What measurable improvement could this deliver?</p>
+      <div class="meter-bar" aria-hidden="true">
+        <div class="meter-band">L</div>
+        <div class="meter-band">M</div>
+        <div class="meter-band hi">H</div>
+      </div>
+    </div>
+    <div class="meter meter-p">
+      <p class="meter-code">P</p>
+      <p class="meter-name">Problem Severity</p>
+      <p class="meter-ask">How much does the current problem hurt?</p>
+      <div class="meter-bar" aria-hidden="true">
+        <div class="meter-band">L</div>
+        <div class="meter-band hi">M</div>
+        <div class="meter-band">H</div>
+      </div>
+    </div>
+    <div class="meter meter-f">
+      <p class="meter-code">F</p>
+      <p class="meter-name">Delivery Feasibility</p>
+      <p class="meter-ask">How realistically can we deliver a solution?</p>
+      <div class="meter-bar" aria-hidden="true">
+        <div class="meter-band">L</div>
+        <div class="meter-band hi">M</div>
+        <div class="meter-band">H</div>
+      </div>
+    </div>
+    <div class="meter meter-s">
+      <p class="meter-code">S</p>
+      <p class="meter-name">Stakeholder Sentiment</p>
+      <p class="meter-ask">How strong is stakeholder sentiment for this?</p>
+      <div class="meter-bar" aria-hidden="true">
+        <div class="meter-band">L</div>
+        <div class="meter-band">M</div>
+        <div class="meter-band hi">H</div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="foot"><p class="foot-l">Use case prioritization</p><p class="foot-r">2 / 6</p></div>
+<aside>Four channel meters full stage. No side legend. No entrance animation.</aside>
+</section>
+
+<!-- 3. Buckets → priority ranking -->
+<section id="outcomes" class="slide" data-transition="fade">
+<div class="eyebrow"><div class="sq"></div><p class="eyebrow-text">How the dimensions combine</p></div>
+<h2 class="title">Two buckets feed the priority ranking.</h2>
+<div class="bucket-stage">
+  <div class="feeds-row">
+    <div class="feed-side">
+      <div class="dim-feed">
+        <div class="chip k"><p class="c">K</p><p class="n">Business Impact</p></div>
+        <div class="chip p"><p class="c">P</p><p class="n">Problem Severity</p></div>
+      </div>
+      <div class="feed-join">
+        <svg width="20" height="28" viewBox="0 0 20 28" aria-hidden="true"><path d="M10 2v18M4 14l6 8 6-8" fill="none" stroke="#00E5FF" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        into value
+      </div>
+    </div>
+    <div aria-hidden="true"></div>
+    <div aria-hidden="true"></div>
+    <div aria-hidden="true"></div>
+    <div class="feed-side">
+      <div class="dim-feed">
+        <div class="chip f"><p class="c">F</p><p class="n">Delivery Feasibility</p></div>
+        <div class="chip s"><p class="c">S</p><p class="n">Stakeholder Sentiment</p></div>
+      </div>
+      <div class="feed-join">
+        <svg width="20" height="28" viewBox="0 0 20 28" aria-hidden="true"><path d="M10 2v18M4 14l6 8 6-8" fill="none" stroke="#39FF14" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        into readiness
+      </div>
+    </div>
+  </div>
+  <div class="flow-row">
+    <div class="bucket bucket-bv">
+      <p class="bucket-tag">Value bucket</p>
+      <p class="bucket-title">Business value</p>
+      <p class="bucket-sub">Why the opportunity matters</p>
+      <p class="bucket-mix">K + P</p>
+    </div>
+    <div class="flow-arrow" aria-hidden="true">
+      <svg viewBox="0 0 72 48"><path d="M4 24h52M42 10l16 14-16 14" fill="none" stroke="#FF00FF" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </div>
+    <div class="rank-box">
+      <p class="bucket-tag">Score</p>
+      <p class="rank-title">Priority ranking</p>
+      <p class="rank-sub">Both buckets feed one ranked list</p>
+    </div>
+    <div class="flow-arrow" aria-hidden="true">
+      <svg viewBox="0 0 72 48"><path d="M68 24H16M30 10L14 24l16 14" fill="none" stroke="#FF00FF" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </div>
+    <div class="bucket bucket-dr">
+      <p class="bucket-tag">Readiness bucket</p>
+      <p class="bucket-title">Delivery readiness</p>
+      <p class="bucket-sub">How realistically we can pursue it</p>
+      <p class="bucket-mix">F + S</p>
+    </div>
+  </div>
+</div>
+<div class="foot"><p class="foot-l">Use case prioritization</p><p class="foot-r">3 / 6</p></div>
+<aside>K and P into value; F and S into readiness; both arrows into the centered Priority ranking row.</aside>
+</section>
+
+<!-- 4. Tilt — 40/60 as spatial mass -->
+<section id="priority" class="slide" data-transition="fade">
+<div class="eyebrow"><div class="sq"></div><p class="eyebrow-text">How priority is determined</p></div>
+<h2 class="title">The readiness bucket carries more weight.</h2>
+<div class="tilt">
+  <div class="tilt-bv">
+    <p class="tilt-pct">40%</p>
+    <p class="tilt-name">Business value</p>
+    <p class="tilt-eq">K and P count equally inside the bucket</p>
+    <div class="score-ladder">
+      <div class="ladder-row lr-1"><span class="n">1</span> Low</div>
+      <div class="ladder-row lr-2"><span class="n">2</span> Medium</div>
+      <div class="ladder-row lr-3"><span class="n">3</span> High</div>
+    </div>
+  </div>
+  <div class="tilt-dr">
+    <p class="tilt-pct">60%</p>
+    <p class="tilt-name">Delivery readiness</p>
+    <p class="tilt-eq">F and S count equally. Each outweighs K or P alone.</p>
+    <div class="keyline" style="margin-top:32px">
+      <div class="sq"></div>
+      <p class="keytext">Use the ranked list to decide what to pursue, improve, or defer. A high-value case ranks lower when delivery is hard or sentiment is weak.</p>
+    </div>
+  </div>
+</div>
+<div class="foot"><p class="foot-l">Use case prioritization</p><p class="foot-r">4 / 6</p></div>
+<aside>Same 40/60 model and 1–2–3 bands. Spatial tilt: narrower BV / wider DR. No entrance animation.</aside>
+</section>
+
+<!-- 5. Ruler — one 100% bar -->
+<section id="weights" class="slide" data-transition="fade">
+<div class="eyebrow"><div class="sq"></div><p class="eyebrow-text">The weights</p></div>
+<h2 class="title">One hundred percent. Four segments.</h2>
+<div class="ruler-meta">
+  <p><strong>20% + 20% + 30% + 30%</strong> = overall score</p>
+  <p>Within each bucket, the two dimensions count equally</p>
+</div>
+<div class="ruler">
+  <div class="seg seg-k">
+    <p class="seg-code">K · KPI</p>
+    <p class="seg-pct">20%</p>
+    <p class="seg-name">Business Impact</p>
+  </div>
+  <div class="seg seg-p">
+    <p class="seg-code">P · Pain</p>
+    <p class="seg-pct">20%</p>
+    <p class="seg-name">Problem Severity</p>
+  </div>
+  <div class="seg seg-f">
+    <p class="seg-code">F · Feasibility</p>
+    <p class="seg-pct">30%</p>
+    <p class="seg-name">Delivery Feasibility</p>
+  </div>
+  <div class="seg seg-s">
+    <p class="seg-code">S · Sentiment</p>
+    <p class="seg-pct">30%</p>
+    <p class="seg-name">Stakeholder Sentiment</p>
+  </div>
+</div>
+<div class="band-labels">
+  <div class="band band-bv"><span>Business value · 40%</span><em>K + P</em></div>
+  <div class="band band-dr"><span>Delivery readiness · 60%</span><em>F + S</em></div>
+</div>
+<div class="keyline"><div class="sq"></div><p class="keytext">Feasibility and sentiment each outweigh either value dimension alone.</p></div>
+<div class="foot"><p class="foot-l">Use case prioritization</p><p class="foot-r">5 / 6</p></div>
+<aside>Same weight math as a proportional ruler. No entrance animation.</aside>
+</section>
+
+<!-- 6. Math + vertical priority ladder -->
+<section id="formula" class="slide" data-transition="fade">
+<div class="eyebrow"><div class="sq"></div><p class="eyebrow-text">The formula</p></div>
+<h2 class="title">The formula and the priority labels.</h2>
+<div class="s6">
+  <div class="math-stack">
+    <div class="math math-bv">
+      <p class="math-tag">Business value</p>
+      <p class="math-eq">BV = ((K + P) / 6) × 100</p>
+    </div>
+    <div class="math math-dr">
+      <p class="math-tag">Delivery readiness</p>
+      <p class="math-eq">DR = ((F + S) / 6) × 100</p>
+    </div>
+    <div class="math math-ov">
+      <p class="math-tag">Overall priority</p>
+      <p class="math-eq">Overall = (BV × 0.40) + (DR × 0.60)</p>
+      <p class="math-ex">Example: K = 3, P = 3, F = 2, S = 3 → BV = 100, DR = 83.3, Overall = 90.0 · P0.</p>
+    </div>
+    <div class="keyline"><div class="sq"></div><p class="keytext">Pursue high scores, improve mid scores, gather missing evidence before ranking unscored cases.</p></div>
+  </div>
+  <div class="prio-col">
+    <div class="prio p0"><p class="prio-name">P0 Urgent</p><p class="prio-range">≥ 80</p></div>
+    <div class="prio p1"><p class="prio-name">P1 High</p><p class="prio-range">65 – &lt;80</p></div>
+    <div class="prio p2"><p class="prio-name">P2 Medium</p><p class="prio-range">50 – &lt;65</p></div>
+    <div class="prio p3"><p class="prio-name">P3 Low</p><p class="prio-range">&lt; 50</p></div>
+    <div class="prio pn"><p class="prio-name">None</p><p class="prio-range">Any dimension unscored</p></div>
+  </div>
+</div>
+<div class="foot"><p class="foot-l">Use case prioritization</p><p class="foot-r">6 / 6</p></div>
+<aside>Same formulas, example, and P0–P3 / none bands. No entrance animation.</aside>
+</section>
+
+</div></div>
+<div class="notes" id="notes"></div>
+<div class="hud"><button id="prev">&larr; Back</button><button id="next">Next &rarr;</button><button id="nbtn">Notes (N)</button><button id="fs">Fullscreen (F)</button></div>
+<script>
+(function(){
+  var slides=[].slice.call(document.querySelectorAll('section.slide'));
+  var stage=document.getElementById('stage'),notes=document.getElementById('notes');
+  var cur=0,step=0;
+  function groups(s){
+    var idx={};
+    [].forEach.call(s.querySelectorAll('.fragment'),function(f,i){
+      var k=f.getAttribute('data-fragment-index');k=k===null?1000+i:+k;(idx[k]=idx[k]||[]).push(f);
+    });
+    return Object.keys(idx).map(Number).sort(function(a,b){return a-b}).map(function(k){return idx[k]});
+  }
+  function setStep(s,n){
+    groups(s).forEach(function(g,i){g.forEach(function(f){f.classList.toggle('visible',i<n)})});
+  }
+  function show(i,full){
+    cur=Math.max(0,Math.min(slides.length-1,i));
+    slides.forEach(function(s,k){s.classList.toggle('active',k===cur)});
+    var s=slides[cur],g=groups(s).length;
+    step=full?g:0;setStep(s,step);
+    var a=s.querySelector('aside');notes.textContent=a?a.textContent:'';
+    history.replaceState(null,'','#'+(cur+1));
+  }
+  function next(){var g=groups(slides[cur]).length;if(step<g){step++;setStep(slides[cur],step)}else if(cur<slides.length-1)show(cur+1,false)}
+  function prev(){if(step>0){step--;setStep(slides[cur],step)}else if(cur>0)show(cur-1,true)}
+  function fit(){var k=Math.min(innerWidth/1920,innerHeight/1080);stage.style.transform='scale('+k+')'}
+  addEventListener('resize',fit);fit();
+  addEventListener('keydown',function(e){
+    var k=e.key;
+    if(k==='ArrowRight'||k==='ArrowDown'||k===' '||k==='PageDown'||k==='Enter'){e.preventDefault();next()}
+    else if(k==='ArrowLeft'||k==='ArrowUp'||k==='PageUp'||k==='Backspace'){e.preventDefault();prev()}
+    else if(k==='Home')show(0,false);else if(k==='End')show(slides.length-1,true);
+    else if(k==='n'||k==='N')notes.classList.toggle('on');
+    else if(k==='f'||k==='F')toggleFs();
+  });
+  function toggleFs(){if(document.fullscreenElement)document.exitFullscreen();else document.documentElement.requestFullscreen&&document.documentElement.requestFullscreen()}
+  document.getElementById('next').onclick=function(e){e.stopPropagation();next()};
+  document.getElementById('prev').onclick=function(e){e.stopPropagation();prev()};
+  document.getElementById('nbtn').onclick=function(e){e.stopPropagation();notes.classList.toggle('on')};
+  document.getElementById('fs').onclick=function(e){e.stopPropagation();toggleFs()};
+  document.querySelector('.viewport').addEventListener('click',function(e){if(e.clientX<innerWidth*0.25)prev();else next()});
+  var h=parseInt(location.hash.slice(1),10);show(isNaN(h)?0:h-1,false);
+})();
+</script>
+</body>
+</html>

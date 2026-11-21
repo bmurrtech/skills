@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
-"""Deterministic discovery priority: V, P-level, N, rank from K/P/F/S bands.
+"""Deterministic discovery priority: K/P/F/S bands -> BV, DR, Overall, P0-P3, rank.
 
-LLM assigns bands and gates; this script applies the formula only.
-See skills/discovery/references/priority-formula.md.
+LLM assigns bands (1-3, or null when unscored); this script applies the math only.
+See skills/discovery/references/scoring.md.
 """
 
 from __future__ import annotations
@@ -10,147 +10,123 @@ from __future__ import annotations
 import argparse
 import json
 import sys
+from fractions import Fraction
 from typing import Any
 
-CONFIDENCE_RANK = {"H": 3, "M": 2, "L": 1}
-GATE_STATUSES = frozenset({"blocked", "deferred", "needs-discovery"})
-P_ORDER = {"P1": 0, "P2": 1, "P3": 2, "P4": 3}
+DIMENSIONS = ("K", "P", "F", "S")
+BV_WEIGHT = Fraction(2, 5)
+DR_WEIGHT = Fraction(3, 5)
+THRESHOLDS = ((80, "P0"), (65, "P1"), (50, "P2"))
+LABEL_ORDER = {"P0": 0, "P1": 1, "P2": 2, "P3": 3}
 
 
-def validate_band(name: str, value: Any) -> int:
-    if not isinstance(value, int) or isinstance(value, bool) or value < 1 or value > 5:
-        raise ValueError(f"{name} must be an integer 1–5, got {value!r}")
+def _band(name: str, value: Any) -> int | None:
+    if value is None:
+        return None
+    if isinstance(value, bool) or not isinstance(value, int) or not 1 <= value <= 3:
+        raise ValueError(f"{name} must be an integer 1-3 or null, got {value!r}")
     return value
 
 
-def score_one(raw: dict[str, Any]) -> dict[str, Any]:
-    if "id" not in raw or not str(raw["id"]).strip():
-        raise ValueError("each candidate needs a non-empty id")
-    cid = str(raw["id"]).strip()
-    gate = raw.get("gate")
-    if gate is not None:
-        gate_norm = str(gate).strip().lower().replace(" ", "-")
-        if gate_norm not in GATE_STATUSES:
-            raise ValueError(
-                f"gate must be one of {sorted(GATE_STATUSES)} or null, got {gate!r}"
-            )
-        conf = str(raw.get("confidence", "L")).upper()
-        if conf not in CONFIDENCE_RANK:
-            raise ValueError(f"confidence must be H, M, or L, got {conf!r}")
-        return {
-            "id": cid,
-            "status": gate_norm,
-            "p_level": None,
-            "V": None,
-            "N": None,
-            "K": raw.get("K"),
-            "P": raw.get("P"),
-            "F": raw.get("F"),
-            "S": raw.get("S"),
-            "confidence": conf,
-        }
+def _label(overall: Fraction) -> str:
+    for floor, label in THRESHOLDS:
+        if overall >= floor:
+            return label
+    return "P3"
 
-    k = validate_band("K", raw["K"])
-    p = validate_band("P", raw["P"])
-    f = validate_band("F", raw["F"])
-    s = validate_band("S", raw["S"])
-    conf = str(raw.get("confidence", "L")).upper()
-    if conf not in CONFIDENCE_RANK:
-        raise ValueError(f"confidence must be H, M, or L, got {conf!r}")
 
-    v = k + p
-    p_level = (
-        "P1"
-        if v >= 7 and f >= 4
-        else "P2"
-        if v >= 7 and f <= 3
-        else "P3"
-        if v <= 6 and f >= 4
-        else "P4"
+def _one_decimal(value: Fraction) -> float:
+    return float(round(value, 1))
+
+
+def score_one(raw: Any) -> dict[str, Any]:
+    if not isinstance(raw, dict):
+        raise ValueError(f"each use case must be an object, got {raw!r}")
+    uid = str(raw.get("id", "")).strip()
+    if not uid:
+        raise ValueError("each use case needs a non-empty id")
+
+    bands = {d: _band(f"{uid}.{d}", raw.get(d)) for d in DIMENSIONS}
+    row = dict(raw)
+    row.update(bands)
+    row["id"] = uid
+
+    missing = [d for d in DIMENSIONS if bands[d] is None]
+    if missing:
+        row.update(
+            status="needs-discovery",
+            priority="none",
+            missing=missing,
+            bv=None,
+            dr=None,
+            overall=None,
+        )
+        return row
+
+    bv = Fraction(bands["K"] + bands["P"], 6) * 100
+    dr = Fraction(bands["F"] + bands["S"], 6) * 100
+    overall = bv * BV_WEIGHT + dr * DR_WEIGHT
+    row.update(
+        status="scored",
+        priority=_label(overall),
+        missing=[],
+        bv=_one_decimal(bv),
+        dr=_one_decimal(dr),
+        overall=_one_decimal(overall),
+        _exact=overall,
     )
-    n = 5 * k + 5 * p + 6 * f + 4 * s
-    return {
-        "id": cid,
-        "status": "scored",
-        "p_level": p_level,
-        "V": v,
-        "N": n,
-        "K": k,
-        "P": p,
-        "F": f,
-        "S": s,
-        "confidence": conf,
-    }
+    return row
 
 
-def _sort_key(item: dict[str, Any]) -> tuple:
-    return (
-        P_ORDER[item["p_level"]],
-        -item["N"],
-        -CONFIDENCE_RANK[item["confidence"]],
-        -item["S"],
-        item["id"],
-    )
-
-
-def rank(candidates: list[dict[str, Any]]) -> dict[str, Any]:
+def rank(use_cases: list[Any]) -> dict[str, list[dict[str, Any]]]:
+    seen: set[str] = set()
     scored: list[dict[str, Any]] = []
-    gated: list[dict[str, Any]] = []
-    for raw in candidates:
+    unscored: list[dict[str, Any]] = []
+    for raw in use_cases:
         row = score_one(raw)
-        if row["status"] == "scored":
-            scored.append(row)
-        else:
-            gated.append(row)
+        if row["id"] in seen:
+            raise ValueError(f"duplicate id {row['id']!r}")
+        seen.add(row["id"])
+        (scored if row["status"] == "scored" else unscored).append(row)
 
-    scored.sort(key=_sort_key)
-
-    ranked: list[dict[str, Any]] = []
-    for i, item in enumerate(scored):
-        near: list[str] = []
-        for j, other in enumerate(scored):
-            if i == j or item["p_level"] != other["p_level"]:
-                continue
-            if abs(item["N"] - other["N"]) <= 5:
-                near.append(other["id"])
-        out = dict(item)
-        out["rank"] = i + 1
-        out["near_tie_with"] = near
-        ranked.append(out)
-
-    return {"ranked": ranked, "gated": gated}
+    scored.sort(
+        key=lambda r: (LABEL_ORDER[r["priority"]], -r["_exact"], -r["S"], r["id"])
+    )
+    for i, row in enumerate(scored, start=1):
+        del row["_exact"]
+        row["rank"] = i
+    return {"scored": scored, "unscored": unscored}
 
 
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(
-        description="Score discovery candidates (K/P/F/S → P-level + N + rank)."
+        description="Score discovery use cases (K/P/F/S -> BV, DR, Overall, P0-P3)."
     )
     parser.add_argument(
         "--stdin",
         action="store_true",
-        help="read JSON from stdin: {\"candidates\":[...]}",
+        help='read JSON from stdin: {"use_cases":[{"id","K","P","F","S"}]}',
     )
-    parser.add_argument(
-        "path",
-        nargs="?",
-        help="JSON file with {\"candidates\":[...]}",
-    )
+    parser.add_argument("path", nargs="?", help='JSON file with {"use_cases":[...]}')
     args = parser.parse_args(argv)
 
-    if args.stdin:
-        payload = json.load(sys.stdin)
-    elif args.path:
-        with open(args.path, encoding="utf-8") as fh:
-            payload = json.load(fh)
-    else:
-        parser.error("provide a JSON path or --stdin")
+    try:
+        if args.stdin:
+            payload = json.load(sys.stdin)
+        elif args.path:
+            with open(args.path, encoding="utf-8") as fh:
+                payload = json.load(fh)
+        else:
+            parser.error("provide a JSON path or --stdin")
+        if not isinstance(payload, dict) or not isinstance(
+            payload.get("use_cases"), list
+        ):
+            raise ValueError('JSON must be an object with a "use_cases" array')
+        result = rank(payload["use_cases"])
+    except (OSError, ValueError) as exc:
+        sys.stderr.write(f"priority_score: {exc}\n")
+        return 1
 
-    if not isinstance(payload, dict) or "candidates" not in payload:
-        raise SystemExit('JSON must be an object with a "candidates" array')
-    if not isinstance(payload["candidates"], list):
-        raise SystemExit('"candidates" must be an array')
-
-    result = rank(payload["candidates"])
     json.dump(result, sys.stdout, indent=2, sort_keys=True)
     sys.stdout.write("\n")
     return 0

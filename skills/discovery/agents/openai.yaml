@@ -1,5 +1,5 @@
 interface:
   display_name: "Discovery"
-  short_description: "Meetings to ranked use cases for builders"
+  short_description: "Prep, capture, brief, and rank use cases (KPFS)"
 policy:
   allow_implicit_invocation: false

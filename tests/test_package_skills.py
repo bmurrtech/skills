@@ -54,6 +54,14 @@ class PackageSkillsContractTests(unittest.TestCase):
             ),
             msg="skill-create must not appear in the release artifact",
         )
+        # Experimental doop may exist on disk (gitignored) — never ship
+        self.assertFalse(
+            any(
+                m == "skills/doop" or m.startswith("skills/doop/")
+                for m in members
+            ),
+            msg="doop must not appear in the release artifact",
+        )
         forbidden_prefixes = (
             "knowledge/",
             "docs/",

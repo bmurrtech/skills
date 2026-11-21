@@ -1,0 +1,40 @@
+{
+  "default_font": "Arial",
+  "Normal": {
+    "color": "111827",
+    "sizePt": 10,
+    "font": "Arial"
+  },
+  "Title": {
+    "color": "111827",
+    "sizePt": 22,
+    "bold": true,
+    "spaceAfterPt": 4
+  },
+  "Subtitle": {
+    "color": "64748B",
+    "sizePt": 12,
+    "spaceAfterPt": 4
+  },
+  "Heading1": {
+    "color": "111827",
+    "sizePt": 14,
+    "bold": true,
+    "spaceBeforePt": 14,
+    "spaceAfterPt": 4
+  },
+  "Heading2": {
+    "color": "0F766E",
+    "sizePt": 12,
+    "bold": true,
+    "spaceBeforePt": 10,
+    "spaceAfterPt": 3
+  },
+  "Heading3": {
+    "color": "0F766E",
+    "sizePt": 11,
+    "bold": true,
+    "spaceBeforePt": 8,
+    "spaceAfterPt": 2
+  }
+}

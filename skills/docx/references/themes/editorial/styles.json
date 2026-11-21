@@ -1,0 +1,45 @@
+{
+  "default_font": "Georgia",
+  "Normal": {
+    "color": "1C1917",
+    "sizePt": 11,
+    "font": "Georgia"
+  },
+  "Title": {
+    "color": "1C1917",
+    "sizePt": 28,
+    "bold": true,
+    "spaceAfterPt": 8,
+    "font": "Arial"
+  },
+  "Subtitle": {
+    "color": "78716C",
+    "sizePt": 13,
+    "italic": true,
+    "spaceAfterPt": 10
+  },
+  "Heading1": {
+    "color": "1C1917",
+    "sizePt": 16,
+    "bold": true,
+    "spaceBeforePt": 22,
+    "spaceAfterPt": 8,
+    "font": "Arial"
+  },
+  "Heading2": {
+    "color": "7F1D1D",
+    "sizePt": 13,
+    "bold": true,
+    "spaceBeforePt": 16,
+    "spaceAfterPt": 6,
+    "font": "Arial"
+  },
+  "Heading3": {
+    "color": "7F1D1D",
+    "sizePt": 12,
+    "bold": true,
+    "spaceBeforePt": 12,
+    "spaceAfterPt": 4,
+    "font": "Arial"
+  }
+}

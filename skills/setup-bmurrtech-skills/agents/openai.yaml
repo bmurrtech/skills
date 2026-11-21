@@ -1,5 +1,5 @@
 interface:
   display_name: "Setup bmurrtech Skills"
-  short_description: "Scaffold + PRD track/ignore choice"
+  short_description: "Scaffold + PRD/discovery track-ignore choices"
 policy:
   allow_implicit_invocation: false

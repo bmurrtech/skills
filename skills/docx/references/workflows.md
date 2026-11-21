@@ -13,6 +13,15 @@ docx create OUT.docx --text-file body.txt
 Confirm `OUT.docx` first. No bundled starter template. `--text-file` lands
 literal text (each newline a paragraph) when GFM would mangle content.
 
+### Theme (optional)
+
+Unless the operator asks for plain/unstyled output, pick a theme from
+[themes/index.md](themes/index.md) (default **professional**), then apply that
+folder’s `theme.md` after create. State `theme: <id>` in the reply.
+
+Restyle-only (existing file, no content rewrite): load the same `theme.md` and
+run its style/margin/table steps — confirm path first.
+
 ## read
 
 ```bash

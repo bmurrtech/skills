@@ -12,6 +12,10 @@ from pathlib import Path
 RELEASE_INCLUDE_DIRS: frozenset[str] = frozenset({"skills"})
 RELEASE_INCLUDE_FILES: frozenset[str] = frozenset({"LICENSE"})
 
+# Skill dirs under skills/ that must never ship (local dogfood / gitignored).
+# Keep in sync with .gitignore `/skills/doop/` until re-tracked for a release.
+RELEASE_EXCLUDE_SKILL_DIRS: frozenset[str] = frozenset({"doop"})
+
 # Root names / files that must never appear in the skills release artifact.
 # Library OKF, ops manuals, docs, and tooling stay tracked in git but out of installs.
 RELEASE_EXCLUDE_ROOTS: frozenset[str] = frozenset(
@@ -69,6 +73,10 @@ def build_release_members(repo_root: Path) -> list[str]:
                 continue
             if path.suffix in {".pyc", ".pyo"}:
                 continue
+            # skills/<name>/... — skip deferred local-only skill dirs
+            if len(rel_parts) >= 2 and rel_parts[0] == "skills":
+                if rel_parts[1] in RELEASE_EXCLUDE_SKILL_DIRS:
+                    continue
             rel = path.relative_to(root).as_posix()
             members.append(rel)
 
@@ -76,6 +84,9 @@ def build_release_members(repo_root: Path) -> list[str]:
         top = member.split("/", 1)[0]
         if top in RELEASE_EXCLUDE_ROOTS and top not in RELEASE_INCLUDE_DIRS:
             raise RuntimeError(f"excluded path leaked into members: {member}")
+        parts = member.split("/")
+        if len(parts) >= 2 and parts[0] == "skills" and parts[1] in RELEASE_EXCLUDE_SKILL_DIRS:
+            raise RuntimeError(f"excluded skill leaked into members: {member}")
 
     return members
 

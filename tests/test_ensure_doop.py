@@ -1,4 +1,8 @@
-"""Seams for doop ensure_doop identity + stop safety."""
+"""Seams for doop ensure_doop identity + stop safety.
+
+skills/doop is gitignored / untracked until stable-ready. When the skill tree
+is absent (CI clone), this module skips rather than fail import.
+"""
 
 from __future__ import annotations
 
@@ -12,6 +16,7 @@ from unittest import mock
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 SCRIPT = REPO_ROOT / "skills" / "doop" / "scripts" / "ensure_doop.py"
+DOOP_PRESENT = SCRIPT.is_file()
 
 
 def _load():
@@ -23,10 +28,11 @@ def _load():
     return mod
 
 
-ensure_doop = _load()
+ensure_doop = _load() if DOOP_PRESENT else None
 
 
 def _fake_doop_tree(root: Path) -> None:
+    assert ensure_doop is not None
     (root / "server").mkdir(parents=True)
     (root / "shared").mkdir(parents=True)
     (root / "package.json").write_text(
@@ -38,6 +44,7 @@ def _fake_doop_tree(root: Path) -> None:
         p.write_text("// marker\n", encoding="utf-8")
 
 
+@unittest.skipUnless(DOOP_PRESENT, "skills/doop local-only (gitignored)")
 class CheckoutIdentityTests(unittest.TestCase):
     def test_accepts_doop_markers(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
@@ -64,6 +71,7 @@ class CheckoutIdentityTests(unittest.TestCase):
             self.assertIn("missing", reason)
 
 
+@unittest.skipUnless(DOOP_PRESENT, "skills/doop local-only (gitignored)")
 class LiveProbeTests(unittest.TestCase):
     def test_healthz_ok(self) -> None:
         self.assertTrue(ensure_doop.is_doop_healthz_body('{"ok": true}'))
@@ -104,6 +112,7 @@ class LiveProbeTests(unittest.TestCase):
         self.assertTrue(live["port_occupied"])
 
 
+@unittest.skipUnless(DOOP_PRESENT, "skills/doop local-only (gitignored)")
 class StopSafetyTests(unittest.TestCase):
     def test_expected_bun_dev_cmdline_and_cwd(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
@@ -129,6 +138,7 @@ class StopSafetyTests(unittest.TestCase):
             self.assertIn("bun", reason)
 
 
+@unittest.skipUnless(DOOP_PRESENT, "skills/doop local-only (gitignored)")
 class EnsureGateTests(unittest.TestCase):
     def test_ensure_refuses_non_doop_home(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:

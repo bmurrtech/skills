@@ -1,0 +1,6 @@
+{"at":"Normal","font":"Georgia","size":11,"color":"1C1917"}
+{"at":"Title","font":"Arial","color":"1C1917","size":28,"bold":true,"space_after":8}
+{"at":"Subtitle","color":"78716C","size":13,"italic":true,"space_after":10}
+{"at":"Heading1","font":"Arial","color":"1C1917","size":16,"bold":true,"space_before":22,"space_after":8}
+{"at":"Heading2","font":"Arial","color":"7F1D1D","size":13,"bold":true,"space_before":16,"space_after":6}
+{"at":"Heading3","font":"Arial","color":"7F1D1D","size":12,"bold":true,"space_before":12,"space_after":4}

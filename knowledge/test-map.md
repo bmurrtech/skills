@@ -29,5 +29,6 @@ Full suites grow (hundreds of tests). Agents should not load or narrate the enti
 
 ## Related
 
-- Glossary: [CONTEXT.md](../CONTEXT.md)
-- Skill: [`skills/tdd`](../skills/tdd/SKILL.md)
+- Glossary: [CONTEXT.md](../CONTEXT.md) (**Test map**, **Skill testing**)
+- Skill: [`skills/tdd`](../skills/tdd/SKILL.md) (code seams + Agent Skill suites)
+- Skill authoring: [agent-skill.md](agent-skill.md)

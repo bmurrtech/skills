@@ -1,0 +1,40 @@
+{
+  "default_font": "Calibri",
+  "Normal": {
+    "color": "1F2937",
+    "sizePt": 11,
+    "font": "Calibri"
+  },
+  "Title": {
+    "color": "1E3A5F",
+    "sizePt": 26,
+    "bold": true,
+    "spaceAfterPt": 6
+  },
+  "Subtitle": {
+    "color": "6B7280",
+    "sizePt": 14,
+    "spaceAfterPt": 6
+  },
+  "Heading1": {
+    "color": "1E3A5F",
+    "sizePt": 16,
+    "bold": true,
+    "spaceBeforePt": 18,
+    "spaceAfterPt": 8
+  },
+  "Heading2": {
+    "color": "1E3A5F",
+    "sizePt": 13,
+    "bold": true,
+    "spaceBeforePt": 14,
+    "spaceAfterPt": 6
+  },
+  "Heading3": {
+    "color": "1E3A5F",
+    "sizePt": 12,
+    "bold": true,
+    "spaceBeforePt": 12,
+    "spaceAfterPt": 4
+  }
+}

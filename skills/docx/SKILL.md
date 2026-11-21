@@ -2,8 +2,11 @@
 name: docx
 description: >
   Word .docx via docx-cli: create, read, fill, edit, comments, tracked
-  redlines, batch mutations, optional page render. Use when building or
-  changing a .docx — not PDF, Sheets, Slides, or legacy .doc alone.
+  redlines, batch mutations, optional page render; create with named themes
+  (professional, technical, editorial) when the ask is styled, professional,
+  corporate, technical, editorial, narrative, memo, or proposal Word output.
+  Use when building or changing a .docx — not PDF, Sheets, Slides, or legacy
+  .doc alone.
 ---
 
 # docx
@@ -11,9 +14,11 @@ description: >
 Drive `.docx` with the `docx` CLI. Mutations overwrite in place (no undo).
 Authoritative contract: `docx <command> --help`. Locators: `docx info locators`.
 
-**Leading words:** *locator* · *batch* · *render*
+**Leading words:** *locator* · *batch* · *render* · *theme*
 
-No domain template. Create from operator Markdown or an existing file.
+No domain template. Create from operator Markdown or an existing file. Optional
+**themes** restyle headings/fonts/margins/table headers after create — pick via
+[references/themes/index.md](references/themes/index.md).
 
 ## 1. Ensure toolchain
 
@@ -56,7 +61,7 @@ after structural edits: re-read, or apply many changes from one read with
 
 | Branch | When |
 |--------|------|
-| **create** | New `.docx` from Markdown / text |
+| **create** | New `.docx` from Markdown / text (pick theme unless plain) |
 | **read** | Inspect, outline, find, extract |
 | **edit** | Fill, replace, structural edit, comments |
 | **redline** | Tracked-change pass |
@@ -75,4 +80,13 @@ many edits from one read. Re-read after structural edits if not batching.
 Mutating sessions: at most one `docx render` when layout must be checked.
 Exit code is success: `0` ok · `1` error · `2` usage · `3` not-found.
 
-**Done when:** intended commands exit 0; user has the output path.
+**Done when:** intended commands exit 0; user has the output path (and `theme:
+<id>` when a theme was applied).
+
+## Boundaries
+
+- Do not invent a fourth theme mid-session unless the operator supplies brand
+  tokens; use professional / technical / editorial or plain skip.
+- Do not ship content-locator JSONL as theme SoT — style ids only; re-locate
+  table cells after create.
+- Do not claim layout verified without `docx render` when geometry is the ask.

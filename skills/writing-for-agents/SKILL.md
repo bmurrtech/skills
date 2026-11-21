@@ -16,7 +16,11 @@ same levers, same *process* every run (not the same output).
 Owns the prose and structure bar. Does **not** create or maintain ops manuals.
 
 When the document is a **skill**, also read [references/mechanics.md](references/mechanics.md)
-(frontmatter, invocation, routers, must-pass checklist).
+(frontmatter, invocation, routers, must-pass checklist). Workflow shape options:
+[references/patterns.md](references/patterns.md). Packaging/runtime failures:
+[references/troubleshooting.md](references/troubleshooting.md). Behavioral
+suites (triggering / functional / baseline): **`tdd`**
+`references/skill-testing.md`.
 
 ## Workflow
 
@@ -56,7 +60,13 @@ standalone in any consumer.
 python3 scripts/quick_validate.py skills/<name>   # when present
 ```
 
-Skip for plain instruction docs outside a skill folder.
+Then run skill TDD under **`tdd`** for the examples from step 1: triggering
+(should / should-not), at least one functional slice, and baseline comparison
+when you claim improvement. Soft-skip programmatic evals when no harness
+exists — manual or scripted probes still count.
+
+Skip structural + behavioral skill checks for plain instruction docs outside a
+skill folder.
 
 **Done when:** exit 0 (or soft-skip); description/pointer alone would route the
-examples from step 1.
+examples from step 1; agreed skill scenarios pass at the chosen rigor.

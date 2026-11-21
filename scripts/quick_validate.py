@@ -58,10 +58,30 @@ def parse_simple_yaml_map(text: str) -> dict[str, str]:
 
 
 def validate_skill(skill_path: Path) -> tuple[bool, str]:
-    skill_md = skill_path / "SKILL.md"
-    if not skill_md.is_file():
+    if not skill_path.is_dir():
+        return False, f"Not a directory: {skill_path}"
+
+    # Exact case: SKILL.md only (case-insensitive FS can hide skill.md variants)
+    top_names = [p.name for p in skill_path.iterdir()]
+    if "SKILL.md" not in top_names:
+        variants = [n for n in top_names if n.lower() == "skill.md"]
+        if variants:
+            return False, f"Entry file must be exactly SKILL.md (found {variants[0]!r})"
         return False, "SKILL.md not found"
 
+    readmes = sorted(
+        str(p.relative_to(skill_path))
+        for p in skill_path.rglob("*")
+        if p.is_file() and p.name.lower() == "readme.md"
+    )
+    if readmes:
+        return (
+            False,
+            "Do not include README.md inside a skill folder "
+            f"(found: {', '.join(readmes)}); use SKILL.md or references/",
+        )
+
+    skill_md = skill_path / "SKILL.md"
     content = skill_md.read_text(encoding="utf-8")
     match = FRONTMATTER_RE.match(content)
     if not match:

@@ -5,6 +5,11 @@
 # PRDs — OKF concepts under docs/prd/. Default ignored (setup A); track via setup B. See docs/how-to-bmurrtech-skills.md / knowledge/prd.md.
 /docs/prd/
 /docs/prd/*
+
+# Discovery OKF — team bundles under docs/discovery/. Default ignored (setup A); track via setup B (private repo). See docs/how-to-discovery.md.
+/docs/discovery/
+/docs/discovery/*
+
 /docs/handoff/
 /docs/handoff/*
 
@@ -21,6 +26,11 @@
 .agents/
 .cursor/
 skills-lock.json
+
+# Experimental doop — kept on disk for local dogfood; untracked until stable-ready.
+# (Not catalog SoT while ignored; do not dual-track under agent dirs.)
+/skills/doop/
+/skills/doop/*
 
 # Secrets & local env
 .env

@@ -8,7 +8,7 @@ Repo knowledge for agents. Start at [CONTEXT.md](../CONTEXT.md) for the glossary
 
 ## Concepts
 
-- [Skill](agent-skill.md) — tracked skill folders under `skills/`
+- [Skill](agent-skill.md) — mint / modify / improve under `skills/` (layout, description, body, patterns, skill TDD)
 - [Universal sprint skill](universal-sprint-skill.md) — portable implement/review/tdd for any consumer
 - [Test map](test-map.md) — OKF seam → smallest test run; AGENTS one-liner index
 - [Skills release artifact](skills-release-artifact.md) — filtered install tarball (`skills/` + LICENSE)
@@ -26,6 +26,8 @@ Repo knowledge for agents. Start at [CONTEXT.md](../CONTEXT.md) for the glossary
 - [upkeep](upkeep.md) — AGENTS.md maintenance
 - [context](context.md) — glossary and OKF maintenance
 - [Skill scripts vs LLM](skill-scripts.md) — when to script vs let the model judge
-- [discovery](discovery.md) — meeting→use-case cycles, team OKF bundles, priority formula
-- [Discovery priority score](discovery-priority-score.md) — test map for priority_score.py
-- [Ensure doop](ensure-doop.md) — test map for doop checkout/live identity + stop safety
+- [discovery](discovery.md) — prep/capture/brief/rank modes, team OKF bundles, KPFS scoring
+- [Discovery priority score](discovery-priority-score.md) — test map for priority_score.py (KPFS → P0–P3)
+- [Ensure doop](ensure-doop.md) — test map for local-only doop (`skills/doop/` gitignored until stable)
+- [Summarize transcript](summarize-transcript.md) — test map for assess/chunk scripts + e2e fixture
+- [Check slides](check-slides.md) — test map for visual-explainer slide structural checker

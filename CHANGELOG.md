@@ -9,11 +9,71 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+### Changed
+
+### Fixed
+
+## [0.3.0] - 2026-11-21
+
+Operator-facing stable: slides/docx themes/`summarize-transcript`/KPFS discovery,
+skill-authoring OKF, discovery A/B tracking; experimental **`doop`** deferred
+(local gitignored) ahead of Latest.
+
+### Added
+
+- **`visual-explainer` slides**: frozen `deck-shell.html` (print CSS, Esc
+  overview, `data-screen-label`, speaker notes); `slide-authoring.md` with
+  action-title outline + copy/layout rules; `scripts/check_slides.py` structural
+  floors + `tests.test_check_slides`.
+- **`visual-explainer` slides**: `slide-visual-patterns.md` concept → pattern
+  catalog (funnel, quadrant, merge, proportion, calculator chain, scale, pills)
+  with `vx-*` classes + entity colors (`--e1..--e4`) in the deck shell;
+  generate-slides now maps each outline title to a pattern before HTML.
+- **`docx`**: named create themes under `references/themes/` —
+  **professional** (default), **technical**, **editorial** — keyword pick +
+  style/margin/table-header apply after `docx create`.
+- **`summarize-transcript`**: retained-signal summarization for already-provided
+  transcripts (focus, map-reduce, stance, earned decisions/actions/evidence);
+  `tests.test_summarize_transcript` + fixture.
 - README Quick start: **Pin to a release** — `npx skills@latest add bmurrtech/skills@v…`
   for stable or pre-release tags.
 
 ### Changed
 
+- **`visual-explainer` slides**: model fills sections only (no SlideEngine
+  rewrite); surf/raster only on ask or supplied brand assets; sans-default type;
+  starter layout set with free-form escape; refs are `deck-shell.html` +
+  `slide-authoring.md` via `generate-slides.md` (old pattern/deck stubs removed).
+- Skill mint/modify/improve practices mirrored in glossary + OKF
+  ([CONTEXT.md](CONTEXT.md) **Skill** / **Skill description** / **Skill testing**;
+  [knowledge/agent-skill.md](knowledge/agent-skill.md)); `AGENTS.md` Code style
+  points there instead of duplicating the essay.
+- **`tdd`**: skills-under-test callout + `references/skill-testing.md` —
+  rigor levels (manual / scripted / programmatic), one-hard-task-first,
+  triggering · functional · baseline suites, under/over-trigger iteration.
+- **`writing-for-agents`**: `references/patterns.md` (problem-/tool-first +
+  five workflow patterns) and `references/troubleshooting.md` (validate,
+  trigger, MCP, instructions, context size); validate step now points at
+  **`tdd`** skill suites.
+- Skill create/edit contract documented in AGENTS, how-to maintainers, and
+  **`writing-for-agents`** `references/mechanics.md`: required `SKILL.md`
+  (exact case) + library `agents/openai.yaml`; optional `scripts/` /
+  `references/` / `assets/` only when needed; no skill-folder `README.md`;
+  kebab-case name/folder; frontmatter **what + when + key capabilities**
+  (good/bad description examples); body template (Workflow / Examples /
+  Troubleshooting) + instruction practices (specific commands, error
+  handling, named refs, progressive disclosure). `scripts/quick_validate.py`
+  rejects wrong `SKILL.md` casing and in-skill `README.md`.
+- **`setup-bmurrtech-skills`**: **Commit discovery records?** A ignore (default) /
+  B track (private-repo recommend); new `references/discovery-tracking.md`.
+  Library `.gitignore` dogfoods `/docs/discovery/`. How-tos, skill-scaffold,
+  AGENTS/CONTEXT, and PRD 0004 D2 mitigation updated to match.
+- **`discovery`** (breaking): rebuilt on the KPFS model — bands 1–3 or unscored;
+  BV/DR/Overall (40/60) → P0–P3; unscored dims → `none` + needs-discovery.
+  Modes `prep` · `capture` · `brief` · `rank` replace the seven cycles. Gates are gone;
+  generic blockers lower a band instead. `priority_score.py` now takes
+  `{"use_cases":[…]}` and returns `scored`/`unscored` (exact-rational math).
+  Rosters record name/email/title/role from evidence.
 - README Features example prompts: lead with `/skill-name` slash form (hyphenated).
 - Release workflow + **`release`** skill/bootstrap: SemVer pre-release tags use
   `gh release create --prerelease --latest=false` so GitHub **Latest** stays on
@@ -23,6 +83,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Historical GitHub `-rc*` releases marked as pre-releases so **Latest** is the
   newest stable (`v0.2.0`), not an older RC that was published as a full release.
+
+### Removed
+
+- **`doop`** deferred from the published catalog for this stable cut: untracked +
+  gitignored under `/skills/doop/` (files kept locally for dogfood);
+  `package_skills.py` also excludes `skills/doop/` so local trees cannot leak
+  into the tarball. Was experimental in `0.3.0-rc1`. Re-track when ready for a
+  later release.
 
 ## [0.3.0-rc1] - 2026-10-18
 
